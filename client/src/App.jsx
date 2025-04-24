@@ -11,26 +11,30 @@ import Dashboard from './pages/educator/Dashboard'
 import AddCourse from './pages/educator/AddCourse'
 import MyCourses from './pages/educator/MyCourses'
 import StudentsEnrolled from './pages/educator/StudentEnrolled'
+import Navbar from './components/student/Navbar'
 
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/course-list" element={<CoursesList />} />
-      <Route path="/course-list/:input" element={<CoursesList />} />
-      <Route path="/course/:id" element={<CourseDetails />} />
-      <Route path="/my-enrollments" element={<MyEnrollments />} />
-      <Route path="/player/:courseId" element={<Player />} />
-      <Route path="/loading/:path" element={<Loading />} />
+    <div className='text-default min-h-screen bg-white'>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/course-list" element={<CoursesList />} />
+        <Route path="/course-list/:input" element={<CoursesList />} />
+        <Route path="/course/:id" element={<CourseDetails />} />
+        <Route path="/my-enrollments" element={<MyEnrollments />} />
+        <Route path="/player/:courseId" element={<Player />} />
+        <Route path="/loading/:path" element={<Loading />} />
 
-      <Route path="/educator" element={<Educator />}>
-        <Route path="educator" element={<Dashboard/>} />
-        <Route path="add-course" element={<AddCourse/>} />
-        <Route path="my-courses" element={<MyCourses/>} />
-        <Route path="student-enrolled" element={<StudentsEnrolled/>} />
-      </Route>
-    </Routes>
+        <Route path="/educator" element={<Educator />}>
+          <Route path="educator" element={<Dashboard/>} />
+          <Route path="add-course" element={<AddCourse/>} />
+          <Route path="my-courses" element={<MyCourses/>} />
+          <Route path="student-enrolled" element={<StudentsEnrolled/>} />
+        </Route>
+      </Routes>
+    </div>
   )
 }
 

@@ -16,6 +16,20 @@ export const AppContextProvider = (props) => {
       setAllCourses(dummyCourses)
    }
 
+   // Function to calculate average rating of course
+   const calculateRating = (course) => {
+      if(course.courseRating.length === 0) {
+         return 0
+      } 
+
+      let totalRating = 0
+      course.courseRating.forEach((rating) => {
+         totalRating += rating.rating // means that rating is an object with a rating property
+      })
+      return totalRating / course.courseRating.length
+
+   }
+
    useEffect(() => {
       fetchAllCourses()
    },[])
@@ -23,7 +37,8 @@ export const AppContextProvider = (props) => {
    const value = {
       currency,
       allCourses, 
-      navigate
+      navigate,
+      calculateRating
    }
 
    return (

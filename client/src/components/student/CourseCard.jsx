@@ -4,7 +4,7 @@ import { AppContext } from '../../context/AppContext'
 import { Link } from 'react-router-dom'
 
 const CourseCard = ({course}) => {
-  const {currency} = useContext(AppContext)
+  const {currency, calculateRating} = useContext(AppContext)
 
   return (
     <Link to={'/course/' + course._id} onClick={() => scrollTo(0,0)} 
@@ -15,14 +15,14 @@ const CourseCard = ({course}) => {
         <p className="text-gray-500">{course.educator.name}</p>
 
         <div className="flex items-center space-x-2">
-          <p>4.5</p>
+          <p>{calculateRating(course)}</p>
           <div className="flex">
             {[...Array(5)].map((_, index) => (
-              <img className='w-3.5 h-3.5' key={index} src={assets.star} alt="" />
+              <img className='w-3.5 h-3.5' key={index} src={index < Math.floor(calculateRating(course)) ? assets.star : assets.star_blank} alt="" />
             ))}
           </div>
 
-          <p className='text-gray-500'>22</p>
+          <p className='text-gray-500'>{course.courseRatings.length}</p>
         </div>
 
         <p className='text-base font-semibold text-gray-800'>{currency}{(course.coursePrice - course.discount * course.coursePrice / 100).toFixed(2)}</p>

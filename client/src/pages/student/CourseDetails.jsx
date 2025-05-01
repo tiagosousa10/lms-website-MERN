@@ -9,7 +9,13 @@ const CourseDetails = () => {
 
   const [courseData,setCourseData] = useState(null)
 
-  const {allCourses, calculateRating} = useContext(AppContext)
+  const {
+    allCourses,
+    calculateRating,
+    calculateChapterTime,
+    calculateCourseDuration,
+    calculateNoOfLectures
+  } = useContext(AppContext)
 
   const fetchCourseData = async () => {
     const findCourse = allCourses.find((course) => course._id === id)
@@ -34,8 +40,7 @@ const CourseDetails = () => {
           dangerouslySetInnerHTML={{__html: courseData.courseDescription.slice(0,200)}}></p>
 
           {/* review and ratings */}
-
-           <div className="flex items-center space-x-2">
+           <div className="flex items-center space-x-2 pt-3 pb-1 text-sm">
               <p>{calculateRating(courseData)}</p>
               <div className="flex">
                 {[...Array(5)].map((_, index) => (
@@ -47,6 +52,7 @@ const CourseDetails = () => {
 
               <p>{courseData.enrolledStudents.length} {courseData.enrolledStudents.length > 1 ? 'students' : 'student'} </p>
             </div>
+            <p className='text-sm'>Course by <span className='text-blue-600 underline'>GreatStack</span></p>
       </div>
 
       {/* //right column */}

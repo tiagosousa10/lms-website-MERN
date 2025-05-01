@@ -65,7 +65,8 @@ const CourseDetails = () => {
 
             <div className='pt-8 text-gray-800'>
                 <h2 className='text-xl font-semibold'>Course Structure</h2>
-
+                                          {/* // course structure */}
+                                          {/* // CHAPTER */}
                 <div className='pt-5'>
                   {courseData.courseContent.map((chapter, index) => (
                     <div className='border border-gray-300 bg-white mb-2 rounded' key={index}>
@@ -73,14 +74,17 @@ const CourseDetails = () => {
                         onClick={() => toggleSection(index)}
                       >
                         <div className='flex items-center gap-2'>
-                          <img src={assets.down_arrow_icon} alt="arrow icon" />
+                          <img src={assets.down_arrow_icon} alt="arrow icon" 
+                            className={`transform transition-transform ${openSections[index] ? 'rotate-180' : ''}`}
+                          />
                           <p className='font-medium md:text-base text-sm'>{chapter.chapterTitle}</p>
                         </div>
 
                         <p className='text-sm md:text-default'>{chapter.chapterContent.length} lectures - {calculateChapterTime(chapter)}</p>
                       </div> 
 
-                      <div className='overflow-hidden transition-all duration-300 max-h-96'> 
+                                          {/* // LECTURES */}
+                      <div className={`overflow-hidden transition-all duration-300 ${openSections[index] ? 'max-h-96' : 'max-h-0'}`}> 
                         <ul className='list-disc md:pl-10 pl-4 pr-4 py-2 text-gray-600 border-t border-gray-300'>
                           {chapter.chapterContent.map((lecture, index) => (
                             <li key={index} className='flex items-start gap-2 py-1' >
@@ -95,15 +99,16 @@ const CourseDetails = () => {
                               </div>
                             </li>
                           ))}
-                          
                         </ul>
                       </div> 
                     </div>
-
-                   
                   ))}
-
                 </div>
+            </div>
+
+            <div className='py-20 text-sm md:text-default'>
+              <h3 className='text-3xl font-semibold text-gray-800'>Course Description</h3>
+              <p className='pt-3 rich-text' dangerouslySetInnerHTML={{__html: courseData.courseDescription}}></p>
             </div>
       </div>
 

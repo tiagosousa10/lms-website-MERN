@@ -119,14 +119,87 @@ useEffect(() => {
                 <div className='p-4'>
                   {chapters.chapterContent.map((lecture, lectureIndex) => (
                     <div key={lectureIndex} className='flex justify-between items-center mb-2'>
-                      
+                      <span>{lectureIndex + 1} {lecture.lectureTitle} - {lecture.lectureDuration} mins - <a href={lecture.lectureUrl} target='_blank' className='text-blue-500'>Link</a> - {lecture.isPreviewFree ? 'Free Preview' : 'Paid'}  </span>
+                      <img src={assets.cross_icon} alt="" className='cursor-pointer' />
                     </div>
                   ))}
+
+                  <div className='inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2'>
+                    + Add Lecture
+                  </div>
                 </div>
               )}
 
             </div>
           ))}
+
+          <div className='flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer' >
+            + Add Chapter
+          </div>
+
+          {
+            showPopup && (
+              <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50'>
+                <div className='bg-white to-gray-700 p-4 rounded relative w-full max-w-80'>
+                  <h2 className='text-lg font-semibold mb-4'>Add Lecture</h2>
+
+                  <div className='mb-2'>
+                    <p>Lecture Title</p>
+                    <input 
+                      type="text" 
+                      className='mt-1 block w-full border rounded py-1 px-2'
+                      value={lectureDetails.lectureTitle}
+                      onChange={(e) => setLectureDetails({...lectureDetails, lectureTitle: e.target.value})}
+                    />
+
+                  </div>
+
+
+                  <div className='mb-2'>
+                    <p>Duration (minutes)</p>
+                    <input 
+                      type="number" 
+                      className='mt-1 block w-full border rounded py-1 px-2'
+                      value={lectureDetails.lectureDuration}
+                      onChange={(e) => setLectureDetails({...lectureDetails, lectureDuration: e.target.value})}
+                    />
+                  </div>
+
+
+                  <div className='mb-2'>
+                    <p>Lecture URL</p>
+                    <input 
+                      type="text" 
+                      className='mt-1 block w-full border rounded py-1 px-2'
+                      value={lectureDetails.lectureUrl}
+                      onChange={(e) => setLectureDetails({...lectureDetails, lectureUrl: e.target.value})}
+                    />
+                  </div>
+
+
+                  <div className='mb-2'>
+                    <p>Is Preview Free?</p>
+                    <input 
+                      type="text" 
+                      className='mt-1 block w-full border rounded py-1 px-2'
+                      value={lectureDetails.isPreviewFree}
+                      onChange={(e) => setLectureDetails({...lectureDetails, isPreviewFree: e.target.value})}
+                    />
+                  </div>
+
+                  <button type='button' className='w-full bg-blue-400 text-white px-4 py-2 rounded'>Add</button>
+
+                  <img 
+                    src={assets.cross_icon} 
+                    alt="" 
+                    className='absolute top-4 right-4 w-4 cursor-pointer'
+                    onClick={() => setShowPopup(false)}
+                  />
+
+                </div>
+              </div>
+            )
+          }
         </div>
       
       </form>

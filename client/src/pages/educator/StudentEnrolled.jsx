@@ -26,6 +26,21 @@ const StudentEnrolled = () => {
               <th className='px-4 py-3 font-semibold truncate'>Date</th>
             </tr>
           </thead>
+          <tbody className='text-sm text-gray-500'>
+            {enrolledStudents.map((item, index ) => (
+              <tr key={index} className='border-b border-gray-500/20'>
+                <td className='px-4 py-3 text-center hidden sm:table-cell'>
+                  {index + 1}
+                </td>
+                <td>
+                  <img src={item.student.imageUrl} alt="" className='w-9 h-9 rounded-full' />
+                  <span className='truncate'>{item.student.name}</span>
+                </td>
+                <td className='px-4 py-3 truncate'>{item.courseTitle}</td>
+                <td className='px-4 py-3 hidden sm:table-cell'>{new Date(item.purchaseDate).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>

@@ -26,6 +26,22 @@ const AddCourse = () => {
     }
 )
 
+const handleChapter = (action, chapterId) => {
+  if(action === 'add') {
+    const title = prompt('Enter Chapter Name: ');
+    if(title) {
+      const newChapter = {
+        chapterId: uniqid(),
+        chapterTitle: title,
+        chapterContent: [],
+        collapsed: false,
+        chapterOrder: chapters.length > 0 ? chapters.slice(-1)[0].chapterOrder + 1 : 1,
+      }
+      setChapters([...chapters, newChapter])
+    }
+  }
+}
+
 useEffect(() => {
   //Initialize Quill editor only once
   if(!quillRef.current && editorRef.current) {
@@ -133,7 +149,9 @@ useEffect(() => {
             </div>
           ))}
 
-          <div className='flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer' >
+          <div 
+            className='flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer' 
+            onClick={() => handleChapter('add') } >
             + Add Chapter
           </div>
 
@@ -201,6 +219,9 @@ useEffect(() => {
             )
           }
         </div>
+        <button type='submit' className='bg-black text-white w-max py-2.5 px-8 rounded my-4'>
+          Add
+        </button>
       
       </form>
 

@@ -38,3 +38,6 @@ export const getCourseId = async(req,res) => {
     console.log("Error in getCourseId", error.message)
   }
 }
+
+
+

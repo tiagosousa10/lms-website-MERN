@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import Course from "../models/Course.js";
 import User from "../models/User.js";
 import { Purchase } from "../models/Purchase.js";
+import { CourseProgress } from "../models/CourseProgress.js";
 
 //get user data
 export const getUserData = async(req,res) => {
@@ -99,5 +100,38 @@ export const purchaseCourse = async (req, res) => {
 
   } catch (error) {
       res.json({ success: false, message: error.message });
+  }
+}
+
+//update user course progress
+export const updateUserProgress = async(req,res) => {
+  try {
+    const userId = req.auth.userId;
+    const {courseId, progress} = req.body;
+
+    const progressData = await CourseProgress.findOne({
+      userId,
+      courseId
+    })
+
+    if(progressData) {
+      if(progressData.lectureCompleted.includes(lectureId)) {
+        return res.json({success: false, message: "You have already completed this lecture"})
+      }
+
+      progressData.lectureCompleted.push(lectureId);
+      await progressData.save()
+    } else {
+      await CourseProgress.create({
+        userId,
+        courseId,
+        lectureCompleted: [lectureId]
+      })
+    }
+
+    res.json({success:true, message: "Progress updated"})
+  } catch(error) {
+    res.json({success: false, message: error.message})
+    console.log("Error in updateUserProgress", error.message)
   }
 }

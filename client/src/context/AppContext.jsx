@@ -52,7 +52,7 @@ export const AppContextProvider = (props) => {
 
    try {
       const token = await getToken()
-      const {data} =await axios.get(backendUrl + '/api/user', {
+      const {data} =await axios.get(backendUrl + '/api/user/data', {
          headers: {
             Authorization: `Bearer ${token}`
          }
@@ -79,7 +79,7 @@ export const AppContextProvider = (props) => {
       course.courseRatings.forEach((rating) => {
          totalRating += rating.rating // means that rating is an object with a rating property
       })
-      return totalRating / course.courseRatings.length
+      return Math.floor(totalRating / course.courseRatings.length)
    }
 
    // Calculate Course Chapter time
@@ -112,20 +112,33 @@ export const AppContextProvider = (props) => {
    }
 
    //Fetch user enrolled courses
-
    const fetchUserEnrolledCourses = async () => {
-      setEnrolledCourses(dummyCourses)
-   }
+
+      const token = await getToken();
+
+      const { data } = await axios.get(backendUrl + '/api/user/enrolled-courses',
+          { headers: { Authorization: `Bearer ${token}` } })
+      console.log("🚀 ~ fetchUserEnrolledCourses ~ data:", data)
+
+      if (data.success) {
+          setEnrolledCourses(data.enrolledCourses.reverse())
+      } else (
+          toast.error(data.message)
+      )
+
+  }
 
 
    useEffect(() => {
       fetchAllCourses()
-      fetchUserEnrolledCourses()
    },[])
+
+
 
    useEffect(() => {
       if(user) {
          fetchUserData()
+         fetchUserEnrolledCourses()
       }
    }, [user])
 
@@ -143,6 +156,11 @@ export const AppContextProvider = (props) => {
       enrolledCourses,
       setEnrolledCourses,
       fetchUserEnrolledCourses,
+      backendUrl,
+      userData,
+      setUserData,
+      getToken,
+      fetchAllCourses
    }
 
    return (

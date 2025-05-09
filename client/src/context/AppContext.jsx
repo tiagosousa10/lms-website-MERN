@@ -20,25 +20,54 @@ export const AppContextProvider = (props) => {
    const {user} = useUser()
 
    const [allCourses,setAllCourses] = useState([])
-   const [isEducator,setIsEducator] = useState(true)
+   const [isEducator,setIsEducator] = useState(false)
    const [enrolledCourses, setEnrolledCourses] = useState([])
-   console.log("🚀 ~ AppContextProvider ~ enrolledCourses:", enrolledCourses)
+   const [userData, setUserData] = useState(null)
 
    //Fetch all courses
    const fetchAllCourses = async () => {
-      try {
-         const {data} = await axios.get(backendUrl + '/api/courses/all')
 
-         if(data.success) {
-            setAllCourses(data.courses)
-         } else {
-            toast.error(data.message)
-         }
-      } 
-      catch(error) {
-         toast.error(error.message)
+      try {
+
+          const { data } = await axios.get(backendUrl + '/api/course/all');
+
+          if (data.success) {
+              setAllCourses(data.courses)
+          } else {
+              toast.error(data.message)
+          }
+
+      } catch (error) {
+          toast.error(error.message)
       }
+
+  }
+
+  //Fetch user data
+  const fetchUserData = async() => {
+
+   if(user.publicMetadata.role === "educator") {
+      setIsEducator(true)
    }
+
+   try {
+      const token = await getToken()
+      const {data} =await axios.get(backendUrl + '/api/user', {
+         headers: {
+            Authorization: `Bearer ${token}`
+         }
+      })
+
+      if(data.success) {
+         setUserData(data.user)
+      } else {
+         toast.error(data.message)
+      }
+
+   } catch(error) {
+      toast.error(error.message)
+   }
+  }
 
    // Function to calculate average rating of course
    const calculateRating = (course) => {
@@ -94,13 +123,9 @@ export const AppContextProvider = (props) => {
       fetchUserEnrolledCourses()
    },[])
 
-   const logToken = async() => {
-      console.log(await getToken())
-   }
-
    useEffect(() => {
       if(user) {
-         logToken()
+         fetchUserData()
       }
    }, [user])
 

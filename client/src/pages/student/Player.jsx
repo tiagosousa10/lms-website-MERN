@@ -10,7 +10,7 @@ import Rating from '../../components/student/Rating';
 import Footer from '../../components/student/Footer';
 import Loading from '../../components/student/Loading';
 
-const Player = ({ }) => {
+const Player = () => {
 
   const { enrolledCourses, backendUrl, getToken, calculateChapterTime, userData, fetchUserEnrolledCourses } = useContext(AppContext)
 
@@ -105,16 +105,21 @@ const Player = ({ }) => {
         { courseId, rating },
         { headers: { Authorization: `Bearer ${token}` } }
       )
+      console.log('im here', data)
 
       if (data.success) {
+        console.log('estou no if')
         toast.success(data.message)
         fetchUserEnrolledCourses()
+        console.log('estou no if-2')
       } else {
         toast.error(data.message)
+        console.log('estou no else')
       }
-
+      
     } catch (error) {
       toast.error(error.message)
+      console.log('estou no catch')
     }
   }
 

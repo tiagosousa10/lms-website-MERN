@@ -124,11 +124,10 @@ const Player = () => {
   }
 
   useEffect(() => {
-
     getCourseProgress()
-
   }, [])
 
+  
   return courseData ? (
     <>
     

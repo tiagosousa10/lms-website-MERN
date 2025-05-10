@@ -104,36 +104,41 @@ export const purchaseCourse = async (req, res) => {
 }
 
 //update user course progress
-export const updateUserProgress = async(req,res) => {
+export const updateUserCourseProgress = async (req, res) => {
+
   try {
-    const userId = req.auth.userId;
-    const {courseId, progress} = req.body;
 
-    const progressData = await CourseProgress.findOne({
-      userId,
-      courseId
-    })
+      const userId = req.auth.userId
 
-    if(progressData) {
-      if(progressData.lectureCompleted.includes(lectureId)) {
-        return res.json({success: false, message: "You have already completed this lecture"})
+      const { courseId, lectureId } = req.body
+
+      const progressData = await CourseProgress.findOne({ userId, courseId })
+
+      if (progressData) {
+
+          if (progressData.lectureCompleted.includes(lectureId)) {
+              return res.json({ success: true, message: 'Lecture Already Completed' })
+          }
+
+          progressData.lectureCompleted.push(lectureId)
+          await progressData.save()
+
+      } else {
+
+          await CourseProgress.create({
+              userId,
+              courseId,
+              lectureCompleted: [lectureId]
+          })
+
       }
 
-      progressData.lectureCompleted.push(lectureId);
-      await progressData.save()
-    } else {
-      await CourseProgress.create({
-        userId,
-        courseId,
-        lectureCompleted: [lectureId]
-      })
-    }
+      res.json({ success: true, message: 'Progress Updated' })
 
-    res.json({success:true, message: "Progress updated"})
-  } catch(error) {
-    res.json({success: false, message: error.message})
-    console.log("Error in updateUserProgress", error.message)
+  } catch (error) {
+      res.json({ success: false, message: error.message })
   }
+
 }
 
 // get user course progress

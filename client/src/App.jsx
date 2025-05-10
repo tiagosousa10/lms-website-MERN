@@ -14,6 +14,7 @@ import StudentsEnrolled from './pages/educator/StudentEnrolled'
 import Navbar from './components/student/Navbar'
 import "quill/dist/quill.snow.css"
 import {ToastContainer} from 'react-toastify'
+import NotFound from './pages/NotFound'
 
 
 const App = () => {
@@ -41,6 +42,8 @@ const App = () => {
           <Route path="my-courses" element={<MyCourses/>} />
           <Route path="student-enrolled" element={<StudentsEnrolled/>} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   )

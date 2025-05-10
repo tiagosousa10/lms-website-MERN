@@ -8,6 +8,7 @@ import Footer from '../../components/student/Footer'
 import Rating from '../../components/student/Rating'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import Loading from '../../components/student/Loading'
 
 const Player = () => {
 
@@ -47,6 +48,7 @@ const Player = () => {
       getCourseData()
     }
   }, [enrolledCourses])
+
 
   const markLectureAsCompleted = async(lectureId) => {
     try {
@@ -90,7 +92,32 @@ const Player = () => {
     }
   }
 
-  return (
+  const handleRate = async(rating) => {
+    try {
+      const token= getToken()
+      const {data} = await axios.post(backendUrl + '/api/user/add-rating', {courseId, rating}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if(data.success) {
+        toast.success(data.message)
+        fetchUserEnrolledCourses()
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch(error) {
+      toast.error(error.message)
+    }
+  }
+
+  useEffect(() => {
+    getCourseProgress()
+  }, [])
+
+  return courseData ? (
     <>
     <div className='p-4 sm:p-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-10 md:px-36'>
       {/* left column */}
@@ -170,6 +197,8 @@ const Player = () => {
 
     <Footer />
     </>
+  ) : (
+    <Loading />
   )
 }
 

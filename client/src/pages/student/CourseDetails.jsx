@@ -31,9 +31,7 @@ const CourseDetails = () => {
 
   const fetchCourseData = async () => {
     try {
-      //individual course
       const { data } = await axios.get(backendUrl + "/api/course/" + id);
-
       if (data.success) {
         setCourseData(data.courseData);
       } else {
@@ -47,25 +45,18 @@ const CourseDetails = () => {
   const enrollCourse = async () => {
     try {
       if (!userData) {
-        return toast.error("Please login to enroll");
+        return toast.error("Por favor inicia sessão para te inscreveres");
       }
 
       if (isAlreadyEnrolled) {
-        return toast.warning("You are already enrolled in this course");
+        return toast.warning("Já estás inscrito neste curso");
       }
 
       const token = await getToken();
-
       const { data } = await axios.post(
         backendUrl + "/api/user/purchase",
-        {
-          courseId: courseData._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { courseId: courseData._id },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (data.success) {
@@ -92,7 +83,7 @@ const CourseDetails = () => {
   const toggleSection = (index) => {
     setOpenSections((prev) => ({
       ...prev,
-      [index]: !prev[index], // means that if the section is open, close it and vice versa
+      [index]: !prev[index],
     }));
   };
 
@@ -101,7 +92,6 @@ const CourseDetails = () => {
       <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left">
         <div className="absolute top-0 left-0 w-full h-section-height -z-1 bg-gradient-to-b from-cyan-100/70"></div>
 
-        {/* //left column */}
         <div className="max-w-xl z-10 text-gray-500">
           <h1 className="md:text-course-details-heading-large text-course-details-heading-small font-semibold text-gray-800">
             {courseData?.courseTitle}
@@ -113,7 +103,6 @@ const CourseDetails = () => {
             }}
           ></p>
 
-          {/* review and ratings */}
           <div className="flex items-center space-x-2 pt-3 pb-1 text-sm">
             <p>{calculateRating(courseData)}</p>
             <div className="flex">
@@ -133,25 +122,23 @@ const CourseDetails = () => {
 
             <p className="text-blue-600">
               ({courseData.courseRatings.length}{" "}
-              {courseData.length > 1 ? "ratings" : "rating"})
+              {courseData.length > 1 ? "avaliações" : "avaliação"})
             </p>
 
             <p>
               {courseData.enrolledStudents.length}{" "}
-              {courseData.enrolledStudents.length > 1 ? "students" : "student"}{" "}
+              {courseData.enrolledStudents.length > 1 ? "alunos" : "aluno"}
             </p>
           </div>
           <p className="text-sm">
-            Course by{" "}
+            Curso por{" "}
             <span className="text-blue-600 underline">
               {courseData.educator?.name}
             </span>
           </p>
 
           <div className="pt-8 text-gray-800">
-            <h2 className="text-xl font-semibold">Course Structure</h2>
-            {/* // course structure */}
-            {/* // CHAPTER */}
+            <h2 className="text-xl font-semibold">Estrutura do Curso</h2>
             <div className="pt-5">
               {courseData.courseContent.map((chapter, index) => (
                 <div
@@ -165,7 +152,7 @@ const CourseDetails = () => {
                     <div className="flex items-center gap-2">
                       <img
                         src={assets.down_arrow_icon}
-                        alt="arrow icon"
+                        alt="ícone seta"
                         className={`transform transition-transform ${
                           openSections[index] ? "rotate-180" : ""
                         }`}
@@ -176,12 +163,11 @@ const CourseDetails = () => {
                     </div>
 
                     <p className="text-sm md:text-default">
-                      {chapter.chapterContent.length} lectures -{" "}
+                      {chapter.chapterContent.length} aulas -{" "}
                       {calculateChapterTime(chapter)}
                     </p>
                   </div>
 
-                  {/* // LECTURES */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
                       openSections[index] ? "max-h-96" : "max-h-0"
@@ -192,10 +178,9 @@ const CourseDetails = () => {
                         <li key={index} className="flex items-start gap-2 py-1">
                           <img
                             src={assets.play_icon}
-                            alt="play-icon"
+                            alt="ícone play"
                             className="w-4 h-4 mt-1"
                           />
-
                           <div className="flex items-center justify-between w-full text-gray-800 text-xs md:text-default">
                             <p>{lecture.lectureTitle}</p>
                             <div className="flex gap-2">
@@ -210,7 +195,7 @@ const CourseDetails = () => {
                                   }
                                   className="text-blue-500 cursor-pointer"
                                 >
-                                  Preview
+                                  Pré-visualizar
                                 </p>
                               )}
                               <p>
@@ -232,7 +217,7 @@ const CourseDetails = () => {
 
           <div className="py-20 text-sm md:text-default">
             <h3 className="text-3xl font-semibold text-gray-800">
-              Course Description
+              Descrição do Curso
             </h3>
             <p
               className="pt-3 rich-text"
@@ -241,7 +226,6 @@ const CourseDetails = () => {
           </div>
         </div>
 
-        {/* //right column */}
         <div className="max-w-course-card z-10 shadow-custom-card rounded-t md:rounded-none overflow-hidden bg-white min-w-[300px] sm:min-w-[420px]">
           {playerData ? (
             <YouTube
@@ -250,18 +234,18 @@ const CourseDetails = () => {
               iframeClassName="w-full aspect-video"
             />
           ) : (
-            <img src={courseData.courseThumbnail} alt="" />
+            <img src={courseData.courseThumbnail} alt="imagem curso" />
           )}
           <div className="p-5">
             <div className="flex items-center gap-2">
               <img
                 src={assets.time_left_clock_icon}
-                alt="time left clock icon"
+                alt="ícone tempo"
                 className="w-3.5"
               />
-
               <p className="text-red-500">
-                <span className="font-medium">5 days</span> left at this price!
+                <span className="font-medium">5 dias</span> restantes a este
+                preço!
               </p>
             </div>
 
@@ -273,32 +257,28 @@ const CourseDetails = () => {
                   (courseData.discount * courseData.coursePrice) / 100
                 ).toFixed(2)}
               </p>
-              <p className="md:text-lg text-gray-500 line-through ">
+              <p className="md:text-lg text-gray-500 line-through">
                 {currency} {courseData.coursePrice.toFixed(2)}
               </p>
               <p className="md:text-lg text-gray-500">
-                {courseData.discount}% off
+                {courseData.discount}% desconto
               </p>
             </div>
 
             <div className="flex items-center text-sm md:text-default gap-4 pt-2 md:pt-4 text-gray-500">
               <div className="flex items-center gap-1">
-                <img src={assets.star} alt="star icon" />
+                <img src={assets.star} alt="ícone estrela" />
                 <p>{calculateRating(courseData)}</p>
               </div>
-
               <div className="h-4 w-px bg-gray-500/400"></div>
-
               <div className="flex items-center gap-1">
-                <img src={assets.time_clock_icon} alt="clock icon" />
+                <img src={assets.time_clock_icon} alt="ícone relógio" />
                 <p>{calculateCourseDuration(courseData)}</p>
               </div>
-
               <div className="h-4 w-px bg-gray-500/400"></div>
-
               <div className="flex items-center gap-1">
-                <img src={assets.lesson_icon} alt="lesson icon" />
-                <p>{calculateNoOfLectures(courseData)} lessons</p>
+                <img src={assets.lesson_icon} alt="ícone aula" />
+                <p>{calculateNoOfLectures(courseData)} aulas</p>
               </div>
             </div>
 
@@ -306,19 +286,19 @@ const CourseDetails = () => {
               onClick={enrollCourse}
               className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium "
             >
-              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
+              {isAlreadyEnrolled ? "Já Inscrito" : "Inscreve-te Agora"}
             </button>
 
             <div className="pt-6">
               <p className="md:text-xl text-lg font-medium text-gray-800">
-                What's in the course?
+                O que está incluído no curso?
               </p>
               <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
-                <li>Lifetime access with free updates</li>
-                <li>Step-by-step, hands-on project guidance.</li>
-                <li>Downloadable resources and source code.</li>
-                <li>Quizes to test your knowledge</li>
-                <li>Certificate of completion</li>
+                <li>Acesso vitalício com atualizações gratuitas</li>
+                <li>Guia passo a passo com projetos práticos</li>
+                <li>Recursos e código-fonte para download</li>
+                <li>Questionários para testares os teus conhecimentos</li>
+                <li>Certificado de conclusão incluído</li>
               </ul>
             </div>
           </div>

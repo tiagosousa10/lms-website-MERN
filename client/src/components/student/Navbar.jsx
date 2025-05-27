@@ -52,7 +52,7 @@ const Navbar = () => {
       <img
         onClick={() => navigate("/")}
         src={assets.logo}
-        alt="logo"
+        alt="logótipo"
         className="w-28 lg:w-32 cursor-pointer"
       />
       <div className="hidden md:flex items-center gap-5 text-gray-500">
@@ -60,10 +60,10 @@ const Navbar = () => {
           {user && (
             <>
               <button onClick={becomeEducator}>
-                {isEducator ? "Educator Dashboard" : "Become Educator"}
+                {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
               </button>
-              | <Link to={"/my-enrollments"}>My Enrollments</Link>|{" "}
-              <Link to={"/chat"}>Social</Link>
+              | <Link to={"/my-enrollments"}>Os Meus Cursos</Link> |{" "}
+              <Link to={"/chat"}>Comunidade</Link>
             </>
           )}
         </div>
@@ -74,20 +74,20 @@ const Navbar = () => {
             onClick={() => openSignIn()}
             className="bg-blue-600 text-white px-5 py-2 rounded-full"
           >
-            Create Account
+            Criar Conta
           </button>
         )}
       </div>
 
-      {/*Mobile Screens */}
+      {/* Versão Mobile */}
       <div className="md:hidden flex items-center gap-2 sm:gap-5 text-gray-500 ">
         <div className="flex items-center gap-1 sm:gap-2 max-sm:text-xs">
           {user && (
             <>
               <button onClick={becomeEducator}>
-                {isEducator ? "Educator Dashboard" : "Become Educator"}
+                {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
               </button>
-              | <Link to={"/my-enrollments"}>My Enrollments</Link>
+              | <Link to={"/my-enrollments"}>Os Meus Cursos</Link>
             </>
           )}
         </div>
@@ -95,7 +95,7 @@ const Navbar = () => {
           <UserButton />
         ) : (
           <button onClick={() => openSignIn()}>
-            <img src={assets.user_icon} alt="user_icon" />
+            <img src={assets.user_icon} alt="ícone utilizador" />
           </button>
         )}
       </div>

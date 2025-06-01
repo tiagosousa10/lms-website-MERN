@@ -40,7 +40,7 @@ const App = () => {
         <Route
           path="/community"
           element={
-            <CommunityLayout>
+            <CommunityLayout showSidebar={true}>
               <CommunityPage />
             </CommunityLayout>
           }

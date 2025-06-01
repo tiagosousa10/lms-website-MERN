@@ -1,6 +1,6 @@
 import CommunitySideBar from "./CommunitySideBar";
 
-const CommunityLayout = ({ children, showSidebar = true }) => {
+const CommunityLayout = ({ children, showSidebar = false }) => {
   return (
     <div className="min-h-screen ">
       <div className="flex">

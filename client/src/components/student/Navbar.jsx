@@ -10,8 +10,6 @@ const Navbar = () => {
   const { navigate, isEducator, backendUrl, setIsEducator, getToken } =
     useContext(AppContext);
 
-  const isCourseListPage = location.pathname.includes("courses-list");
-
   const { openSignIn } = useClerk();
   const { user } = useUser();
 
@@ -44,58 +42,92 @@ const Navbar = () => {
   };
 
   return (
-    <div
-      className={`flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-gray-500 py-4 ${
-        isCourseListPage ? "bg-white" : "bg-cyan-100/70"
-      }`}
-    >
-      <img
-        onClick={() => navigate("/")}
-        src={assets.logo}
-        alt="logótipo"
-        className="w-28 lg:w-32 cursor-pointer"
-      />
-      <div className="hidden md:flex items-center gap-5 text-gray-500">
-        <div className="flex items-center gap-5">
+    <div className="navbar bg-base-100 shadow-sm z-10 px-20">
+      {/* INÍCIO NAVBAR - LOGO E DROPDOWN MOBILE */}
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
+          >
+            {user && (
+              <>
+                <li>
+                  <button onClick={becomeEducator}>
+                    {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
+                  </button>
+                </li>
+                <li>
+                  <Link to="/my-enrollments">Os Meus Cursos</Link>
+                </li>
+                <li>
+                  <Link to="/community">Comunidade</Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="avatar">
+            <div className="size-10 rounded-full overflow-hidden">
+              <img
+                src="logo.jpg"
+                className="object-cover object-center w-full h-full cursor-pointer"
+                onClick={() => navigate("/")}
+              />
+            </div>
+          </div>
+          <span className="font-medium">tsAcademy</span>
+        </div>
+      </div>
+
+      {/* CENTRO NAVBAR - LINKS DESKTOP */}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
           {user && (
             <>
-              <button onClick={becomeEducator}>
-                {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
-              </button>
-              | <Link to={"/my-enrollments"}>Os Meus Cursos</Link> |{" "}
-              <Link to={"/community"}>Comunidade</Link>
+              <li>
+                <button onClick={becomeEducator}>
+                  {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
+                </button>
+              </li>
+              <li>
+                <Link to="/my-enrollments">Os Meus Cursos</Link>
+              </li>
+              <li>
+                <Link to="/community">Comunidade</Link>
+              </li>
             </>
           )}
-        </div>
+        </ul>
+      </div>
+
+      {/* FIM NAVBAR - AUTENTICAÇÃO */}
+      <div className="navbar-end">
         {user ? (
           <UserButton />
         ) : (
           <button
             onClick={() => openSignIn()}
-            className="bg-blue-600 text-white px-5 py-2 rounded-full"
+            className="btn btn-primary normal-case"
           >
             Criar Conta
-          </button>
-        )}
-      </div>
-
-      {/* Versão Mobile */}
-      <div className="md:hidden flex items-center gap-2 sm:gap-5 text-gray-500 ">
-        <div className="flex items-center gap-1 sm:gap-2 max-sm:text-xs">
-          {user && (
-            <>
-              <button onClick={becomeEducator}>
-                {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
-              </button>
-              | <Link to={"/my-enrollments"}>Os Meus Cursos</Link>
-            </>
-          )}
-        </div>
-        {user ? (
-          <UserButton />
-        ) : (
-          <button onClick={() => openSignIn()}>
-            <img src={assets.user_icon} alt="ícone utilizador" />
           </button>
         )}
       </div>

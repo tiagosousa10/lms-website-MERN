@@ -12,7 +12,7 @@ const CommunitySideBar = () => {
         <Link to="/" className="flex items-center gap-2.5">
           <ShipWheelIcon className="size-9 text-primary" />
           <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-            Streamify
+            tsAcademy
           </span>
         </Link>
       </div>

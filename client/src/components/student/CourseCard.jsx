@@ -10,40 +10,49 @@ const CourseCard = ({ course }) => {
     <Link
       to={"/course/" + course._id}
       onClick={() => scrollTo(0, 0)}
-      className="border border-gray-500/30 pb-6 overflow-hidden rounded-lg"
+      className="card bg-base-100 w-full sm:w-80 shadow-sm hover:shadow-md transition"
     >
-      <img className="w-full" src={course.courseThumbnail} alt="" />
-      <div className="p-3 text-left">
-        <h3 className="text-base font-semibold">{course.courseTitle}</h3>
-        <p className="text-gray-500">{course.educator?.name}</p>
+      <figure>
+        <img
+          src={course.courseThumbnail}
+          alt={course.courseTitle}
+          className="h-48 w-full object-cover"
+        />
+      </figure>
+      <div className="card-body p-4 border">
+        <h2 className="card-title text-base">{course.courseTitle}</h2>
+        <p className="text-sm text-gray-500">{course.educator?.name}</p>
 
-        <div className="flex items-center space-x-2">
-          <p>{calculateRating(course)}</p>
+        <div className="flex items-center gap-2">
+          <p className="text-sm">{calculateRating(course)}</p>
           <div className="flex">
             {[...Array(5)].map((_, index) => (
               <img
-                className="w-3.5 h-3.5"
+                className="w-4 h-4"
                 key={index}
                 src={
                   index < Math.floor(calculateRating(course))
                     ? assets.star
                     : assets.star_blank
                 }
-                alt=""
+                alt="rating"
               />
             ))}
           </div>
-
-          <p className="text-gray-500">{course.courseRatings.length}</p>
+          <p className="text-xs text-gray-400">
+            ({course.courseRatings.length})
+          </p>
         </div>
 
-        <p className="text-base font-semibold text-gray-800">
-          {currency}
-          {(
-            course.coursePrice -
-            (course.discount * course.coursePrice) / 100
-          ).toFixed(2)}
-        </p>
+        <div className="card-actions justify-end mt-2">
+          <p className="text-base font-semibold text-gray-800">
+            {currency}
+            {(
+              course.coursePrice -
+              (course.discount * course.coursePrice) / 100
+            ).toFixed(2)}
+          </p>
+        </div>
       </div>
     </Link>
   );

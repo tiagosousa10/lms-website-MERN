@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { AppContext } from "../../context/AppContext";
@@ -83,13 +82,15 @@ const Navbar = () => {
             )}
           </ul>
         </div>
-        <div className="flex items-center gap-4">
+        <div
+          className="flex items-center gap-4 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <div className="avatar">
             <div className="size-10 rounded-full overflow-hidden">
               <img
                 src="logo.jpg"
                 className="object-cover object-center w-full h-full cursor-pointer"
-                onClick={() => navigate("/")}
               />
             </div>
           </div>

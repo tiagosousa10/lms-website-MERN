@@ -15,9 +15,10 @@ import Navbar from "./components/student/Navbar";
 import "quill/dist/quill.snow.css";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/NotFound";
-import SocialPage from "./pages/student/SocialPage";
-import CallPage from "./pages/student/CallPage";
-import ChatPage from "./pages/student/ChatPage";
+import CallPage from "./pages/community/CallPage";
+import ChatPage from "./pages/community/ChatPage";
+import CommunityLayout from "./components/community/CommunityLayout";
+import CommunityPage from "./pages/community/CommunityPage";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -34,8 +35,16 @@ const App = () => {
         <Route path="/my-enrollments" element={<MyEnrollments />} />
         <Route path="/player/:courseId" element={<Player />} />
         <Route path="/loading/:path" element={<Loading />} />
-        {/* SOCIAL & CHAT */}
-        <Route path="/social" element={<SocialPage />} />
+        {/* SOCIAL & CHAT  : TODO -> VERIFICAR UTILIZADOR LOGADO*/}
+
+        <Route
+          path="/community"
+          element={
+            <CommunityLayout>
+              <CommunityPage />
+            </CommunityLayout>
+          }
+        />
         <Route path="/call/:id" element={<CallPage />} />
         <Route path="/chat/:id" element={<ChatPage />} />
 

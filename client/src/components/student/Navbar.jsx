@@ -63,7 +63,7 @@ const Navbar = () => {
                 {isEducator ? "Painel do Formador" : "Tornar-me Formador"}
               </button>
               | <Link to={"/my-enrollments"}>Os Meus Cursos</Link> |{" "}
-              <Link to={"/chat"}>Comunidade</Link>
+              <Link to={"/community"}>Comunidade</Link>
             </>
           )}
         </div>

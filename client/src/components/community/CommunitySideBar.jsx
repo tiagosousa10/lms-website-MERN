@@ -25,7 +25,7 @@ const CommunitySideBar = () => {
           }`}
         >
           <HomeIcon className="size-5 text-base-content opacity-70" />
-          <span>Home</span>
+          <span>Início</span>
         </Link>
 
         <Link
@@ -35,7 +35,7 @@ const CommunitySideBar = () => {
           }`}
         >
           <UsersIcon className="size-5 text-base-content opacity-70" />
-          <span>Friends</span>
+          <span>Amigos</span>
         </Link>
 
         <Link
@@ -45,7 +45,7 @@ const CommunitySideBar = () => {
           }`}
         >
           <BellIcon className="size-5 text-base-content opacity-70" />
-          <span>Notifications</span>
+          <span>Notificações</span>
         </Link>
       </nav>
 
@@ -54,7 +54,7 @@ const CommunitySideBar = () => {
         <div className="flex items-center gap-3">
           <div className="avatar">
             <div className="w-10 rounded-full">
-              <img src={assets.profile_img} alt="user avatar" />
+              <img src={assets.profile_img} alt="avatar do utilizador" />
             </div>
           </div>
 

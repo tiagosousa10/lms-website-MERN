@@ -66,8 +66,8 @@ const CommunityPage = () => {
           <NoFriendsFound />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {amigos.map((amigo) => (
-              <FriendCard key={amigo._id} friend={amigo} />
+            {amigos.map((amigo, index) => (
+              <FriendCard key={amigo._id + "-" + index} friend={amigo} />
             ))}
           </div>
         )}
@@ -101,12 +101,12 @@ const CommunityPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {amigos.map((utilizador) => {
+                {amigos.map((utilizador, index) => {
                   const pedidoEnviado = true;
 
                   return (
                     <div
-                      key={utilizador._id}
+                      key={utilizador._id + "-" + index}
                       className="card bg-base-200 hover:shadow-lg transition-all duration-300"
                     >
                       <div className="card-body p-5 space-y-4">

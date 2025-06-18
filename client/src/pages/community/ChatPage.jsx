@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import useAuthUser from "../hooks/useAuthUser";
-// import { useQuery } from "@tanstack/react-query";
-// import { getStreamToken } from "../lib/api";
+import useAuthUser from "../hooks/useAuthUser";
+import { useQuery } from "@tanstack/react-query";
+import { getStreamToken } from "../lib/api";
 
 import {
   Channel,
@@ -26,54 +26,54 @@ const ChatPage = () => {
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // const { authUser } = useAuthUser();
+  const { authUser } = useAuthUser();
 
-  // const { data } = useQuery({
-  //   queryKey: ["streamToken"],
-  //   queryFn: getStreamToken,
-  //   enabled: !!authUser, // only fetch if authUser is available
-  // });
+  const { data } = useQuery({
+    queryKey: ["streamToken"],
+    queryFn: getStreamToken,
+    enabled: !!authUser, // only fetch if authUser is available
+  });
 
-  // const tokenData = data;
+  const tokenData = data;
 
-  // useEffect(() => {
-  //   const initChat = async () => {
-  //     if (!tokenData || !authUser) return;
+  useEffect(() => {
+    const initChat = async () => {
+      if (!tokenData || !authUser) return;
 
-  //     try {
-  //       console.log("Initializing chat client...");
+      try {
+        console.log("Initializing chat client...");
 
-  //       const client = StreamChat.getInstance(STREAM_API_KEY); // create a client with the API key from STREAM
+        const client = StreamChat.getInstance(STREAM_API_KEY); // create a client with the API key from STREAM
 
-  //       await client.connectUser(
-  //         {
-  //           id: authUser._id,
-  //           name: authUser.fullName,
-  //           image: authUser.profilePic,
-  //         },
-  //         tokenData
-  //       );
+        await client.connectUser(
+          {
+            id: authUser._id,
+            name: authUser.fullName,
+            image: authUser.profilePic,
+          },
+          tokenData
+        );
 
-  //       const channelId = [authUser._id, targetUserId].sort().join("-"); // create a channel id between the current user and the target user
+        const channelId = [authUser._id, targetUserId].sort().join("-"); // create a channel id between the current user and the target user
 
-  //       const currentChannel = client.channel("messaging", channelId, {
-  //         members: [authUser._id, targetUserId],
-  //       });
+        const currentChannel = client.channel("messaging", channelId, {
+          members: [authUser._id, targetUserId],
+        });
 
-  //       await currentChannel.watch(); // watch the channel
+        await currentChannel.watch(); // watch the channel
 
-  //       setChatClient(client);
-  //       setChannel(currentChannel);
-  //     } catch (error) {
-  //       console.error("Error in initializing chat:", error);
-  //       toast.error("Error in initializing chat:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        setChatClient(client);
+        setChannel(currentChannel);
+      } catch (error) {
+        console.error("Error in initializing chat:", error);
+        toast.error("Error in initializing chat:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   initChat();
-  // }, [tokenData, authUser, targetUserId]);
+    initChat();
+  }, [tokenData, authUser, targetUserId]);
 
   const handleVideoCall = () => {
     if (channel) {

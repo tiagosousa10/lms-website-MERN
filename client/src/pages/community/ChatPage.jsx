@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useAuthUser from "../hooks/useAuthUser";
-import { useQuery } from "@tanstack/react-query";
-import { getStreamToken } from "../lib/api";
 
 import {
   Channel,
@@ -17,6 +14,8 @@ import { StreamChat } from "stream-chat";
 import { toast } from "react-toastify";
 import ChatLoader from "../../components/community/ChatLoader";
 import CallButton from "../../components/community/CallButton";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
@@ -26,19 +25,11 @@ const ChatPage = () => {
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { authUser } = useAuthUser();
-
-  const { data } = useQuery({
-    queryKey: ["streamToken"],
-    queryFn: getStreamToken,
-    enabled: !!authUser, // only fetch if authUser is available
-  });
-
-  const tokenData = data;
+  const { userData, getStreamToken } = useContext(AppContext);
 
   useEffect(() => {
     const initChat = async () => {
-      if (!tokenData || !authUser) return;
+      if (!userData) return;
 
       try {
         console.log("Initializing chat client...");
@@ -47,17 +38,17 @@ const ChatPage = () => {
 
         await client.connectUser(
           {
-            id: authUser._id,
-            name: authUser.fullName,
-            image: authUser.profilePic,
+            id: userData._id,
+            name: userData.fullName,
+            image: userData.profilePic,
           },
-          tokenData
+          getStreamToken
         );
 
-        const channelId = [authUser._id, targetUserId].sort().join("-"); // create a channel id between the current user and the target user
+        const channelId = [userData._id, targetUserId].sort().join("-"); // create a channel id between the current user and the target user
 
         const currentChannel = client.channel("messaging", channelId, {
-          members: [authUser._id, targetUserId],
+          members: [userData._id, targetUserId],
         });
 
         await currentChannel.watch(); // watch the channel
@@ -73,7 +64,7 @@ const ChatPage = () => {
     };
 
     initChat();
-  }, [tokenData, authUser, targetUserId]);
+  }, [getStreamToken, userData, targetUserId]);
 
   const handleVideoCall = () => {
     if (channel) {

@@ -22,6 +22,7 @@ export const protectEducator = async (req, res, next) => {
 export const protectRoute = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
+    console.log("🚀 ~ protectRoute ~ token:", token);
 
     if (!token) {
       return res

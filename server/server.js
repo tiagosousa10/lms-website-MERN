@@ -9,6 +9,7 @@ import connectCloudinary from "./configs/cloudinary.js";
 import courseRouter from "./routes/courseRoute.js";
 import userRouter from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import communityRouter from "./routes/communityRoutes.js";
 
 //Initialize express app
 const app = express();
@@ -29,6 +30,7 @@ app.post("/clerk", express.json(), clerkWebhooks);
 app.use("/api/educator", express.json(), educatorRouter);
 app.use("/api/course", express.json(), courseRouter);
 app.use("/api/user", express.json(), userRouter);
+app.use("/api/community", express.json(), communityRouter);
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 app.use("/api/chat", chatRoutes);
 

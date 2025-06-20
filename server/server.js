@@ -32,7 +32,7 @@ app.use("/api/course", express.json(), courseRouter);
 app.use("/api/user", express.json(), userRouter);
 app.use("/api/community", express.json(), communityRouter);
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
-app.use("/api/chat", chatRoutes);
+app.use("/api/chat", express.json(), chatRoutes);
 
 //Port
 const PORT = process.env.PORT || 5000;

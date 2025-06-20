@@ -1,5 +1,5 @@
 import express from "express";
-import { protectRoute } from "../middlewares/authMiddleware.js";
+// import { protectRoute } from "../middlewares/authMiddleware.js";
 import {
   acceptFriendRequest,
   getFriendRequests,
@@ -7,10 +7,11 @@ import {
   getOutgoingFriendReqs,
   getRecommendedUsers,
   sendFriendRequest,
-} from "../controllers/userController.js";
+} from "../controllers/communityController.js";
+
 const communityRouter = express.Router();
 
-communityRouter.use(protectRoute);
+// communityRouter.use(protectRoute);
 
 communityRouter.get("/recommended-users", getRecommendedUsers);
 

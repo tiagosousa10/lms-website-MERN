@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addUserRating,
+  getAllUsersData,
   getUserCourseProgress,
   getUserData,
   purchaseCourse,
@@ -11,6 +12,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.get("/data", getUserData);
+userRouter.get("/all-users", getAllUsersData);
 userRouter.post("/purchase", purchaseCourse);
 userRouter.get("/enrolled-courses", userEnrolledCourses);
 userRouter.post("/update-course-progress", updateUserCourseProgress);

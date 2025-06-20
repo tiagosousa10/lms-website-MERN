@@ -23,6 +23,14 @@ export const getUserData = async (req, res) => {
   }
 };
 
+export const getAllUsersData = async (req, res) => {
+  try {
+    const users = await User.find({});
+
+    return res.json({ success: true, users });
+  } catch (error) {}
+};
+
 //user enrolled courses with lecture links
 export const userEnrolledCourses = async (req, res) => {
   try {

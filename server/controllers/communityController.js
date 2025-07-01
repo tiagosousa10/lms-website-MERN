@@ -127,19 +127,25 @@ export async function acceptFriendRequest(req, res) {
 export async function getFriendRequests(req, res) {
   try {
     const userId = req.auth.userId;
+    console.log("🚀 ~ getFriendRequests ~ userId:", userId);
 
     const incomingReqs = await FriendRequest.find({
       recipient: userId,
       status: "pending",
-    }).populate(
-      "sender",
-      "fullName profilePic nativeLanguage learningLanguage"
-    );
+    })
+      // .populate("recipient", "name email")
+      .lean();
+
+    console.log("incomingReqs: ", incomingReqs);
 
     const acceptedReqs = await FriendRequest.find({
       sender: userId,
       status: "accepted",
-    }).populate("recipient", "fullName profilePic");
+    })
+      // .populate("recipient", "name email")
+      .lean();
+
+    console.log("acceptedReqs: ", acceptedReqs);
 
     res.status(200).json({ incomingReqs, acceptedReqs });
   } catch (error) {

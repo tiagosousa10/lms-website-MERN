@@ -6,14 +6,12 @@ import Loading from "../../components/student/Loading";
 
 const MyCourses = () => {
   const { backendUrl, isEducator, currency, getToken } = useContext(AppContext);
-
   const [courses, setCourses] = useState(null);
 
   const fetchEducatorCourses = async () => {
     try {
       const token = await getToken();
-
-      const { data } = await axios.get(backendUrl + "/api/educator/courses", {
+      const { data } = await axios.get(`${backendUrl}/api/educator/courses`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -24,44 +22,41 @@ const MyCourses = () => {
   };
 
   useEffect(() => {
-    if (isEducator) {
-      fetchEducatorCourses();
-    }
+    if (isEducator) fetchEducatorCourses();
   }, [isEducator]);
 
-  return courses ? (
-    <div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
-      <div className="w-full">
-        <h2 className="pb-4 text-lg font-medium">Os Meus Cursos</h2>
-        <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-500/20">
-          <table className="md:table-auto table-fixed w-full overflow-hidden">
-            <thead className="text-gray-900 border-b border-gray-500/20 text-sm text-left">
+  if (!courses) return <Loading />;
+
+  return (
+    <div className="min-h-screen bg-base-200 p-4 md:p-8">
+      <div className="w-full max-w-6xl mx-auto">
+        <h2 className="text-xl font-semibold text-base-content mb-6">
+          Os Meus Cursos
+        </h2>
+
+        <div className="overflow-x-auto bg-base-100 border border-base-300 rounded-xl shadow">
+          <table className="table table-zebra w-full">
+            <thead className="text-base-content text-sm">
               <tr>
-                <th className="px-4 py-3 font-semibold truncate">
-                  Cursos Publicados
-                </th>
-                <th className="px-4 py-3 font-semibold truncate">Ganhos</th>
-                <th className="px-4 py-3 font-semibold truncate">Alunos</th>
-                <th className="px-4 py-3 font-semibold truncate">
-                  Publicado em
-                </th>
+                <th className="px-4 py-3">Curso</th>
+                <th className="px-4 py-3">Ganhos</th>
+                <th className="px-4 py-3">Alunos</th>
+                <th className="px-4 py-3">Publicado em</th>
               </tr>
             </thead>
-            <tbody className="text-sm text-gray-500">
+            <tbody className="text-base-content/70">
               {courses.map((course) => (
-                <tr key={course._id} className="border-b border-gray-500/20">
-                  <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
+                <tr key={course._id}>
+                  <td className="px-4 py-3 flex items-center gap-3">
                     <img
                       src={course.courseThumbnail}
                       alt="Imagem do Curso"
-                      className="w-16"
+                      className="w-12 h-12 object-cover rounded-md"
                     />
-                    <span className="truncate hidden md:block">
-                      {course.courseTitle}
-                    </span>
+                    <span className="truncate">{course.courseTitle}</span>
                   </td>
                   <td className="px-4 py-3">
-                    {currency}{" "}
+                    {currency}
                     {Math.floor(
                       course.enrolledStudents.length *
                         (course.coursePrice -
@@ -81,8 +76,6 @@ const MyCourses = () => {
         </div>
       </div>
     </div>
-  ) : (
-    <Loading />
   );
 };
 

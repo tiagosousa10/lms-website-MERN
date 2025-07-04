@@ -40,7 +40,7 @@ const App = () => {
         <Route path="/loading/:path" element={<Loading />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contacts" element={<Contacts />} />
-        <Route path="/about-us" element={<PrivacyPolicy />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         {/* SOCIAL & CHAT  : TODO -> VERIFICAR UTILIZADOR LOGADO*/}
 
         <Route

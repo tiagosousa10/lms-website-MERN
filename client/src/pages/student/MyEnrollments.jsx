@@ -21,110 +21,97 @@ const MyEnrollments = () => {
   const getCourseProgress = async () => {
     try {
       const token = await getToken();
-
-      const tempProgressArray = await Promise.all(
+      const temp = await Promise.all(
         enrolledCourses.map(async (course) => {
           const { data } = await axios.post(
             `${backendUrl}/api/user/get-course-progress`,
             { courseId: course._id },
             { headers: { Authorization: `Bearer ${token}` } }
           );
-
-          let totalLectures = calculateNoOfLectures(course);
-          const lectureCompleted = data.progressData
-            ? data.progressData.lectureCompleted.length
-            : 0;
-
-          return { totalLectures, lectureCompleted };
+          const total = calculateNoOfLectures(course);
+          const completed = data.progressData?.lectureCompleted.length || 0;
+          return { totalLectures: total, lectureCompleted: completed };
         })
       );
-
-      setProgressData(tempProgressArray);
+      setProgressData(temp);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
   useEffect(() => {
-    if (userData) {
-      fetchUserEnrolledCourses();
-    }
+    if (userData) fetchUserEnrolledCourses();
   }, [userData]);
 
   useEffect(() => {
-    if (enrolledCourses.length > 0) {
-      getCourseProgress();
-    }
+    if (enrolledCourses.length > 0) getCourseProgress();
   }, [enrolledCourses]);
 
   return (
-    <>
-      <div className="md:px-36 px-8 pt-10 min-h-screen">
-        <h1 className="text-2xl font-semibold">Os Meus Cursos</h1>
+    <div className="bg-base-200 min-h-screen px-6 md:px-20 pt-10 pb-16 space-y-8">
+      <h1 className="text-3xl font-semibold text-base-content">
+        Os Meus Cursos
+      </h1>
 
-        <table className="md:table-auto table-fixed w-full overflow-hidden border mt-10">
-          <thead className="text-gray-900 border-b border-gray-500/20 text-sm text-left max-sm:hidden">
+      <div className="overflow-x-auto bg-base-100 rounded-lg shadow">
+        <table className="table w-full">
+          <thead>
             <tr>
-              <th className="px-4 py-3 font-semibold truncate">Curso</th>
-              <th className="px-4 py-3 font-semibold truncate max-sm:hidden">
-                Duração
-              </th>
-              <th className="px-4 py-3 font-semibold truncate max-sm:hidden">
-                Concluído
-              </th>
-              <th className="px-4 py-3 font-semibold truncate">Estado</th>
+              <th>Curso</th>
+              <th className="hidden md:table-cell">Duração</th>
+              <th className="hidden md:table-cell">Concluído</th>
+              <th>Estado</th>
             </tr>
           </thead>
-          <tbody className="text-gray-700">
-            {enrolledCourses.map((course, index) => (
-              <tr key={index} className="border-b border-gray-500/20">
-                <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3">
-                  <img
-                    src={course.courseThumbnail}
-                    alt=""
-                    className="w-14 sm:w-24 md:w-28"
-                  />
-                  <div className="flex-1">
-                    <p className="mb-1 max-sm:text-sm">{course.courseTitle}</p>
-                    <Line
-                      className="bg-gray-300 rounded-full"
-                      strokeWidth={2}
-                      percent={
-                        progressArray[index]
-                          ? (progressArray[index].lectureCompleted * 100) /
-                            progressArray[index].totalLectures
-                          : 0
-                      }
+          <tbody>
+            {enrolledCourses.map((course, idx) => {
+              const prog = progressArray[idx] || {
+                lectureCompleted: 0,
+                totalLectures: 1,
+              };
+              const percent =
+                (prog.lectureCompleted / prog.totalLectures) * 100;
+
+              return (
+                <tr key={course._id}>
+                  <td className="flex items-center space-x-4">
+                    <img
+                      src={course.courseThumbnail}
+                      alt=""
+                      className="w-16 h-16 rounded-lg object-cover"
                     />
-                  </div>
-                </td>
-                <td className="px-4 py-3 max-sm:hidden">
-                  {calculateCourseDuration(course)}
-                </td>
-                <td className="px-4 py-3 max-sm:hidden">
-                  {progressArray[index] &&
-                    `${progressArray[index].lectureCompleted} / ${progressArray[index].totalLectures}`}
-                  <span className="text-xs ml-2">Aulas</span>
-                </td>
-                <td className="px-4 py-3 max-sm:text-right">
-                  <button
-                    onClick={() => navigate("/player/" + course._id)}
-                    className="px-3 sm:px-5 py-1.5 sm:py-2 bg-blue-600 max-sm:text-xs text-white"
-                  >
-                    {progressArray[index] &&
-                    progressArray[index].lectureCompleted /
-                      progressArray[index].totalLectures ===
-                      1
-                      ? "Concluído"
-                      : "Em Progresso"}
-                  </button>
-                </td>
-              </tr>
-            ))}
+                    <div className="flex-1 space-y-1">
+                      <p className="font-medium">{course.courseTitle}</p>
+                      <Line
+                        className="progress progress-primary h-2 rounded-full"
+                        strokeWidth={4}
+                        percent={percent}
+                      />
+                    </div>
+                  </td>
+                  <td className="hidden md:table-cell">
+                    {calculateCourseDuration(course)}
+                  </td>
+                  <td className="hidden md:table-cell">
+                    {prog.lectureCompleted} / {prog.totalLectures}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => navigate("/player/" + course._id)}
+                      className={`btn btn-sm ${
+                        percent >= 100 ? "btn-success" : "btn-primary"
+                      }`}
+                    >
+                      {percent >= 100 ? "Concluído" : "Em Progresso"}
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

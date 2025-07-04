@@ -14,7 +14,7 @@ const SearchBar = ({ data }) => {
   return (
     <form
       onSubmit={onSearchHandler}
-      className="max-w-xl w-full md:h-14 h-12 flex items-center bg-white border border-gray-500/20 rounded"
+      className="max-w-xl w-full md:h-12 h-12 flex items-center bg-white border border-gray-500/20 rounded-full"
     >
       <img
         src={assets.search_icon}
@@ -26,11 +26,12 @@ const SearchBar = ({ data }) => {
         value={input}
         type="text"
         placeholder="Pesquisar por curso"
-        className="w-full h-full outline-none text-gray-500/80"
+        className="w-full h-full outline-none text-gray-500/80 "
       />
       <button
         type="submit"
-        className="bg-blue-600 rounded text-white md:px-10 px-7 md:py-3 py-2 mx-1"
+        className="px-8 py-3 rounded-full text-white font-semibold bg-gradient-to-r from-[#60a5fa] to-[#3b82f6]
+             shadow-md hover:from-[#4f8ae6] hover:to-[#2563eb] transition duration-200"
       >
         Pesquisar
       </button>

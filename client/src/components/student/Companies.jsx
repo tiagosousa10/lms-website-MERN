@@ -4,7 +4,7 @@ import { assets } from "../../assets/assets";
 const Companies = () => {
   return (
     <div className="pt-16 overflow-hidden">
-      <p className=" text-base-content/70 text-center text-3xl mb-10">
+      <p className="font-bold text-center text-3xl mb-10">
         Confiança dos alunos de
       </p>
 

@@ -4,7 +4,7 @@ import { Flag, Users, Heart, Calendar } from "lucide-react"; // 🌟 Certifica-t
 
 const AboutUs = () => {
   return (
-    <div className="bg-base-200 min-h-screen px-6 md:px-20 py-12 space-y-12 bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] ">
+    <div className=" min-h-screen px-6 md:px-20 py-12 space-y-12 bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] ">
       {/* Hero */}
       <section className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-base-content">Sobre Nós</h1>

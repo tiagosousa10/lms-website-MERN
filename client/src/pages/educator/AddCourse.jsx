@@ -140,7 +140,7 @@ const AddCourse = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200 p-4 md:p-8">
+    <div className="min-h-screen  p-4 md:p-8">
       <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl w-full">
         <div className="form-control">
           <label className="label">Título do Curso</label>

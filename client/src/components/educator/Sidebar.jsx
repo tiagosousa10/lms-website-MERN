@@ -27,7 +27,7 @@ const Sidebar = () => {
 
   return (
     isEducator && (
-      <aside className="w-64 bg-base-200 border-r border-base-300 hidden md:flex flex-col h-screen sticky top-0">
+      <aside className="w-64 border-r border-base-300 hidden md:flex flex-col h-screen sticky top-0">
         <nav className="flex-1 p-4 space-y-1">
           {menuItems.map((item) => (
             <NavLink

@@ -48,7 +48,7 @@ const MyEnrollments = () => {
   }, [enrolledCourses]);
 
   return (
-    <div className="bg-base-200 min-h-screen px-6 md:px-20 pt-10 pb-16 space-y-8">
+    <div className=" min-h-screen px-6 md:px-20 pt-10 pb-16 space-y-8">
       <h1 className="text-3xl font-semibold text-base-content">
         Os Meus Cursos
       </h1>
@@ -98,7 +98,7 @@ const MyEnrollments = () => {
                   <td>
                     <button
                       onClick={() => navigate("/player/" + course._id)}
-                      className={`btn btn-sm ${
+                      className={`btn btn-sm text-white ${
                         percent >= 100 ? "btn-success" : "btn-primary"
                       }`}
                     >

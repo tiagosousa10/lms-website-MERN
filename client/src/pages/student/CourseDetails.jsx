@@ -17,7 +17,6 @@ const CourseDetails = () => {
   const [playerData, setPlayerData] = useState(null);
 
   const {
-    allCourses,
     calculateRating,
     calculateChapterTime,
     calculateCourseDuration,

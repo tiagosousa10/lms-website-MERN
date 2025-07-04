@@ -91,7 +91,7 @@ const CommunityPage = () => {
                 <span className="loading loading-spinner loading-lg" />
               </div>
             ) : amigos.length === 0 ? (
-              <div className="card bg-base-200 p-6 text-center">
+              <div className="card  p-6 text-center">
                 <h3 className="font-semibold text-lg mb-2">
                   Sem recomendações disponíveis
                 </h3>
@@ -107,7 +107,7 @@ const CommunityPage = () => {
                   return (
                     <div
                       key={utilizador._id + "-" + index}
-                      className="card bg-base-200 hover:shadow-lg transition-all duration-300"
+                      className="card  hover:shadow-lg transition-all duration-300"
                     >
                       <div className="card-body p-5 space-y-4">
                         <div className="flex items-center gap-3">

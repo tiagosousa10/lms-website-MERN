@@ -28,7 +28,7 @@ const MyCourses = () => {
   if (!courses) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-base-200 p-4 md:p-8">
+    <div className="min-h-screen  p-4 md:p-8">
       <div className="w-full max-w-6xl mx-auto">
         <h2 className="text-xl font-semibold text-base-content mb-6">
           Os Meus Cursos

@@ -3,7 +3,7 @@ import { assets } from "../../assets/assets";
 
 const FriendCard = ({ friend }) => {
   return (
-    <div className="card bg-base-200 hover:shadow-md transition-shadow">
+    <div className="card  hover:shadow-md transition-shadow">
       <div className="card-body p-4 cursor-pointer">
         {/* USER INFO  */}
         <div className="flex items-center gap-3 mb-3">

@@ -5,7 +5,7 @@ import Sidebar from "../../components/educator/Sidebar";
 
 const Educator = () => {
   return (
-    <div className="text-default min-h-screen bg-white">
+    <div className="text-default min-h-screen ">
       <Navbar />
       <div className="flex">
         <Sidebar />

@@ -57,10 +57,12 @@ const CoursesList = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 my-16 gap-3 px-2 md:px-0">
-          {filteredCourses.map((course, index) => (
-            <CourseCard key={index} course={course} />
-          ))}
+        <div className="flex flex-row  ">
+          <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 my-16 md:px-0 gap-8 mx-auto  ">
+            {filteredCourses.map((course, index) => (
+              <CourseCard key={index} course={course} />
+            ))}
+          </div>
         </div>
       </div>
     </>

@@ -37,7 +37,7 @@ const Dashboard = () => {
   if (!dashboardData) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-base-200 p-4 md:p-8 space-y-8">
+    <div className="min-h-screen  p-4 md:p-8 space-y-8">
       {/* Cards de estatísticas */}
       <div className="flex flex-wrap gap-5">
         <div className="card w-56 bg-base-100 shadow-md border border-base-300">

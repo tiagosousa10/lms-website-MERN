@@ -4,7 +4,7 @@ import { MapPin, Mail, Phone } from "lucide-react";
 
 const ContactUs = () => {
   return (
-    <div className="bg-base-200 min-h-screen px-6 md:px-20 py-16">
+    <div className="bg-base-200 min-h-screen px-6 md:px-20 py-16 bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8]">
       {/* Header */}
       <section className="max-w-3xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-bold text-base-content mb-4">

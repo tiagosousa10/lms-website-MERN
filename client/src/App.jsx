@@ -20,8 +20,8 @@ import ChatPage from "./pages/community/ChatPage";
 import CommunityLayout from "./components/community/CommunityLayout";
 import CommunityPage from "./pages/community/CommunityPage";
 import AboutUs from "./pages/student/AboutUs";
-import Contacts from "./pages/student/Contacts";
 import PrivacyPolicy from "./pages/student/PrivacyPolicy";
+import ContactUs from "./pages/student/ContactUs";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -39,7 +39,7 @@ const App = () => {
         <Route path="/player/:courseId" element={<Player />} />
         <Route path="/loading/:path" element={<Loading />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/contacts" element={<Contacts />} />
+        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         {/* SOCIAL & CHAT  : TODO -> VERIFICAR UTILIZADOR LOGADO*/}
 

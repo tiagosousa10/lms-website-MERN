@@ -103,11 +103,6 @@ const ContactUs = () => {
           </form>
         </div>
       </section>
-
-      {/* Mapa ou footer */}
-      {/* <section className="mt-12">
-        Insere aqui um Google Maps embed se desejado
-      </section> */}
     </div>
   );
 };

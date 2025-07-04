@@ -1,12 +1,16 @@
 import React from "react";
-import { assets } from "../../assets/assets";
+import logo from "../../../public/logo.jpg";
 
 const Footer = () => {
   return (
     <footer className="bg-gray-900 md:px-36 text-left w-full mt-10">
       <div className="flex flex-col md:flex-row items-start px-8 md:px-0 justify-center gap-10 md:gap-32 py-10 border-b border-white/30">
-        <div className="flex flex-col md:items-start items-center w-full">
-          <img src={assets.logo_dark} alt="logótipo" />
+        <div className="flex flex-row md:items-start items-center w-full gap-8">
+          <img
+            src={logo}
+            alt="logótipo"
+            className="w-20 h-20 rounded-full  object-cover mt-4  "
+          />
           <p className="mt-6 text-center md:text-left text-sm text-white/80">
             A nossa plataforma é dedicada a fornecer educação de qualidade a
             qualquer pessoa, em qualquer lugar. Estamos comprometidos com o teu
@@ -18,16 +22,16 @@ const Footer = () => {
           <h2 className="font-semibold text-white mb-5">Empresa</h2>
           <ul className="flex md:flex-col w-full justify-between text-sm text-white/80 md:space-y-2">
             <li>
-              <a href="#">Início</a>
+              <a href="/">Início</a>
             </li>
             <li>
-              <a href="#">Sobre nós</a>
+              <a href="/about-us">Sobre nós</a>
             </li>
             <li>
-              <a href="#">Contactos</a>
+              <a href="/contact-us">Contactos</a>
             </li>
             <li>
-              <a href="#">Política de Privacidade</a>
+              <a href="/privacy-policy">Política de Privacidade</a>
             </li>
           </ul>
         </div>

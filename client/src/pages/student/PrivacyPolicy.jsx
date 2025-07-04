@@ -101,24 +101,6 @@ const PrivacyPolicy = () => {
           .
         </p>
       </section>
-
-      {/* 🧾 Footer com links */}
-      <footer className="footer footer-center sm:footer-horizontal bg-neutral text-neutral-content p-6 mt-12 rounded-lg">
-        <nav>
-          <a href="/terms" className="link link-hover mx-2">
-            Termos de uso
-          </a>
-          <a href="/privacy" className="link link-hover mx-2">
-            Política de Privacidade
-          </a>
-          <a href="/contact" className="link link-hover mx-2">
-            Contacto
-          </a>
-        </nav>
-        <p>
-          © {new Date().getFullYear()} tsAcademy. Todos os direitos reservados.
-        </p>
-      </footer>
     </div>
   );
 };

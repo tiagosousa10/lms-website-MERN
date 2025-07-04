@@ -22,6 +22,7 @@ import CommunityPage from "./pages/community/CommunityPage";
 import AboutUs from "./pages/student/AboutUs";
 import PrivacyPolicy from "./pages/student/PrivacyPolicy";
 import ContactUs from "./pages/student/ContactUs";
+import Footer from "./components/student/Footer";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -63,6 +64,7 @@ const App = () => {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </div>
   );
 };

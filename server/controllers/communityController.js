@@ -88,6 +88,7 @@ export async function sendFriendRequest(req, res) {
   }
 }
 
+//TODO -> update this
 export async function acceptFriendRequest(req, res) {
   try {
     const userId = req.auth.userId;

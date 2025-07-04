@@ -3,10 +3,10 @@ import SearchBar from "./SearchBar";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col items-center justify-center w-full md:pt-36 pt-20 px-7 md:px-0 space-y-7 text-center bg-gradient-to-b from-cyan-100/70">
-      <h1 className="md:text-home-heading-large text-home-heading-small font-bold relative text-gray-800 max-w-3xl mx-auto">
+    <div className="flex flex-col items-center justify-center w-full md:pt-36 py-20 px-7 md:px-0 space-y-7 text-center bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] ">
+      <h1 className="md:text-5xl text-3xl font-bold text-base-content max-w-3xl mx-auto leading-snug relative">
         Potencia o teu futuro com cursos desenhados para{" "}
-        <span className="text-blue-600"> se adaptarem às tuas escolhas. </span>
+        <span className="text-primary">se adaptarem às tuas escolhas.</span>
         <img
           src={assets.sketch}
           alt="esboço"
@@ -14,13 +14,13 @@ const Hero = () => {
         />
       </h1>
 
-      <p className="md:block hidden text-gray-500 max-w-2xl mx-auto">
+      <p className="md:block hidden text-base-content/70 max-w-2xl mx-auto text-lg">
         Reunimos instrutores de classe mundial, conteúdo interativo e uma
         comunidade de apoio para te ajudar a alcançar os teus objetivos pessoais
         e profissionais.
       </p>
 
-      <p className="md:hidden text-gray-500 max-w-sm mx-auto">
+      <p className="md:hidden text-base-content/70 max-w-sm mx-auto text-base">
         Reunimos instrutores de classe mundial para te ajudar a alcançar os teus
         objetivos profissionais.
       </p>

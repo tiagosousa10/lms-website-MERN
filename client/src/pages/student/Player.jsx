@@ -131,7 +131,10 @@ const Player = () => {
                 >
                   <ul className="menu bg-base-100 p-4 space-y-2">
                     {chapter.chapterContent.map((lec, i) => (
-                      <li key={i} className="flex justify-between items-center">
+                      <li
+                        key={i}
+                        className="flex justify-between items-center "
+                      >
                         <div className="flex items-center gap-2">
                           <img
                             src={
@@ -155,7 +158,7 @@ const Player = () => {
                                   lecture: i + 1,
                                 })
                               }
-                              className="btn btn-xs btn-ghost text-blue-600"
+                              className="btn btn-xs btn-ghost text-blue-600 px-10"
                             >
                               Ver aula
                             </button>

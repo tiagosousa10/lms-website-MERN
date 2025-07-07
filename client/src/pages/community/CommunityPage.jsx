@@ -14,35 +14,24 @@ import { assets } from "../../assets/assets";
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const utilizador = {
-    nomeCompleto: "Joana Silva",
-    email: "joana.silva@example.com",
-    palavraPasse: "senhaSegura123", // Deve ter no mínimo 6 caracteres
-    biografia: "Apaixonada por línguas e culturas.",
-    fotoPerfil: "https://example.com/images/joana.jpg",
-    linguaNativa: "Português",
-    linguaAprender: "Inglês",
-    localizacao: "Lisboa, Portugal",
-    perfilCompleto: true,
-    amigos: ["userIdExample", "anotherTest"],
-  };
-
   const amigos = [
     {
-      id: "amigo1",
-      nomeCompleto: "Maria Oliveira",
-      fotoPerfil: "https://example.com/images/maria.jpg",
-      linguaNativa: "Português",
-      linguaAprender: "Espanhol",
+      _id: "amigo1",
+      name: "Maria Oliveira",
+      email: "maria.oliveira@example.com",
+      imageUrl: "https://example.com/images/maria.jpg",
+      enrolledCourses: [],
+      friends: [],
     },
     {
-      id: "amigo2",
-      nomeCompleto: "Pedro Santos",
-      fotoPerfil: "https://example.com/images/pedro.jpg",
-      linguaNativa: "Inglês",
-      linguaAprender: "Francês",
+      _id: "amigo2",
+      name: "Pedro Santos",
+      email: "pedro.santos@example.com",
+      imageUrl: "https://example.com/images/pedro.jpg",
+      enrolledCourses: [],
+      friends: [],
     },
-    // Pode adicionar mais amigos aqui
+    // Podes adicionar mais utilizadores seguindo esta estrutura
   ];
 
   console.log("amigos", amigos);
@@ -56,7 +45,7 @@ const CommunityPage = () => {
           to="/notifications"
           className="btn btn-outline btn-sm flex items-center"
         >
-          <UsersIcon className="mr-2 w-4 h-4" /> Ir aos Amigos
+          <UsersIcon className=" w-4 h-4" /> Amigos
         </Link>
       </div>
 
@@ -115,33 +104,14 @@ const CommunityPage = () => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">
-                          {u.nomeCompleto}
+                        <h3 className="text-md font-semibold truncate">
+                          {u.name}
                         </h3>
-                        {u.localizacao && (
-                          <div className="flex items-center text-sm text-base-content/60 mt-1">
-                            <MapPinIcon className="w-4 h-4 mr-1" />
-                            {u.localizacao}
-                          </div>
-                        )}
+                        <p className="text-sm text-base-content/60 truncate">
+                          {u.email}
+                        </p>
                       </div>
                     </div>
-
-                    {/* Línguas */}
-                    <div className="flex flex-wrap gap-2">
-                      <span className="badge badge-secondary">
-                        {u.linguaNativa}
-                      </span>
-                      <span className="badge badge-outline">
-                        {u.linguaAprender}
-                      </span>
-                    </div>
-
-                    {u.biografia && (
-                      <p className="text-sm text-base-content/70 truncate">
-                        {u.biografia}
-                      </p>
-                    )}
 
                     {/* Botão de ação */}
                     <button

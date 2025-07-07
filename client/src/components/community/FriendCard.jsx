@@ -14,21 +14,12 @@ const FriendCard = ({ friend, requestSent }) => (
         </div>
 
         <div className="min-w-0 flex-1">
-          <h3 className="text-md font-semibold truncate">
-            {friend.nomeCompleto}
-          </h3>
+          <h3 className="text-md font-semibold truncate">{friend.name}</h3>
           <p className="text-sm text-base-content/60 truncate">
-            {friend.linguaNativa} → {friend.linguaAprender}
+            {friend.email}
           </p>
         </div>
       </div>
-
-      {/* Biografia */}
-      {friend.biografia && (
-        <p className="text-sm text-base-content/70 line-clamp-2">
-          {friend.biografia}
-        </p>
-      )}
 
       {/* Botões de ação */}
       <div className="flex items-center gap-2">

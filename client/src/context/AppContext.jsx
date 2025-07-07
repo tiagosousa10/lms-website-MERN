@@ -122,37 +122,37 @@ export const AppContextProvider = (props) => {
 
   // --------------------COMMUNITY AND CHATS---------------------
   const getUserFriends = async () => {
-    const response = await axios.get(backendUrl + "/users/friends");
+    const response = await axios.get(backendUrl + "api/community/friends");
     return response.data;
   };
 
   const getRecommendedUsers = async () => {
-    const response = await axios.get(backendUrl + "/users");
+    const response = await axios.get(backendUrl + "/community");
     return response.data;
   };
 
   const getOutgoingFriendReqs = async () => {
     const response = await axios.get(
-      backendUrl + "/users/outgoing-friend-requests"
+      backendUrl + "/community/outgoing-friend-requests"
     );
     return response.data;
   };
 
   const sendFriendRequest = async (userId) => {
     const response = await axios.post(
-      backendUrl + `/users/friend-request/${userId}`
+      backendUrl + `/community/friend-request/${userId}`
     );
     return response.data;
   };
 
   const getFriendRequests = async () => {
-    const response = await axios.get(backendUrl + "/users/friend-requests");
+    const response = await axios.get(backendUrl + "/community/friend-requests");
     return response.data;
   };
 
   const acceptFriendRequest = async (requestId) => {
     const response = await axios.put(
-      backendUrl + `/users/friend-request/${requestId}/accept`
+      backendUrl + `/community/friend-request/${requestId}/accept`
     );
     return response.data;
   };

@@ -2,10 +2,15 @@ import FriendRequest from "../models/FriendRequest.js";
 import User from "../models/User.js";
 
 // ---------------------- COMMUNITY FRIENDS & CHATS ----------------------
+//test with new users... (need to create them first)
 export async function getRecommendedUsers(req, res) {
   try {
     const currentUserId = req.auth.userId;
     const currentUser = await User.findById(currentUserId);
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const recommendedUsers = await User.find({
       $and: [
@@ -23,14 +28,14 @@ export async function getRecommendedUsers(req, res) {
       .json({ message: "Internal server error", error: error.message });
   }
 }
-
+// CHECK !
 export async function getMyFriends(req, res) {
   try {
     const userId = req.auth.userId;
 
     const user = await User.findById(userId)
       .select("-friends")
-      .populate("friends", "fullName email imageUrl");
+      .populate("friends", "name email imageUrl");
 
     res.status(200).json(user.friends);
   } catch (error) {
@@ -41,6 +46,7 @@ export async function getMyFriends(req, res) {
   }
 }
 
+// CHECK !
 export async function sendFriendRequest(req, res) {
   try {
     const myId = req.auth.userId;
@@ -88,7 +94,7 @@ export async function sendFriendRequest(req, res) {
   }
 }
 
-//TODO -> update this
+//CHECK !
 export async function acceptFriendRequest(req, res) {
   try {
     const userId = req.auth.userId;
@@ -125,6 +131,7 @@ export async function acceptFriendRequest(req, res) {
   }
 }
 
+// CHECK !
 export async function getFriendRequests(req, res) {
   try {
     const userId = req.auth.userId;
@@ -157,6 +164,7 @@ export async function getFriendRequests(req, res) {
   }
 }
 
+// verify if needed or not
 export async function getOutgoingFriendReqs(req, res) {
   try {
     const userId = req.auth.userId;
@@ -164,10 +172,7 @@ export async function getOutgoingFriendReqs(req, res) {
     const outgoingRequests = await FriendRequest.find({
       sender: userId,
       status: "pending",
-    }).populate(
-      "recipient",
-      "fullName profilePic nativeLanguage learningLanguage"
-    );
+    }).populate("recipient", "name email imageUrl");
 
     res.status(200).json(outgoingRequests);
   } catch (error) {

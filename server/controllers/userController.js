@@ -71,12 +71,6 @@ export const purchaseCourse = async (req, res) => {
 
     const newPurchase = await Purchase.create(purchaseData);
 
-    // ⚠️ Atualizar os cursos inscritos do utilizador
-    if (!userData.enrolledCourses.includes(courseData._id)) {
-      userData.enrolledCourses.push(courseData._id);
-      await userData.save();
-    }
-
     // Stripe Gateway Initialize
     const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 

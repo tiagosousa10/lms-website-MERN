@@ -122,7 +122,14 @@ export const AppContextProvider = (props) => {
 
   // --------------------COMMUNITY AND CHATS---------------------
   const getUserFriends = async () => {
-    const response = await axios.get(backendUrl + "api/community/friends");
+    const token = await getToken();
+
+    const response = await axios.get(backendUrl + "/api/community/friends", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("🚀 ~ getUserFriends ~ response:", response.data);
     return response.data;
   };
 
@@ -164,6 +171,7 @@ export const AppContextProvider = (props) => {
 
   useEffect(() => {
     fetchAllCourses();
+    getUserFriends();
   }, []);
 
   useEffect(() => {

@@ -4,12 +4,13 @@ import {
   UserPlusIcon,
   UsersIcon,
 } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../components/student/Loading";
 import NoFriendsFound from "../../components/community/NoFriendsFound";
 import FriendCard from "../../components/community/FriendCard";
 import { assets } from "../../assets/assets";
+import { AppContext } from "../../context/AppContext";
 
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -34,7 +35,7 @@ const CommunityPage = () => {
     // Podes adicionar mais utilizadores seguindo esta estrutura
   ];
 
-  console.log("amigos", amigos);
+  // console.log("amigos", amigos);
 
   return (
     <div className=" min-h-screen p-4 md:p-8 lg:p-12 space-y-12">

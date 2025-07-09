@@ -15,27 +15,8 @@ import { AppContext } from "../../context/AppContext";
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const amigos = [
-    {
-      _id: "amigo1",
-      name: "Maria Oliveira",
-      email: "maria.oliveira@example.com",
-      imageUrl: "https://example.com/images/maria.jpg",
-      enrolledCourses: [],
-      friends: [],
-    },
-    {
-      _id: "amigo2",
-      name: "Pedro Santos",
-      email: "pedro.santos@example.com",
-      imageUrl: "https://example.com/images/pedro.jpg",
-      enrolledCourses: [],
-      friends: [],
-    },
-    // Podes adicionar mais utilizadores seguindo esta estrutura
-  ];
-
-  // console.log("amigos", amigos);
+  const { userFriends } = useContext(AppContext);
+  console.log("🚀 ~ CommunityPage ~ userFriends:", userFriends);
 
   return (
     <div className=" min-h-screen p-4 md:p-8 lg:p-12 space-y-12">
@@ -53,11 +34,11 @@ const CommunityPage = () => {
       {/* Lista de Amigos */}
       {isLoading ? (
         <Loading />
-      ) : amigos.length === 0 ? (
+      ) : userFriends.length === 0 ? (
         <NoFriendsFound />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {amigos.map((friend, idx) => (
+          {userFriends.map((friend, idx) => (
             <FriendCard key={friend.id || idx} friend={friend} />
           ))}
         </div>
@@ -78,7 +59,7 @@ const CommunityPage = () => {
           <div className="flex justify-center py-12">
             <span className="loading loading-spinner loading-lg" />
           </div>
-        ) : amigos.length === 0 ? (
+        ) : userFriends.length === 0 ? (
           <div className="card bg-base-100 shadow p-6 text-center">
             <h3 className="text-xl font-semibold">
               Sem recomendações por agora
@@ -89,7 +70,7 @@ const CommunityPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {amigos.map((u, idx) => {
+            {userFriends.map((u, idx) => {
               const pedidoEnviado = true;
 
               return (

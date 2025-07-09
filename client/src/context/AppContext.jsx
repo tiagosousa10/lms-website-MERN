@@ -21,6 +21,8 @@ export const AppContextProvider = (props) => {
   const [isEducator, setIsEducator] = useState(false);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [userFriends, setUserFriends] = useState([]);
+  console.log("🚀 ~ AppContextProvider ~ userFriends:", userFriends);
 
   //Fetch all courses
   const fetchAllCourses = async () => {
@@ -130,6 +132,7 @@ export const AppContextProvider = (props) => {
       },
     });
     console.log("🚀 ~ getUserFriends ~ response:", response.data);
+    setUserFriends(response.data);
     return response.data;
   };
 
@@ -207,6 +210,7 @@ export const AppContextProvider = (props) => {
     getFriendRequests,
     acceptFriendRequest,
     getStreamToken,
+    userFriends,
   };
 
   return (

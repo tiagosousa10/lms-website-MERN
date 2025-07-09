@@ -19,9 +19,9 @@ const CommunitySideBar = () => {
         </Link>
 
         <Link
-          to={"/notifications"}
+          to={"/community/notifications"}
           className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
-            currentPath === "/notifications" ? "btn-active" : ""
+            currentPath === "/community/notifications" ? "btn-active" : ""
           }`}
         >
           <BellIcon className="size-5 text-base-content opacity-70" />
@@ -29,9 +29,9 @@ const CommunitySideBar = () => {
         </Link>
 
         <Link
-          to={"/friends"}
+          to={"/community/friends"}
           className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
-            currentPath === "/friends" ? "btn-active" : ""
+            currentPath === "/community/friends" ? "btn-active" : ""
           }`}
         >
           <UsersIcon className="size-5 text-base-content opacity-70" />

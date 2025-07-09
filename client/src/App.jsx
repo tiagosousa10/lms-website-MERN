@@ -47,15 +47,13 @@ const App = () => {
 
         <Route
           path="/community"
-          element={
-            <CommunityLayout showSidebar={true}>
-              <CommunityPage />
-            </CommunityLayout>
-          }
-        />
-        <Route path="/call/:id" element={<CallPage />} />
-        <Route path="/chat/:id" element={<ChatPage />} />
-        <Route path="/notifications" element={<Notifications />} />
+          element={<CommunityLayout showSidebar={true} />}
+        >
+          <Route index element={<CommunityPage />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="chat/:id" element={<ChatPage />} />
+          <Route path="call/:id" element={<CallPage />} />
+        </Route>
 
         <Route path="/educator" element={<Educator />}>
           <Route path="/educator" element={<Dashboard />} />

@@ -22,7 +22,8 @@ export const AppContextProvider = (props) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [userData, setUserData] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
-  console.log("🚀 ~ AppContextProvider ~ userFriends:", userFriends);
+  const [friendRequests, setFriendRequests] = useState([]);
+  console.log("🚀 ~ AppContextProvider ~ friendRequests:", friendRequests);
 
   //Fetch all courses
   const fetchAllCourses = async () => {
@@ -131,8 +132,11 @@ export const AppContextProvider = (props) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("🚀 ~ getUserFriends ~ response:", response.data);
-    setUserFriends(response.data);
+
+    if (response) {
+      setUserFriends(response.data);
+    }
+
     return response.data;
   };
 
@@ -156,13 +160,33 @@ export const AppContextProvider = (props) => {
   };
 
   const getFriendRequests = async () => {
-    const response = await axios.get(backendUrl + "/community/friend-requests");
+    const token = await getToken();
+    const response = await axios.get(
+      backendUrl + "/api/community/friend-requests",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response) {
+      setFriendRequests(response.data);
+    }
+
     return response.data;
   };
 
   const acceptFriendRequest = async (requestId) => {
+    const token = await getToken();
+
     const response = await axios.put(
-      backendUrl + `/community/friend-request/${requestId}/accept`
+      backendUrl + `/community/friend-request/${requestId}/accept`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response.data;
   };
@@ -175,6 +199,7 @@ export const AppContextProvider = (props) => {
   useEffect(() => {
     fetchAllCourses();
     getUserFriends();
+    getFriendRequests();
   }, []);
 
   useEffect(() => {
@@ -212,6 +237,8 @@ export const AppContextProvider = (props) => {
     getStreamToken,
     userFriends,
     setUserFriends,
+    friendRequests,
+    setFriendRequests,
   };
 
   return (

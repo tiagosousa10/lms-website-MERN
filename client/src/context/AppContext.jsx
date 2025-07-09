@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { dummyCourses } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import humanizeDuration from "humanize-duration";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -152,6 +151,7 @@ export const AppContextProvider = (props) => {
     return response.data;
   };
 
+  //TODO: O proximo a testar.
   const sendFriendRequest = async (userId) => {
     const response = await axios.post(
       backendUrl + `/community/friend-request/${userId}`
@@ -159,6 +159,7 @@ export const AppContextProvider = (props) => {
     return response.data;
   };
 
+  //check !
   const getFriendRequests = async () => {
     const token = await getToken();
     const response = await axios.get(
@@ -177,11 +178,13 @@ export const AppContextProvider = (props) => {
     return response.data;
   };
 
+  //check !
   const acceptFriendRequest = async (requestId) => {
     const token = await getToken();
+    console.log("🚀 ~ acceptFriendRequest ~ token:", token);
 
     const response = await axios.put(
-      backendUrl + `/community/friend-request/${requestId}/accept`,
+      backendUrl + `/api/community/friend-request/${requestId}/accept`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

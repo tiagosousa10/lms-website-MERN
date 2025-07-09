@@ -141,7 +141,7 @@ export async function getFriendRequests(req, res) {
       recipient: userId,
       status: "pending",
     })
-      // .populate("recipient", "name email")
+      .populate("sender", "name email imageUrl")
       .lean();
 
     console.log("incomingReqs: ", incomingReqs);
@@ -150,7 +150,7 @@ export async function getFriendRequests(req, res) {
       sender: userId,
       status: "accepted",
     })
-      // .populate("recipient", "name email")
+      .populate("recipient", "name email imageUrl")
       .lean();
 
     console.log("acceptedReqs: ", acceptedReqs);

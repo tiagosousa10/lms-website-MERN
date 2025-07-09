@@ -15,6 +15,10 @@ const Notifications = () => {
     getFriendRequests,
     getUserFriends,
   } = useContext(AppContext);
+  console.log(
+    "🚀 ~ Notifications ~ friendRequests SENDER:",
+    friendRequests.incomingReqs
+  );
 
   const isLoading = !friendRequests || Object.keys(friendRequests).length === 0;
 

@@ -211,6 +211,7 @@ export const AppContextProvider = (props) => {
     acceptFriendRequest,
     getStreamToken,
     userFriends,
+    setUserFriends,
   };
 
   return (

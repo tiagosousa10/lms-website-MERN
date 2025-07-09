@@ -23,6 +23,7 @@ import AboutUs from "./pages/student/AboutUs";
 import PrivacyPolicy from "./pages/student/PrivacyPolicy";
 import ContactUs from "./pages/student/ContactUs";
 import Footer from "./components/student/Footer";
+import Notifications from "./pages/community/Notifications";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -54,6 +55,7 @@ const App = () => {
         />
         <Route path="/call/:id" element={<CallPage />} />
         <Route path="/chat/:id" element={<ChatPage />} />
+        <Route path="/notifications" element={<Notifications />} />
 
         <Route path="/educator" element={<Educator />}>
           <Route path="/educator" element={<Dashboard />} />

@@ -9,7 +9,7 @@ const FriendCard = ({ friend, requestSent }) => (
       <div className="flex items-center gap-3">
         <div className="avatar">
           <div className="w-12 h-12 rounded-full overflow-hidden ring-2  ring-primary ring-offset-2">
-            <img src={assets.profile_img} alt={friend.nomeCompleto} />
+            <img src={friend.imageUrl} alt={friend.nomeCompleto} />
           </div>
         </div>
 

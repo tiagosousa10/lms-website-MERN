@@ -13,29 +13,24 @@ const Companies = () => {
           {[...Array(2)].map((_, i) => (
             <React.Fragment key={i}>
               <img
-                src={assets.microsoft_logo}
-                alt="Microsoft"
-                className="w-20 md:w-28 inline-block"
+                src={assets.ipb_logo}
+                alt="IPB"
+                className="w-32 md:w-40 inline-block object-contain"
               />
               <img
-                src={assets.walmart_logo}
-                alt="Walmart"
-                className="w-20 md:w-28 inline-block"
+                src={assets.ipb_logo2}
+                alt="IPB"
+                className="w-32 md:w-40 inline-block object-contain"
               />
               <img
-                src={assets.accenture_logo}
-                alt="Accenture"
-                className="w-20 md:w-28 inline-block"
+                src={assets.ipb_logo}
+                alt="IPB"
+                className="w-32 md:w-40 inline-block object-contain"
               />
               <img
-                src={assets.adobe_logo}
-                alt="Adobe"
-                className="w-20 md:w-28 inline-block"
-              />
-              <img
-                src={assets.paypal_logo}
-                alt="Paypal"
-                className="w-20 md:w-28 inline-block"
+                src={assets.ipb_logo2}
+                alt="IPB"
+                className="w-32 md:w-40 inline-block object-contain"
               />
             </React.Fragment>
           ))}

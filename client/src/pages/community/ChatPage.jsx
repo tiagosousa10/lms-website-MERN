@@ -17,6 +17,7 @@ import CallButton from "../../components/community/CallButton";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import MD5 from "crypto-js/md5";
+import "stream-chat-react/dist/css/v2/index.css";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
@@ -58,6 +59,7 @@ const ChatPage = () => {
           await getToken()
         );
 
+        //need md5 because the channel id must be have 64 characters
         const channelId = MD5(
           [userData._id, targetUserId].sort().join("-")
         ).toString();

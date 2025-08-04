@@ -37,6 +37,16 @@ const CommunitySideBar = () => {
           <UsersIcon className="size-5 text-base-content opacity-70" />
           <span>Amigos</span>
         </Link>
+
+        <Link
+          to={"/community/testimonies"}
+          className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
+            currentPath === "/community/testimonies" ? "btn-active" : ""
+          }`}
+        >
+          <UsersIcon className="size-5 text-base-content opacity-70" />
+          <span>Testemunhos</span>
+        </Link>
       </nav>
     </aside>
   );

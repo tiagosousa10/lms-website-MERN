@@ -85,13 +85,13 @@ const ChatPage = () => {
 
   const handleVideoCall = () => {
     if (channel) {
-      const callUrl = `${window.location.origin}/call/${channel.id}`; // generate the call url, using the channel id
+      const callUrl = `${window.location.origin}/community/call/${channel.id}`; // generate the call url, using the channel id
 
       channel.sendMessage({
-        text: `I've started a video call. Join me here: ${callUrl}`,
+        text: `📞 Iniciei uma vídeo-chamada! Junta-te aqui: ${callUrl}`,
       });
 
-      toast.success("Video call link sent successfully");
+      toast.success("✅ Link da videochamada enviado com sucesso!");
     }
   };
 

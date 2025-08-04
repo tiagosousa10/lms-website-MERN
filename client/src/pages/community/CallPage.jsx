@@ -12,8 +12,8 @@ import {
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
-import toast from "react-hot-toast";
-import PageLoader from "../components/PageLoader";
+import { toast } from "react-toastify";
+import PageLoader from "../../components/community/PageLoader";
 import { AppContext } from "../../context/AppContext";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;

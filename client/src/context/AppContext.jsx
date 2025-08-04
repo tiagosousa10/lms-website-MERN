@@ -196,8 +196,13 @@ export const AppContextProvider = (props) => {
 
   const getStreamToken = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/chat/token`);
-      console.log("🚀 ~ getStreamToken ~ response:", response);
+      const token = await getToken();
+
+      const response = await axios.get(`${backendUrl}/api/chat/token`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data.token;
     } catch (error) {
       console.log("🚀 ~ getStreamToken ~ error:", error.message);

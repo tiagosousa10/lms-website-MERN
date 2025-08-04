@@ -16,6 +16,7 @@ import ChatLoader from "../../components/community/ChatLoader";
 import CallButton from "../../components/community/CallButton";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
+import MD5 from "crypto-js/md5";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
@@ -27,6 +28,17 @@ const ChatPage = () => {
   const [loading, setLoading] = useState(true);
 
   const { userData, getStreamToken } = useContext(AppContext);
+
+  const getToken = async () => {
+    try {
+      const token = await getStreamToken();
+      console.log("🚀 ~ getToken ~ token:", token);
+      return token;
+    } catch (error) {
+      console.error("Error in getting stream token:", error);
+      toast.error("Error in getting stream token:", error);
+    }
+  };
 
   useEffect(() => {
     const initChat = async () => {
@@ -43,10 +55,12 @@ const ChatPage = () => {
             name: userData.fullName,
             image: userData.profilePic,
           },
-          getStreamToken()
+          await getToken()
         );
 
-        const channelId = [userData._id, targetUserId].sort().join("-"); // create a channel id between the current user and the target user
+        const channelId = MD5(
+          [userData._id, targetUserId].sort().join("-")
+        ).toString();
 
         const currentChannel = client.channel("messaging", channelId, {
           members: [userData._id, targetUserId],
@@ -57,15 +71,15 @@ const ChatPage = () => {
         setChatClient(client);
         setChannel(currentChannel);
       } catch (error) {
-        console.error("Error in initializing chat:", error);
-        toast.error("Error in initializing chat:", error);
+        console.error("Error in initializing chat:", error.message);
+        toast.error("Error in initializing chat:", error.message);
       } finally {
         setLoading(false);
       }
     };
 
     initChat();
-  }, [getStreamToken, userData, targetUserId]);
+  }, [getToken, userData, targetUserId]);
 
   const handleVideoCall = () => {
     if (channel) {

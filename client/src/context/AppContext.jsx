@@ -195,14 +195,20 @@ export const AppContextProvider = (props) => {
   };
 
   const getStreamToken = async () => {
-    const response = await axios.get(backendUrl + "/chat/token");
-    return response.data.token;
+    try {
+      const response = await axios.get(`${backendUrl}/api/chat/token`);
+      console.log("🚀 ~ getStreamToken ~ response:", response);
+      return response.data.token;
+    } catch (error) {
+      console.log("🚀 ~ getStreamToken ~ error:", error.message);
+    }
   };
 
   useEffect(() => {
     fetchAllCourses();
     getUserFriends();
     getFriendRequests();
+    getStreamToken();
   }, []);
 
   useEffect(() => {

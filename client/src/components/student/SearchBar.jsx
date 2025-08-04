@@ -26,7 +26,7 @@ const SearchBar = ({ data }) => {
         value={input}
         type="text"
         placeholder="Pesquisar por curso"
-        className="w-full h-full outline-none text-gray-500/80 "
+        className="w-full h-full outline-none bg-white text-gray-500/80 "
       />
       <button
         type="submit"

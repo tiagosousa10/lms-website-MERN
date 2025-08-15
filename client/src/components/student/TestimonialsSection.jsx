@@ -1,44 +1,78 @@
-import React from "react";
-import { assets, dummyTestimonial } from "../../assets/assets";
+// components/community/TestimonialsSection.jsx
+import React, { useContext, useEffect } from "react";
+import { AppContext } from "../../context/AppContext";
+import { assets } from "../../assets/assets";
+
+// helpers to get initials from name
+const initialsFromName = (name = "") =>
+  name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((n) => n[0]?.toUpperCase() || "")
+    .join("");
 
 const TestimonialsSection = () => {
+  const { randomTestimonials, fetchRandomTestimonials } =
+    useContext(AppContext);
+
+  useEffect(() => {
+    // garante que há dados na primeira montagem (idempotente se já chamadas no contexto)
+    if (!randomTestimonials?.length) fetchRandomTestimonials();
+  }, []);
+
   return (
     <div className="pb-14 px-8 md:px-0">
-      <h2 className="text-3xl font-medium text-gray-800">Testemunhos</h2>
-      <p className="md:text-base text-gray-500 mt-3">
-        Ouve os nossos alunos enquanto partilham as suas jornadas de
-        transformação, sucesso <br /> e como a nossa plataforma fez a diferença
-        nas suas vidas.
-      </p>
+      <div className="flex items-end justify-between gap-3">
+        <div>
+          <h2 className="text-3xl font-medium text-gray-800">Testemunhos</h2>
+          <p className="md:text-base text-gray-500 mt-3">
+            Ouve os nossos alunos enquanto partilham as suas jornadas de
+            transformação, sucesso <br /> e como a nossa plataforma fez a
+            diferença nas suas vidas.
+          </p>
+        </div>
+      </div>
 
       <div className="grid grid-cols-auto gap-8 mt-14">
-        {dummyTestimonial.map((testimonial, index) => (
+        {(randomTestimonials?.length
+          ? randomTestimonials
+          : Array(4).fill(null)
+        ).map((testimonial, index) => (
           <div
-            key={index}
+            key={testimonial?._id || index}
             className="text-sm text-left border border-gray-500/30 rounded-lg pb-6 bg-white shadow-[0px_4px_15px_0px] shadow-black/5 overflow-hidden"
           >
             <div className="flex items-center gap-4 px-5 py-4 bg-gray-500/10 ">
-              <img
-                className="h-12 w-12 rounded-full"
-                src={testimonial.image}
-                alt={testimonial.name}
-              />
+              {/* Avatar: se não houver imagem, mostra iniciais */}
+              <div className="avatar placeholder">
+                <div className="bg-neutral text-neutral-content rounded-full w-12 h-12">
+                  <span className="text-base">
+                    {testimonial
+                      ? initialsFromName(testimonial?.user?.name)
+                      : "—"}
+                  </span>
+                </div>
+              </div>
+
               <div>
                 <h1 className="text-lg font-medium text-gray-800">
-                  {testimonial.name}
+                  {testimonial?.user?.name || "Utilizador"}
                 </h1>
-                <p className="text-gray-800/80">{testimonial.role}</p>
+                <p className="text-gray-800/80">
+                  {testimonial?.user?.email || "Aluno"}
+                </p>
               </div>
             </div>
 
             <div className="p-5 pb-7">
               <div className="flex gap-0.5">
-                {[...Array(5)].map((_, index) => (
+                {[...Array(5)].map((_, i) => (
                   <img
                     className="h-5"
-                    key={index}
+                    key={i}
                     src={
-                      index < Math.floor(testimonial.rating)
+                      i < Math.floor(testimonial?.rating || 0)
                         ? assets.star
                         : assets.star_blank
                     }
@@ -46,7 +80,9 @@ const TestimonialsSection = () => {
                   />
                 ))}
               </div>
-              <p className="text-gray-500 mt-5">{testimonial.feedback}</p>
+              <p className="text-gray-500 mt-5">
+                {testimonial?.text || "Carregar testemunhos…"}
+              </p>
             </div>
 
             <a href="#" className="text-blue-500 underline px-5">

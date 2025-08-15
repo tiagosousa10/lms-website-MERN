@@ -2,10 +2,11 @@
 import { useContext, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { AppContext } from "../../context/AppContext";
+import { toast } from "react-toastify";
 
 export default function TestimonialForm() {
   const { isSignedIn } = useUser();
-  const { createTestimonialApi } = useContext(AppContext);
+  const { createTestimonial } = useContext(AppContext);
 
   const [form, setForm] = useState({ rating: 5, text: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -23,13 +24,19 @@ export default function TestimonialForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
-    await createTestimonialApi({
-      rating: Number(form.rating),
-      text: form.text.trim(),
-    });
-    setForm({ rating: 5, text: "" });
-    setSubmitting(false);
+    try {
+      setSubmitting(true);
+      await createTestimonial({
+        rating: Number(form.rating),
+        text: form.text.trim(),
+      });
+      setForm({ rating: 5, text: "" });
+    } catch (error) {
+      console.log("Error in createTestimonial:", error.message);
+      toast.error(error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

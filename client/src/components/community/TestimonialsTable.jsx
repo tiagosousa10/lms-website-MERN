@@ -1,7 +1,6 @@
 // components/community/MyTestimonialsTable.jsx
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../context/AppContext";
-// import { assets } from "../../assets/assets"; // para as estrelas, se quiseres
 
 export default function TestimonialsTable() {
   const {
@@ -11,7 +10,7 @@ export default function TestimonialsTable() {
     deleteMyTestimonial,
   } = useContext(AppContext);
 
-  const [editing, setEditing] = useState(null); // { _id, rating, text }
+  const [editing, setEditing] = useState(null);
   const editDialogRef = useRef(null);
   const deleteDialogRef = useRef(null);
 
@@ -45,7 +44,7 @@ export default function TestimonialsTable() {
   };
 
   return (
-    <section className="bg-base-100 rounded-xl shadow p-4 md:p-6">
+    <section className=" rounded-xl shadow p-4 md:p-6 bg-white">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold">Os meus testemunhos</h3>
         <button onClick={fetchMyTestimonials} className="btn btn-sm">

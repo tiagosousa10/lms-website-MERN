@@ -20,30 +20,6 @@ const CommunityPage = () => {
 
   return (
     <div className=" min-h-screen p-4 md:p-8 lg:p-12 space-y-12">
-      {/* Header Amigos */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <h2 className="text-3xl font-bold">Os teus Amigos</h2>
-        <Link
-          to="/notifications"
-          className="btn btn-outline btn-sm flex items-center"
-        >
-          <UsersIcon className=" w-4 h-4" /> Amigos
-        </Link>
-      </div>
-
-      {/* Lista de Amigos */}
-      {isLoading ? (
-        <Loading />
-      ) : userFriends.length === 0 ? (
-        <NoFriendsFound />
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {userFriends.map((friend, idx) => (
-            <FriendCard key={friend.id || idx} friend={friend} />
-          ))}
-        </div>
-      )}
-
       {/* Nova Secção: Descobrir mais amigos */}
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -121,6 +97,30 @@ const CommunityPage = () => {
           </div>
         )}
       </div>
+
+      {/* Header Amigos */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <h2 className="text-3xl font-bold">Os teus Amigos</h2>
+        <Link
+          to="/notifications"
+          className="btn btn-outline btn-sm flex items-center"
+        >
+          <UsersIcon className=" w-4 h-4" /> Amigos
+        </Link>
+      </div>
+
+      {/* Lista de Amigos */}
+      {isLoading ? (
+        <Loading />
+      ) : userFriends.length === 0 ? (
+        <NoFriendsFound />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {userFriends.map((friend, idx) => (
+            <FriendCard key={friend.id || idx} friend={friend} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

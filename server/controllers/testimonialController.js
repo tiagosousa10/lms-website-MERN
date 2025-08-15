@@ -57,6 +57,28 @@ export const getTestimonial = async (req, res) => {
   }
 };
 
+export const getMyTestimonials = async (req, res) => {
+  try {
+    const userId = req.auth?.userId;
+    if (!userId)
+      return res.json({ success: false, message: "Não autenticado" });
+
+    // (opcional) garantir que o user existe
+    const user = await User.findById(userId);
+    if (!user)
+      return res.json({ success: false, message: "Utilizador não encontrado" });
+
+    const items = await Testimonial.find({ user: String(userId) })
+      .sort({ createdAt: -1 })
+      .populate({ path: "user", select: "name email imageUrl" });
+
+    return res.json({ success: true, items, count: items.length });
+  } catch (error) {
+    console.log("Error in getMyTestimonials:", error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};
+
 export const createTestimonial = async (req, res) => {
   try {
     const userId = req.auth?.userId; // Clerk

@@ -7,7 +7,7 @@ const CoursesSection = () => {
   const { allCourses } = useContext(AppContext);
 
   return (
-    <div className="py-16 md:px-40 px-8">
+    <div className="py-16 md:px-40 px-8 bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] w-full">
       <h2 className="text-3xl font-medium text-gray-800">
         Aprende com os melhores
       </h2>

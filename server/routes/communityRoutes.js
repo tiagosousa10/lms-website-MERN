@@ -11,6 +11,7 @@ import {
 import {
   createTestimonial,
   deleteMyTestimonial,
+  getMyTestimonials,
   getTestimonial,
   listRandomTestimonials,
   updateMyTestimonial,
@@ -27,8 +28,9 @@ communityRouter.get("/friend-requests", getFriendRequests);
 communityRouter.get("/outgoing-friend-requests", getOutgoingFriendReqs);
 
 // TESTIMONIALS
-communityRouter.get("/testimonials/random", listRandomTestimonials); //
-communityRouter.get("/testimonials/:id", getTestimonial); //
+communityRouter.get("/testimonials/random", listRandomTestimonials);
+communityRouter.get("/testimonials/me", getMyTestimonials);
+communityRouter.get("/testimonials/:id", getTestimonial);
 
 communityRouter.post("/testimonials", createTestimonial);
 communityRouter.put("/testimonials/:id", updateMyTestimonial);

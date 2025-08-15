@@ -23,6 +23,7 @@ export const AppContextProvider = (props) => {
   const [userFriends, setUserFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [randomTestimonials, setRandomTestimonials] = useState([]);
+  const [myTestimonials, setMyTestimonials] = useState([]);
 
   //-------------------------------------------------
   // --------------------COURSES---------------------
@@ -233,6 +234,20 @@ export const AppContextProvider = (props) => {
     }
   };
 
+  const fetchMyTestimonials = async () => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(
+        backendUrl + "/api/community/testimonials/me",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) setMyTestimonials(data.items);
+      else toast.error(data.message || "Falha ao obter os teus testemunhos");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const createTestimonial = async ({ rating, text }) => {
     try {
       const token = await getToken();
@@ -342,6 +357,8 @@ export const AppContextProvider = (props) => {
     createTestimonial,
     updateMyTestimonial,
     deleteMyTestimonial,
+    fetchMyTestimonials,
+    myTestimonials,
   };
 
   return (

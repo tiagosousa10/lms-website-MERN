@@ -1,6 +1,7 @@
 // pages/CommunityTestimonials.jsx
 import TestimonialsSection from "../../components/community/TestimonialSection";
 import TestimonialForm from "../../components/community/TestimonialForm";
+import MyTestimonialsTable from "../../components/community/TestimonialsTable";
 
 export default function CommunityTestimonials() {
   return (
@@ -8,6 +9,7 @@ export default function CommunityTestimonials() {
       <h1 className="text-2xl font-bold">Comunidade — Testemunhos</h1>
       <TestimonialsSection />
       <TestimonialForm />
+      <MyTestimonialsTable />
     </div>
   );
 }

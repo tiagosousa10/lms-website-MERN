@@ -23,18 +23,20 @@ const TestimonialsSection = () => {
 
   return (
     <div className="pb-14 px-8 md:px-0">
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <h2 className="text-3xl font-medium text-gray-800">Testemunhos</h2>
-          <p className="md:text-base text-gray-500 mt-3">
-            Ouve os nossos alunos enquanto partilham as suas jornadas de
-            transformação, sucesso <br /> e como a nossa plataforma fez a
-            diferença nas suas vidas.
-          </p>
+      <div className="flex justify-center items-center">
+        <div className="flex justify-between gap-3">
+          <div>
+            <h2 className="text-3xl font-medium text-gray-800">Testemunhos</h2>
+            <p className="md:text-base text-gray-500 mt-3">
+              Ouve os nossos alunos enquanto partilham as suas jornadas de
+              transformação, sucesso <br /> e como a nossa plataforma fez a
+              diferença nas suas vidas.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-auto gap-8 mt-14">
+      <div className="flex flex-wrap gap-8 mt-14 justify-center items-center">
         {(randomTestimonials?.length
           ? randomTestimonials
           : Array(4).fill(null)

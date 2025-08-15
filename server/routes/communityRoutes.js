@@ -8,6 +8,10 @@ import {
   getRecommendedUsers,
   sendFriendRequest,
 } from "../controllers/communityController.js";
+import {
+  getTestimonial,
+  listRandomTestimonials,
+} from "../controllers/testimonialController.js";
 
 const communityRouter = express.Router();
 
@@ -20,7 +24,7 @@ communityRouter.get("/friend-requests", getFriendRequests);
 communityRouter.get("/outgoing-friend-requests", getOutgoingFriendReqs);
 
 // TESTIMONIALS
-communityRouter.get("/testimonials", listTestimonials); //
+communityRouter.get("/testimonials/random", listRandomTestimonials); //
 communityRouter.get("/testimonials/:id", getTestimonial); //
 
 communityRouter.post("/testimonials", createTestimonial);

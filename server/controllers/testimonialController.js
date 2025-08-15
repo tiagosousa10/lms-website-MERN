@@ -38,3 +38,21 @@ export const listRandomTestimonials = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
+
+export const getTestimonial = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const testimonialDocument = await Testimonial.findById(id).populate({
+      path: "user",
+      select: "name email",
+    });
+
+    if (!testimonialDocument)
+      return res.json({ success: false, message: "Testemunho não encontrado" });
+
+    return res.json({ success: true, testimonial: testimonialDocument });
+  } catch (error) {
+    console.log("Error in getTestimonial:", error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};

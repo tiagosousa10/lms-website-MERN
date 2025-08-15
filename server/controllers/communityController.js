@@ -135,7 +135,7 @@ export async function acceptFriendRequest(req, res) {
 export async function getFriendRequests(req, res) {
   try {
     const userId = req.auth.userId;
-    console.log("🚀 ~ getFriendRequests ~ userId:", userId);
+    // console.log("🚀 ~ getFriendRequests ~ userId:", userId);
 
     const incomingReqs = await FriendRequest.find({
       recipient: userId,

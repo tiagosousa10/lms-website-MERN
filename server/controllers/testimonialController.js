@@ -89,3 +89,66 @@ export const createTestimonial = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
+
+export const updateMyTestimonial = async (req, res) => {
+  try {
+    const userId = req.auth?.userId;
+    if (!userId)
+      return res.json({ success: false, message: "Não autenticado" });
+
+    const { id } = req.params;
+    const testimonialDocument = await Testimonial.findById(id);
+    if (!testimonialDocument)
+      return res.json({ success: false, message: "Testemunho não encontrado" });
+
+    if (String(testimonialDocument.user) !== String(userId)) {
+      return res.json({ success: false, message: "Sem permissão para editar" });
+    }
+
+    // Atualizações permitidas
+    if (req.body.rating !== undefined) {
+      const r = Number(req.body.rating);
+      if (!(r >= 1 && r <= 5))
+        return res.json({ success: false, message: "Rating inválido" });
+      testimonialDocument.rating = r;
+    }
+    if (req.body.text !== undefined) {
+      const txt = String(req.body.text).trim();
+      if (txt.length < 10)
+        return res.json({ success: false, message: "Texto muito curto" });
+      testimonialDocument.text = txt;
+    }
+
+    await testimonialDocument.save();
+    return res.json({ success: true, testimonial: testimonialDocument });
+  } catch (error) {
+    console.log("Error in updateMyTestimonial:", error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+export const deleteMyTestimonial = async (req, res) => {
+  try {
+    const userId = req.auth?.userId;
+    if (!userId)
+      return res.json({ success: false, message: "Não autenticado" });
+
+    const { id } = req.params;
+    const testimonialDocument = await Testimonial.findById(id);
+    if (!testimonialDocument)
+      return res.json({ success: false, message: "Testemunho não encontrado" });
+
+    if (String(testimonialDocument.user) !== String(userId)) {
+      return res.json({
+        success: false,
+        message: "Sem permissão para remover",
+      });
+    }
+
+    await Testimonial.deleteOne({ _id: id });
+    return res.json({ success: true, message: "Testemunho removido" });
+  } catch (error) {
+    console.log("Error in deleteMyTestimonial:", error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};

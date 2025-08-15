@@ -9,7 +9,7 @@ import FriendRequest from "../models/FriendRequest.js";
 export const getUserData = async (req, res) => {
   try {
     const userId = req.auth.userId;
-    console.log("🚀 ~ getUserData ~ userId:", userId);
+    // console.log("🚀 ~ getUserData ~ userId:", userId);
     const user = await User.findById(userId);
 
     if (!user) {

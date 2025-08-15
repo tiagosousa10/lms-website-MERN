@@ -9,8 +9,10 @@ import {
   sendFriendRequest,
 } from "../controllers/communityController.js";
 import {
+  createTestimonial,
   getTestimonial,
   listRandomTestimonials,
+  updateMyTestimonial,
 } from "../controllers/testimonialController.js";
 
 const communityRouter = express.Router();

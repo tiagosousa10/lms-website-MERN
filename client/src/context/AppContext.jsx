@@ -233,6 +233,27 @@ export const AppContextProvider = (props) => {
     }
   };
 
+  const createTestimonial = async ({ rating, text }) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        backendUrl + "/api/community/testimonials",
+        { rating, text },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success("Testemunho enviado!");
+        fetchRandomTestimonials();
+      } else {
+        toast.error(data.message || "Não foi possível criar");
+      }
+      return data;
+    } catch (err) {
+      toast.error(err.message);
+      return { success: false, message: err.message };
+    }
+  };
+
   useEffect(() => {
     if (user) {
       fetchUserData();
@@ -277,6 +298,7 @@ export const AppContextProvider = (props) => {
     setFriendRequests,
     randomTestimonials,
     fetchRandomTestimonials,
+    createTestimonial,
   };
 
   return (

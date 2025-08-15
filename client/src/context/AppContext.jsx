@@ -254,6 +254,47 @@ export const AppContextProvider = (props) => {
     }
   };
 
+  const updateMyTestimonial = async (id, payload) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.put(
+        backendUrl + `/api/community/testimonials/${id}`,
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success("Testemunho atualizado");
+        fetchRandomTestimonials();
+      } else {
+        toast.error(data.message || "Não foi possível atualizar");
+      }
+      return data;
+    } catch (err) {
+      toast.error(err.message);
+      return { success: false, message: err.message };
+    }
+  };
+
+  const deleteMyTestimonial = async (id) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.delete(
+        backendUrl + `/api/community/testimonials/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success("Testemunho removido");
+        fetchRandomTestimonials();
+      } else {
+        toast.error(data.message || "Não foi possível remover");
+      }
+      return data;
+    } catch (err) {
+      toast.error(err.message);
+      return { success: false, message: err.message };
+    }
+  };
+
   useEffect(() => {
     if (user) {
       fetchUserData();
@@ -299,6 +340,8 @@ export const AppContextProvider = (props) => {
     randomTestimonials,
     fetchRandomTestimonials,
     createTestimonial,
+    updateMyTestimonial,
+    deleteMyTestimonial,
   };
 
   return (

@@ -144,7 +144,7 @@ export async function getFriendRequests(req, res) {
       .populate("sender", "name email imageUrl")
       .lean();
 
-    console.log("incomingReqs: ", incomingReqs);
+    // console.log("incomingReqs: ", incomingReqs);
 
     const acceptedReqs = await FriendRequest.find({
       sender: userId,
@@ -153,7 +153,7 @@ export async function getFriendRequests(req, res) {
       .populate("recipient", "name email imageUrl")
       .lean();
 
-    console.log("acceptedReqs: ", acceptedReqs);
+    // console.log("acceptedReqs: ", acceptedReqs);
 
     res.status(200).json({ incomingReqs, acceptedReqs });
   } catch (error) {

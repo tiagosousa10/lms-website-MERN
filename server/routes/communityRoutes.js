@@ -10,6 +10,7 @@ import {
 } from "../controllers/communityController.js";
 import {
   createTestimonial,
+  deleteMyTestimonial,
   getTestimonial,
   listRandomTestimonials,
   updateMyTestimonial,

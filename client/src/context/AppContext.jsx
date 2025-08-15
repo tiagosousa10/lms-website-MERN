@@ -22,7 +22,11 @@ export const AppContextProvider = (props) => {
   const [userData, setUserData] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
-  console.log("🚀 ~ AppContextProvider ~ friendRequests:", friendRequests);
+  const [randomTestimonials, setRandomTestimonials] = useState([]);
+
+  //-------------------------------------------------
+  // --------------------COURSES---------------------
+  //-------------------------------------------------
 
   //Fetch all courses
   const fetchAllCourses = async () => {
@@ -121,8 +125,10 @@ export const AppContextProvider = (props) => {
       setEnrolledCourses(data.enrolledCourses.reverse());
     } else toast.error(data.message);
   };
+  //-------------------------------------------------
+  // --------------------COMMUNITY AND CHATS---------
+  //-------------------------------------------------
 
-  // --------------------COMMUNITY AND CHATS---------------------
   const getUserFriends = async () => {
     const token = await getToken();
 
@@ -209,17 +215,33 @@ export const AppContextProvider = (props) => {
     }
   };
 
-  useEffect(() => {
-    fetchAllCourses();
-    getUserFriends();
-    getFriendRequests();
-    getStreamToken();
-  }, []);
+  //-------------------------------------------------
+  // --------------------TESTIMONIALS----------------
+  //-------------------------------------------------
+  const fetchRandomTestimonials = async () => {
+    try {
+      const { data } = await axios.get(
+        backendUrl + "/api/community/testimonials/random"
+      );
+      if (data.success) {
+        setRandomTestimonials(data.items);
+      } else {
+        toast.error(data.message || "Falha ao obter testemunhos");
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   useEffect(() => {
     if (user) {
       fetchUserData();
       fetchUserEnrolledCourses();
+      fetchAllCourses();
+      getUserFriends();
+      getFriendRequests();
+      getStreamToken();
+      fetchRandomTestimonials();
     }
   }, [user]);
 
@@ -253,6 +275,8 @@ export const AppContextProvider = (props) => {
     setUserFriends,
     friendRequests,
     setFriendRequests,
+    randomTestimonials,
+    fetchRandomTestimonials,
   };
 
   return (

@@ -2,7 +2,27 @@ import FriendRequest from "../models/FriendRequest.js";
 import User from "../models/User.js";
 
 // ---------------------- COMMUNITY FRIENDS & CHATS ----------------------
-//test with new users... (need to create them first)
+
+export async function getAllUsers(req, res) {
+  try {
+    const currentUserId = req.auth.userId;
+    const currentUser = await User.findById(currentUserId);
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const getUsers = await User.find({});
+
+    res.status(200).json(getUsers);
+  } catch (error) {
+    console.log("Error in getRecommendedUsers controller", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+}
+
 export async function getRecommendedUsers(req, res) {
   try {
     const currentUserId = req.auth.userId;
@@ -16,7 +36,6 @@ export async function getRecommendedUsers(req, res) {
       $and: [
         { _id: { $ne: currentUserId } },
         { _id: { $nin: currentUser.friends } },
-        { isOnboarded: true },
       ],
     });
 

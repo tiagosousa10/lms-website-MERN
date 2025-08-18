@@ -2,6 +2,7 @@ import express from "express";
 // import { protectRoute } from "../middlewares/authMiddleware.js";
 import {
   acceptFriendRequest,
+  getAllUsers,
   getFriendRequests,
   getMyFriends,
   getOutgoingFriendReqs,
@@ -20,6 +21,8 @@ import {
 const communityRouter = express.Router();
 
 // FRIENDS
+
+communityRouter.get("/all-users", getAllUsers);
 communityRouter.get("/recommended-users", getRecommendedUsers);
 communityRouter.get("/friends", getMyFriends);
 communityRouter.post("/friend-request/:id", sendFriendRequest);

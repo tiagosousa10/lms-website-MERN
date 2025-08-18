@@ -15,8 +15,7 @@ import { AppContext } from "../../context/AppContext";
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { userFriends } = useContext(AppContext);
-  console.log("🚀 ~ CommunityPage ~ userFriends:", userFriends);
+  const { userFriends, recommendedUsers } = useContext(AppContext);
 
   return (
     <div className=" min-h-screen p-4 md:p-8 lg:p-12 space-y-12">
@@ -35,7 +34,7 @@ const CommunityPage = () => {
           <div className="flex justify-center py-12">
             <span className="loading loading-spinner loading-lg" />
           </div>
-        ) : userFriends.length === 0 ? (
+        ) : recommendedUsers.length === 0 ? (
           <div className="card bg-base-100 shadow p-6 text-center">
             <h3 className="text-xl font-semibold">
               Sem recomendações por agora
@@ -46,7 +45,7 @@ const CommunityPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userFriends.map((u, idx) => {
+            {recommendedUsers.map((u, idx) => {
               const pedidoEnviado = true;
 
               return (

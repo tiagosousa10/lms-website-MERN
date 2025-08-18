@@ -21,6 +21,7 @@ export const AppContextProvider = (props) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [userData, setUserData] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
+  const [recommendedUsers, setRecommendedUsers] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [randomTestimonials, setRandomTestimonials] = useState([]);
   const [myTestimonials, setMyTestimonials] = useState([]);
@@ -133,27 +134,48 @@ export const AppContextProvider = (props) => {
   const getUserFriends = async () => {
     const token = await getToken();
 
-    const response = await axios.get(backendUrl + "/api/community/friends", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await axios.get(backendUrl + "/api/community/friends", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (response) {
-      setUserFriends(response.data);
+      if (response) {
+        setUserFriends(response.data);
+      }
+
+      return response.data;
+    } catch (error) {
+      console.log("🚀 ~ getUserFriends ~ error:", error.message);
     }
-
-    return response.data;
   };
 
   const getRecommendedUsers = async () => {
-    const response = await axios.get(backendUrl + "/community");
-    return response.data;
+    const token = await getToken();
+
+    try {
+      const response = await axios.get(
+        backendUrl + "/api/community/recommended-users",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response) {
+        setRecommendedUsers(response.data);
+      }
+      return response.data;
+    } catch (error) {
+      console.log("🚀 ~ getRecommendedUsers ~ error:", error.message);
+    }
   };
 
   const getOutgoingFriendReqs = async () => {
     const response = await axios.get(
-      backendUrl + "/community/outgoing-friend-requests"
+      backendUrl + "/api/community/outgoing-friend-requests"
     );
     return response.data;
   };
@@ -161,7 +183,7 @@ export const AppContextProvider = (props) => {
   //TODO: O proximo a testar.
   const sendFriendRequest = async (userId) => {
     const response = await axios.post(
-      backendUrl + `/community/friend-request/${userId}`
+      backendUrl + `api/community/friend-request/${userId}`
     );
     return response.data;
   };
@@ -319,6 +341,7 @@ export const AppContextProvider = (props) => {
       getFriendRequests();
       getStreamToken();
       fetchRandomTestimonials();
+      getRecommendedUsers();
     }
   }, [user]);
 
@@ -359,6 +382,7 @@ export const AppContextProvider = (props) => {
     deleteMyTestimonial,
     fetchMyTestimonials,
     myTestimonials,
+    recommendedUsers,
   };
 
   return (

@@ -182,10 +182,18 @@ export const AppContextProvider = (props) => {
 
   //TODO: O proximo a testar.
   const sendFriendRequest = async (userId) => {
-    const response = await axios.post(
-      backendUrl + `api/community/friend-request/${userId}`
-    );
-    return response.data;
+    const token = await getToken();
+
+    try {
+      const response = await axios.post(
+        backendUrl + `/api/community/friend-request/${userId}`,
+        {}, // body vazio
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("🚀 ~ sendFriendRequest ~ error:", error.message);
+    }
   };
 
   //check !

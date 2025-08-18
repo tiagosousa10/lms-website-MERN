@@ -69,6 +69,11 @@ export async function getMyFriends(req, res) {
 export async function sendFriendRequest(req, res) {
   try {
     const myId = req.auth.userId;
+
+    if (!myId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const { id: recipientId } = req.params;
 
     if (myId === recipientId) {

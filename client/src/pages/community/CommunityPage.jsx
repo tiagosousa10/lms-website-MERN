@@ -15,7 +15,9 @@ import { AppContext } from "../../context/AppContext";
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { userFriends, recommendedUsers } = useContext(AppContext);
+  const { userFriends, recommendedUsers, sendFriendRequest } =
+    useContext(AppContext);
+  console.log("🚀 ~ CommunityPage ~ recommendedUsers:", recommendedUsers);
 
   return (
     <div className=" min-h-screen p-4 md:p-8 lg:p-12 space-y-12">
@@ -46,7 +48,8 @@ const CommunityPage = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {recommendedUsers.map((u, idx) => {
-              const pedidoEnviado = true;
+              console.log("🚀 ~ u:", u);
+              const pedidoEnviado = false;
 
               return (
                 <div
@@ -76,6 +79,7 @@ const CommunityPage = () => {
                         pedidoEnviado ? "btn-disabled" : "btn-primary"
                       } flex justify-center items-center gap-2`}
                       disabled={pedidoEnviado || isLoading}
+                      onClick={() => sendFriendRequest(u._id)}
                     >
                       {pedidoEnviado ? (
                         <>

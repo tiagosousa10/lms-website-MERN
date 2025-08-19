@@ -1,9 +1,11 @@
 import { CheckCircleIcon, UserMinus, UserPlusIcon } from "lucide-react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { assets } from "../../assets/assets";
+import { AppContext } from "../../context/AppContext";
 
-const FriendCard = ({ friend, requestSent }) => {
+const FriendCard = ({ friend }) => {
   console.log("🚀 ~ FriendCard ~ friend:", friend);
+  const { removeFriend } = useContext(AppContext);
   return (
     <div className="card card-sm bg-base-100 shadow hover:shadow-md transition rounded-lg overflow-hidden">
       <div className="card-body p-4 space-y-2">
@@ -32,23 +34,14 @@ const FriendCard = ({ friend, requestSent }) => {
             Mensagem
           </Link>
           <button
-            disabled={requestSent}
             className="py-1.5 rounded-lg px-8 flex items-center gap-2 normal-case
              bg-gradient-to-r from-[#60A5FA] to-[#3B82F6]
              hover:from-[#4F8AE6] hover:to-[#2563EB]
              text-white"
+            onClick={() => removeFriend(friend._id)}
           >
-            {requestSent ? (
-              <>
-                <CheckCircleIcon className="w-4 h-4" />
-                Pedido Enviado
-              </>
-            ) : (
-              <>
-                <UserMinus className="w-4 h-4" />
-                Remover
-              </>
-            )}
+            <UserMinus className="w-4 h-4" />
+            Remover
           </button>
         </div>
       </div>

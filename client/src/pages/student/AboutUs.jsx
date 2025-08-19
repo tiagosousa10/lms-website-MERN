@@ -28,7 +28,7 @@ const AboutUs = () => {
           <Users className="h-12 w-12 text-primary mb-4" />
           <h3 className="text-xl font-semibold">Quem Somos</h3>
           <p className="text-base-content/70 mt-2">
-            Formadores experientes dedicados ao teu sucesso.
+            Professores experientes dedicados ao teu sucesso.
           </p>
         </div>
         <div className="flex flex-col items-center p-6 bg-base-100 rounded-lg shadow">
@@ -64,7 +64,7 @@ const AboutUs = () => {
                 </div>
               </div>
               <h3 className="font-semibold">{name} Silva</h3>
-              <p className="text-sm text-base-content/70">Formador</p>
+              <p className="text-sm text-base-content/70">Professor</p>
             </div>
           ))}
         </div>

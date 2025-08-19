@@ -65,7 +65,7 @@ const Navbar = () => {
               <>
                 <li>
                   <button onClick={becomeEducator}>
-                    {isEducator ? "Área de Formador" : "Quero Ensinar"}
+                    {isEducator ? "Área do Professor" : "Quero Ensinar"}
                   </button>
                 </li>
                 <li>
@@ -128,7 +128,7 @@ const Navbar = () => {
               className="btn btn-outline btn-sm flex items-center gap-2 normal-case"
             >
               <GraduationCap className="h-5 w-5" />
-              {isEducator ? "Área de Formador" : "Quero Ensinar"}
+              {isEducator ? "Área do Professor" : "Quero Ensinar"}
             </button>
             <UserButton
               afterSignOutUrl="/"

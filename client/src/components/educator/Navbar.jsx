@@ -37,7 +37,7 @@ const Navbar = () => {
         {user ? (
           <div className="flex items-center gap-4">
             <p className="text-gray-500 text-sm">
-              Olá! {user ? user.fullName : "Formadores"}
+              Olá! {user ? user.fullName : "Professor"}
             </p>
             <UserButton />
           </div>

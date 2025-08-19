@@ -15,8 +15,13 @@ import { AppContext } from "../../context/AppContext";
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { userFriends, recommendedUsers, sendFriendRequest, onGoingFriends } =
-    useContext(AppContext);
+  const {
+    userFriends,
+    recommendedUsers,
+    sendFriendRequest,
+    onGoingFriends,
+    isEducator,
+  } = useContext(AppContext);
   console.log("🚀 ~ CommunityPage ~ onGoingFriends:", onGoingFriends);
 
   //to check if a friend request is outgoing
@@ -63,19 +68,26 @@ const CommunityPage = () => {
                   className="card card-sm bg-base-100 shadow hover:shadow-md transition"
                 >
                   <div className="card-body p-4 space-y-2">
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="w-12 h-12 rounded-full overflow-hidden">
-                          <img src={assets.profile_img} alt="Perfil" />
+                    <div className="flex items-center justify-between ">
+                      <div className="flex gap-5">
+                        <div className="avatar">
+                          <div className="w-12 h-12 rounded-full overflow-hidden">
+                            <img src={assets.profile_img} alt="Perfil" />
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-md font-semibold truncate">
+                            {u.name}
+                          </h3>
+                          <p className="text-sm text-base-content/60 truncate">
+                            {u.email}
+                          </p>
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-md font-semibold truncate">
-                          {u.name}
-                        </h3>
-                        <p className="text-sm text-base-content/60 truncate">
-                          {u.email}
-                        </p>
+                        <h4 className="text-sm mr-8 border border-primary px-4 py-1 ">
+                          {isEducator ? "Professor" : "Aluno"}
+                        </h4>
                       </div>
                     </div>
 

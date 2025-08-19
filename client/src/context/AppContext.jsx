@@ -277,7 +277,7 @@ export const AppContextProvider = (props) => {
 
       const response = await axios.delete(
         backendUrl + `/api/community/friends/${friendId}`,
-        {},
+
         {
           headers: {
             Authorization: `Bearer ${token}`,

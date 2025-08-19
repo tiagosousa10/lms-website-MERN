@@ -15,9 +15,16 @@ import { AppContext } from "../../context/AppContext";
 const CommunityPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { userFriends, recommendedUsers, sendFriendRequest } =
+  const { userFriends, recommendedUsers, sendFriendRequest, onGoingFriends } =
     useContext(AppContext);
-  console.log("🚀 ~ CommunityPage ~ recommendedUsers:", recommendedUsers);
+  console.log("🚀 ~ CommunityPage ~ onGoingFriends:", onGoingFriends);
+
+  //to check if a friend request is outgoing
+  const outgoingSet = React.useMemo(() => {
+    return new Set(
+      (onGoingFriends || []).map((fr) => String(fr?.recipient?._id))
+    );
+  }, [onGoingFriends]);
 
   return (
     <div className=" min-h-screen p-4 md:p-8 lg:p-12 space-y-12">
@@ -48,9 +55,8 @@ const CommunityPage = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {recommendedUsers.map((u, idx) => {
-              console.log("🚀 ~ u:", u);
-              const pedidoEnviado = false;
-
+              // console.log("🚀 ~ u:", u);
+              const pedidoEnviado = outgoingSet.has(String(u._id));
               return (
                 <div
                   key={u.id || idx}

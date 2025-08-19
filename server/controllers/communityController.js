@@ -188,21 +188,20 @@ export async function getFriendRequests(req, res) {
   }
 }
 
-// verify if needed or not
+// TODO: PROXIMO PASSO!!! ACABAR!!!
 export async function getOutgoingFriendReqs(req, res) {
   try {
-    const userId = req.auth.userId;
+    const userId = req.auth?.userId;
+    if (!userId) return res.status(401).json({ message: "Não autenticado" });
 
-    const outgoingRequests = await FriendRequest.find({
+    const outgoing = await FriendRequest.find({
       sender: userId,
       status: "pending",
     }).populate("recipient", "name email imageUrl");
-
-    res.status(200).json(outgoingRequests);
-  } catch (error) {
-    console.log("Error in getOutgoingFriendReqs controller", error);
-    res
+    return res.status(200).json(outgoing);
+  } catch (e) {
+    return res
       .status(500)
-      .json({ message: "Internal server error", error: error.message });
+      .json({ message: "Internal server error", error: e.message });
   }
 }

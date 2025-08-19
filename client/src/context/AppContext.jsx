@@ -23,6 +23,7 @@ export const AppContextProvider = (props) => {
   const [userFriends, setUserFriends] = useState([]);
   const [recommendedUsers, setRecommendedUsers] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [onGoingFriends, setOnGoingFriends] = useState([]);
   const [randomTestimonials, setRandomTestimonials] = useState([]);
   const [myTestimonials, setMyTestimonials] = useState([]);
 
@@ -174,10 +175,21 @@ export const AppContextProvider = (props) => {
   };
 
   const getOutgoingFriendReqs = async () => {
-    const response = await axios.get(
-      backendUrl + "/api/community/outgoing-friend-requests"
-    );
-    return response.data;
+    const token = await getToken();
+    try {
+      const response = await axios.get(
+        backendUrl + "/api/community/outgoing-friend-requests",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setOnGoingFriends(response.data);
+      return response.data;
+    } catch (error) {
+      console.log("🚀 ~ getOutgoingFriendReqs ~ error:", error.message);
+    }
   };
 
   //TODO: O proximo a testar.
@@ -222,6 +234,7 @@ export const AppContextProvider = (props) => {
 
     const response = await axios.put(
       backendUrl + `/api/community/friend-request/${requestId}/accept`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -350,6 +363,7 @@ export const AppContextProvider = (props) => {
       getStreamToken();
       fetchRandomTestimonials();
       getRecommendedUsers();
+      getOutgoingFriendReqs();
     }
   }, [user]);
 
@@ -391,6 +405,7 @@ export const AppContextProvider = (props) => {
     fetchMyTestimonials,
     myTestimonials,
     recommendedUsers,
+    onGoingFriends,
   };
 
   return (

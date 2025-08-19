@@ -206,8 +206,6 @@ export async function getOutgoingFriendReqs(req, res) {
   }
 }
 
-import User from "../models/User.js";
-
 export async function removeFriend(req, res) {
   try {
     const userId = req.auth?.userId;

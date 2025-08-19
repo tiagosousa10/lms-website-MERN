@@ -202,6 +202,16 @@ export const AppContextProvider = (props) => {
         {}, // body vazio
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await Promise.all([
+          getUserFriends(),
+          getRecommendedUsers(),
+          getOutgoingFriendReqs(),
+          getFriendRequests(),
+        ]);
+      }
       return response.data;
     } catch (error) {
       console.log("🚀 ~ sendFriendRequest ~ error:", error.message);
@@ -232,16 +242,69 @@ export const AppContextProvider = (props) => {
     const token = await getToken();
     console.log("🚀 ~ acceptFriendRequest ~ token:", token);
 
-    const response = await axios.put(
-      backendUrl + `/api/community/friend-request/${requestId}/accept`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const response = await axios.put(
+        backendUrl + `/api/community/friend-request/${requestId}/accept`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await Promise.all([
+          getUserFriends(),
+          getRecommendedUsers(),
+          getOutgoingFriendReqs(),
+          getFriendRequests(),
+        ]);
+      } else {
+        toast.error(response.data.message);
       }
-    );
-    return response.data;
+
+      return response.data;
+    } catch (error) {
+      console.log("🚀 ~ acceptFriendRequest ~ error:", error.message);
+    }
+  };
+
+  const removeFriend = async (friendId) => {
+    try {
+      const token = await getToken();
+
+      const response = await axios.delete(
+        backendUrl + `/api/community/friends/${friendId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response?.data;
+
+      if (data?.success) {
+        toast.success(data.message || "Amizade removida");
+        getUserFriends();
+
+        await Promise.all([
+          getUserFriends(),
+          getRecommendedUsers(),
+          getOutgoingFriendReqs(),
+          getFriendRequests(),
+        ]);
+      } else {
+        toast.error(data.message || "Falha ao remover amizade");
+      }
+
+      return data;
+    } catch (error) {
+      console.log("🚀 ~ removeFriend ~ error:", error.message);
+    }
   };
 
   const getStreamToken = async () => {
@@ -406,6 +469,7 @@ export const AppContextProvider = (props) => {
     myTestimonials,
     recommendedUsers,
     onGoingFriends,
+    removeFriend,
   };
 
   return (

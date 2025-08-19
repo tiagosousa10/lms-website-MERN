@@ -205,3 +205,47 @@ export async function getOutgoingFriendReqs(req, res) {
       .json({ message: "Internal server error", error: e.message });
   }
 }
+
+import User from "../models/User.js";
+
+export async function removeFriend(req, res) {
+  try {
+    const userId = req.auth?.userId;
+    if (!userId) return res.status(401).json({ message: "Nao autenticado" });
+
+    const { id: friendId } = req.params;
+    if (!friendId)
+      return res.status(400).json({ message: "Friend ID not provided" });
+    if (String(userId) === String(friendId))
+      return res.status(400).json({ message: "You cannot remove yourself" });
+
+    const [me, friend] = await Promise.all([
+      User.findById(userId).select("_id friends"),
+      User.findById(friendId).select("_id friends"),
+    ]);
+
+    if (!me) return res.status(404).json({ message: "User not found" });
+    if (!friend) return res.status(404).json({ message: "Friend not found" });
+
+    await Promise.all([
+      User.updateOne({ _id: userId }, { $pull: { friends: String(friendId) } }),
+      User.updateOne({ _id: friendId }, { $pull: { friends: String(userId) } }),
+      FriendRequest.deleteMany({
+        $or: [
+          { sender: String(userId), recipient: String(friendId) },
+          { sender: String(friendId), recipient: String(userId) },
+        ],
+      }),
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      message: "Amizade removida",
+    });
+  } catch (error) {
+    console.log("Error in removeFriend:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+}

@@ -7,6 +7,7 @@ import {
   getMyFriends,
   getOutgoingFriendReqs,
   getRecommendedUsers,
+  removeFriend,
   sendFriendRequest,
 } from "../controllers/communityController.js";
 import {
@@ -25,10 +26,12 @@ const communityRouter = express.Router();
 communityRouter.get("/all-users", getAllUsers);
 communityRouter.get("/recommended-users", getRecommendedUsers);
 communityRouter.get("/friends", getMyFriends);
-communityRouter.post("/friend-request/:id", sendFriendRequest);
-communityRouter.put("/friend-request/:id/accept", acceptFriendRequest);
 communityRouter.get("/friend-requests", getFriendRequests);
 communityRouter.get("/outgoing-friend-requests", getOutgoingFriendReqs);
+
+communityRouter.post("/friend-request/:id", sendFriendRequest);
+communityRouter.put("/friend-request/:id/accept", acceptFriendRequest);
+communityRouter.delete("/friends/:id", removeFriend);
 
 // TESTIMONIALS
 communityRouter.get("/testimonials/random", listRandomTestimonials);

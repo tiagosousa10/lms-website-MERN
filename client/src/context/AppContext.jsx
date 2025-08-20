@@ -192,7 +192,6 @@ export const AppContextProvider = (props) => {
     }
   };
 
-  //TODO: O proximo a testar.
   const sendFriendRequest = async (userId) => {
     const token = await getToken();
 

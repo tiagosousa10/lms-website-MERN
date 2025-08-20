@@ -188,7 +188,6 @@ export async function getFriendRequests(req, res) {
   }
 }
 
-// TODO: PROXIMO PASSO!!! ACABAR!!!
 export async function getOutgoingFriendReqs(req, res) {
   try {
     const userId = req.auth?.userId;

@@ -25,6 +25,7 @@ import ContactUs from "./pages/student/ContactUs";
 import Footer from "./components/student/Footer";
 import Notifications from "./pages/community/Notifications";
 import Testimonies from "./pages/community/Testimonies";
+import Friends from "./pages/community/Friends";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="notifications" element={<Notifications />} />
           <Route path="chat/:id" element={<ChatPage />} />
           <Route path="call/:id" element={<CallPage />} />
+          <Route path="friends" element={<Friends />} />
           <Route path="testimonies" element={<Testimonies />} />
         </Route>
 

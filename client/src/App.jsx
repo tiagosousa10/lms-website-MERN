@@ -26,6 +26,7 @@ import Footer from "./components/student/Footer";
 import Notifications from "./pages/community/Notifications";
 import Testimonies from "./pages/community/Testimonies";
 import Friends from "./pages/community/Friends";
+import ChatBot from "./components/ai-chat/ChatBot";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -33,6 +34,7 @@ const App = () => {
   return (
     <div className="text-default min-h-screen bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8]">
       <ToastContainer />
+      <ChatBot />
       {!isEducatorRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />

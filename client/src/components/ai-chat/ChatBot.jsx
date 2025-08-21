@@ -3,8 +3,9 @@ import ChatbotIcon from "./ChatbotIcon";
 import ChatForm from "./ChatForm";
 import ChatMessage from "./ChatMessage";
 import { companyInfo } from "./companyInfo";
+import { ArrowUp, Bot, ChevronDown, CircleX } from "lucide-react";
 
-const App = () => {
+const ChatBot = () => {
   const [chatHistory, setChatHistory] = useState([
     {
       hideInChat: true,
@@ -72,8 +73,12 @@ const App = () => {
         onClick={() => setShowChatbot((oldState) => !oldState)}
         id="chatbot-toggler"
       >
-        <span className="material-symbols-rounded">mode_comment</span>
-        <span className="material-symbols-rounded">close</span>
+        <span className="material-symbols-rounded">
+          <Bot />
+        </span>
+        <span className="material-symbols-rounded">
+          <CircleX />
+        </span>
       </button>
 
       <div className="chatbot-popup">
@@ -87,7 +92,7 @@ const App = () => {
             onClick={() => setShowChatbot((oldState) => !oldState)}
             className="material-symbols-rounded"
           >
-            keyboard_arrow_down
+            <ChevronDown />
           </button>
         </div>
 
@@ -119,4 +124,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ChatBot;

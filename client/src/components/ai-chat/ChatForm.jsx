@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { ArrowUp } from "lucide-react";
 
 const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse }) => {
   const inputRef = useRef();
@@ -45,7 +46,9 @@ const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse }) => {
         className="message-input"
         required
       />
-      <button className="material-symbols-rounded">arrow_upward</button>
+      <button className="">
+        <ArrowUp className="items-center justify-center " />
+      </button>
     </form>
   );
 };

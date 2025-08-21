@@ -215,7 +215,7 @@ const Navbar = () => {
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
-                          to="/about"
+                          to="/about-us"
                           className="block rounded-md p-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2"
                         >
                           <div className="text-sm font-medium">A Equipa</div>
@@ -229,28 +229,27 @@ const Navbar = () => {
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
-                          to="/about/mission"
-                          className="block rounded-md p-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2"
-                        >
-                          <div className="text-sm font-medium">
-                            Missão & Valores
-                          </div>
-                          <p className="text-xs text-muted-foreground">
-                            O nosso propósito.
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to="/contact"
+                          to="/contact-us"
                           className="block rounded-md p-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2"
                         >
                           <div className="text-sm font-medium">Contactos</div>
                           <p className="text-xs text-muted-foreground">
                             Fala connosco.
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link
+                          to="/privacy-policy"
+                          className="block rounded-md p-3 hover:bg-muted focus-visible:outline-none focus-visible:ring-2"
+                        >
+                          <div className="text-sm font-medium">
+                            Policia de Privacidade
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Termos e condições.
                           </p>
                         </Link>
                       </NavigationMenuLink>

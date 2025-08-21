@@ -27,6 +27,7 @@ import Notifications from "./pages/community/Notifications";
 import Testimonies from "./pages/community/Testimonies";
 import Friends from "./pages/community/Friends";
 import ChatBot from "./components/ai-chat/ChatBot";
+import Faq from "./pages/student/Faq";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/faq" element={<Faq />} />
         {/* SOCIAL & CHAT  : TODO -> VERIFICAR UTILIZADOR LOGADO*/}
 
         <Route

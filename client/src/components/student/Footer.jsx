@@ -22,9 +22,6 @@ const Footer = () => {
           <h2 className="font-semibold text-white mb-5">Empresa</h2>
           <ul className="flex md:flex-col w-full justify-between text-sm text-white/80 md:space-y-2">
             <li>
-              <a href="/">Início</a>
-            </li>
-            <li>
               <a href="/about-us">Sobre nós</a>
             </li>
             <li>
@@ -32,6 +29,9 @@ const Footer = () => {
             </li>
             <li>
               <a href="/privacy-policy">Política de Privacidade</a>
+            </li>
+            <li>
+              <a href="/faq">FAQs</a>
             </li>
           </ul>
         </div>

@@ -45,8 +45,10 @@ import lesson_icon from "./lesson_icon.svg";
 import ipb_logo from "./ipb_logo.png";
 import ipb_logo2 from "./ipb_logo2.png";
 import developerActivityBro from "./developer-activity-bro.svg";
+import faq from "./faq.svg";
 
 export const assets = {
+  faq,
   developerActivityBro,
   ipb_logo,
   ipb_logo2,

@@ -407,4 +407,48 @@
   .chat-footer {
     padding: 10px 15px 15px;
   }
+  /* ROOT do chat – vivemos no topo do body via portal */
+  .chat-root {
+    position: fixed;
+    inset: 0; /* ocupa a viewport inteira */
+    pointer-events: none; /* evita bloquear a página quando fechado */
+  }
+
+  /* Backdrop opcional para bloquear interações por baixo */
+  .chatbot-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  /* Garantir que tudo fica acima de qualquer coisa */
+  #chatbot-toggler,
+  .chatbot-popup,
+  .chatbot-overlay {
+    z-index: 2147483647; /* bem alto */
+  }
+
+  /* Quando aberto, habilita interações e mostra popup/overlay */
+  .show-chatbot .chatbot-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .show-chatbot #chatbot-toggler {
+    transform: rotate(90deg);
+  }
+
+  /* Se queres manter o mesmo selector “.container.show-chatbot”, 
+   duplica as regras para compatibilidade: */
+  .container.show-chatbot .chatbot-popup,
+  .show-chatbot .chatbot-popup {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  /* Mantém o teu CSS existente (toggler/popup)…
+   só certifica que têm position:fixed (já tens) e agora o z-index alto. */
 }

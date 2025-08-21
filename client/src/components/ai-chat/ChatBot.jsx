@@ -5,6 +5,7 @@ import ChatMessage from "./ChatMessage";
 import { companyInfo } from "./companyInfo";
 import { ArrowUp, Bot, ChevronDown, CircleX } from "lucide-react";
 
+//TODO: corrigir o background do chatbot + o company info.
 const ChatBot = () => {
   const [chatHistory, setChatHistory] = useState([
     {
@@ -92,7 +93,9 @@ const ChatBot = () => {
             onClick={() => setShowChatbot((oldState) => !oldState)}
             className="material-symbols-rounded"
           >
-            <ChevronDown />
+            <div className="ml-2">
+              <ChevronDown />
+            </div>
           </button>
         </div>
 

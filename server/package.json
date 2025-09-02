@@ -7,8 +7,9 @@
     "server": "nodemon server.js",
     "start": "node server.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:watchAll": "NODE_OPTIONS=--experimental-vm-modules jest --watchAll",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --runInBand"
   },
   "keywords": [],
   "author": "",

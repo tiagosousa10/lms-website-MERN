@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for communityRoutes.js</title>
+    <title>Code coverage report for models/Course.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="prettify.css" />
-    <link rel="stylesheet" href="base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> communityRoutes.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">models</a> Course.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -108,7 +108,37 @@
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -131,73 +161,55 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from "express";
-// import { protectRoute } from "../middlewares/authMiddleware.js";
-import {
-  acceptFriendRequest,
-  getAllUsers,
-  getFriendRequests,
-  getMyFriends,
-  getOutgoingFriendReqs,
-  getRecommendedUsers,
-  removeFriend,
-  sendFriendRequest,
-} from "../controllers/communityController.js";
-import {
-  createTestimonial,
-  deleteMyTestimonial,
-  getMyTestimonials,
-  getTestimonial,
-  listRandomTestimonials,
-  updateMyTestimonial,
-} from "../controllers/testimonialController.js";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mongoose from 'mongoose';
 &nbsp;
-const communityRouter = express.Router();
+const lectureSchema = new mongoose.Schema(
+  {
+    lectureId: {type: String, required: true},
+    lectureTitle: {type: String, required: true},
+    lectureDuration: {type: Number, required: true},
+    lectureUrl: {type: String, required: true},
+    isPreviewFree: {type: Boolean, required: true},
+    lectureOrder: {type: Number, required: true}
+  }, {_id: false}
+)
 &nbsp;
-// FRIENDS
 &nbsp;
-communityRouter.get("/all-users", getAllUsers);
-communityRouter.get("/recommended-users", getRecommendedUsers);
-communityRouter.get("/friends", getMyFriends);
-communityRouter.get("/friend-requests", getFriendRequests);
-communityRouter.get("/outgoing-friend-requests", getOutgoingFriendReqs);
+const chapterSchema = new mongoose.Schema(
+  {
+    chapterId: {type:String, required: true},
+    chapterOrder: {type: Number, required: true},
+    chapterTitle: {type: String, required: true},
+    chapterContent: [lectureSchema]
+  }, {_id: false} // means that this schema is not a model
+)
 &nbsp;
-communityRouter.post("/friend-request/:id", sendFriendRequest);
-communityRouter.put("/friend-request/:id/accept", acceptFriendRequest);
-communityRouter.delete("/friends/:id", removeFriend);
 &nbsp;
-// TESTIMONIALS
-communityRouter.get("/testimonials/random", listRandomTestimonials);
-communityRouter.get("/testimonials/me", getMyTestimonials);
-communityRouter.get("/testimonials/:id", getTestimonial);
+const courseSchema = new mongoose.Schema(
+  {
+    courseTitle: {type: String, required: true},
+    courseDescription: {type: String, required: true},
+    courseThumbnail: {type: String},
+    coursePrice: {type: Number, required: true},
+    isPublished: {type: Boolean, default: true},
+    discount: {type: Number, required: true, min: 0, max: 100},
+    courseContent: [chapterSchema],
+    courseRatings: [
+      {
+        userId: {type:String},
+        rating: {type: Number, min: 1, max:5}
+      }
+    ],
+    educator: {type: String, ref: 'User', required: true},
+    enrolledStudents: [
+      {type: String, ref: 'User'}
+    ]
+  }, {timestamps: true, minimize:false}
+)
 &nbsp;
-communityRouter.post("/testimonials", createTestimonial);
-communityRouter.put("/testimonials/:id", updateMyTestimonial);
-communityRouter.delete("/testimonials/:id", deleteMyTestimonial);
 &nbsp;
-export default communityRouter;
+const Course = mongoose.model('Course', courseSchema);
+export default Course;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -205,16 +217,16 @@ export default communityRouter;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-02T13:35:01.920Z
+                at 2025-09-02T13:30:43.892Z
             </div>
-        <script src="prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="sorter.js"></script>
-        <script src="block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1756820101934" clover="3.2.0">
-  <project timestamp="1756820101934" name="All files">
-    <metrics statements="18" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="18" coveredelements="18" complexity="0" loc="18" ncloc="18" packages="1" files="2" classes="2"/>
+<coverage generated="1756820596428" clover="3.2.0">
+  <project timestamp="1756820596428" name="All files">
+    <metrics statements="24" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="24" coveredelements="24" complexity="0" loc="24" ncloc="24" packages="1" files="3" classes="3"/>
     <file name="communityRoutes.js" path="/home/tiago/Documents/cursos&PROJETOS-udemy&youtube/youtubeCURSOS/lms-website-MERN/server/routes/communityRoutes.js">
       <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <line num="22" count="1" type="stmt"/>
@@ -25,6 +25,15 @@
       <line num="4" count="1" type="stmt"/>
       <line num="6" count="1" type="stmt"/>
       <line num="7" count="1" type="stmt"/>
+    </file>
+    <file name="educatorRoutes.js" path="/home/tiago/Documents/cursos&PROJETOS-udemy&youtube/youtubeCURSOS/lms-website-MERN/server/routes/educatorRoutes.js">
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

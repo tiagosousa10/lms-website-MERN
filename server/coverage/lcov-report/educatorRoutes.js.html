@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for communityRoutes.js</title>
+    <title>Code coverage report for educatorRoutes.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> communityRoutes.js</h1>
+        <h1><a href="index.html">All files</a> educatorRoutes.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -107,30 +107,12 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -139,65 +121,80 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from "express";
-// import { protectRoute } from "../middlewares/authMiddleware.js";
-import {
-  acceptFriendRequest,
-  getAllUsers,
-  getFriendRequests,
-  getMyFriends,
-  getOutgoingFriendReqs,
-  getRecommendedUsers,
-  removeFriend,
-  sendFriendRequest,
-} from "../controllers/communityController.js";
-import {
-  createTestimonial,
-  deleteMyTestimonial,
-  getMyTestimonials,
-  getTestimonial,
-  listRandomTestimonials,
-  updateMyTestimonial,
-} from "../controllers/testimonialController.js";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
+import { addCourse, educatorDashboardData, getEducatorCourses, getEnrolledStudentsData, updateRoleToEducator } from '../controllers/educatorController.js';
+import upload from '../configs/multer.js';
+import { protectEducator } from '../middlewares/authMiddleware.js';
 &nbsp;
-const communityRouter = express.Router();
+const educatorRouter = express.Router();
 &nbsp;
-// FRIENDS
+//add educator role
+educatorRouter.get('/update-role', updateRoleToEducator)
+educatorRouter.post('/add-course', upload.single('image'), protectEducator, addCourse)
+educatorRouter.get('/courses', protectEducator, getEducatorCourses)
+educatorRouter.get('/dashboard', protectEducator, educatorDashboardData)
+educatorRouter.get('/enrolled-students', protectEducator, getEnrolledStudentsData)
 &nbsp;
-communityRouter.get("/all-users", getAllUsers);
-communityRouter.get("/recommended-users", getRecommendedUsers);
-communityRouter.get("/friends", getMyFriends);
-communityRouter.get("/friend-requests", getFriendRequests);
-communityRouter.get("/outgoing-friend-requests", getOutgoingFriendReqs);
+export default educatorRouter;
 &nbsp;
-communityRouter.post("/friend-request/:id", sendFriendRequest);
-communityRouter.put("/friend-request/:id/accept", acceptFriendRequest);
-communityRouter.delete("/friends/:id", removeFriend);
 &nbsp;
-// TESTIMONIALS
-communityRouter.get("/testimonials/random", listRandomTestimonials);
-communityRouter.get("/testimonials/me", getMyTestimonials);
-communityRouter.get("/testimonials/:id", getTestimonial);
+/* 
+{
+  "courseTitle": "Web Development Bootcamp",
+  "courseDescription": "Test Course Description",
+  "coursePrice": 50,
+  "discount": 10,
+  "courseContent": [
+    {
+      "chapterId": "chapter1",
+      "chapterOrder": 1,
+      "chapterTitle": "HTML &amp; CSS Basics",
+      "chapterContent": [
+        {
+          "lectureId": "lecture1",
+          "lectureTitle": "Introduction to HTML",
+          "lectureDuration": 600,
+          "lectureUrl": "https://youtu.be/-HeadgoqJ7A",
+          "isPreviewFree": true,
+          "lectureOrder": 1
+        }
+      ]
+    }
+  ]
+}
 &nbsp;
-communityRouter.post("/testimonials", createTestimonial);
-communityRouter.put("/testimonials/:id", updateMyTestimonial);
-communityRouter.delete("/testimonials/:id", deleteMyTestimonial);
 &nbsp;
-export default communityRouter;
+*/
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

@@ -12,3 +12,4 @@ export async function getStreamToken(req, res) {
       .json({ message: "Internal Server Error", error: error.message });
   }
 }
+

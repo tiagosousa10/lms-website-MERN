@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1756820596428" clover="3.2.0">
-  <project timestamp="1756820596428" name="All files">
-    <metrics statements="24" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="24" coveredelements="24" complexity="0" loc="24" ncloc="24" packages="1" files="3" classes="3"/>
+<coverage generated="1756821484672" clover="3.2.0">
+  <project timestamp="1756821484672" name="All files">
+    <metrics statements="34" coveredstatements="34" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="34" coveredelements="34" complexity="0" loc="34" ncloc="34" packages="1" files="5" classes="5"/>
+    <file name="chatRoutes.js" path="/home/tiago/Documents/cursos&PROJETOS-udemy&youtube/youtubeCURSOS/lms-website-MERN/server/routes/chatRoutes.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+    </file>
     <file name="communityRoutes.js" path="/home/tiago/Documents/cursos&PROJETOS-udemy&youtube/youtubeCURSOS/lms-website-MERN/server/routes/communityRoutes.js">
       <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <line num="22" count="1" type="stmt"/>
@@ -34,6 +39,17 @@
       <line num="11" count="1" type="stmt"/>
       <line num="12" count="1" type="stmt"/>
       <line num="13" count="1" type="stmt"/>
+    </file>
+    <file name="userRoutes.js" path="/home/tiago/Documents/cursos&PROJETOS-udemy&youtube/youtubeCURSOS/lms-website-MERN/server/routes/userRoutes.js">
+      <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="16" count="1" type="stmt"/>
+      <line num="17" count="1" type="stmt"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="20" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

@@ -46,8 +46,10 @@ import ipb_logo from "./ipb_logo.png";
 import ipb_logo2 from "./ipb_logo2.png";
 import developerActivityBro from "./developer-activity-bro.svg";
 import faq from "./faq.svg";
+import hero from "./hero.png";
 
 export const assets = {
+  hero,
   faq,
   developerActivityBro,
   ipb_logo,

@@ -1,33 +1,68 @@
+import React from "react";
+import { Button } from "@/components/ui/button"; // ajusta se não usas alias "@"
+import { useNavigate } from "react-router-dom";
+import SearchBar from "../student/SearchBar";
 import { assets } from "../../assets/assets";
-import SearchBar from "./SearchBar";
 
-const Hero = () => {
+export const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col items-center justify-center w-full md:pt-36 py-20 px-7 md:px-0 space-y-7 text-center bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] ">
-      <h1 className="md:text-5xl text-3xl font-bold text-base-content max-w-3xl mx-auto leading-snug relative">
-        Potencia o teu futuro com cursos desenhados para{" "}
-        <span className="text-primary">se adaptarem às tuas escolhas.</span>
-        <img
-          src={assets.sketch}
-          alt="esboço"
-          className="md:block hidden absolute -bottom-7 right-0"
-        />
-      </h1>
+    <section className="w-full">
+      <div className="mx-auto w-full">
+        {/* ====== BLOCO 1: Banner com imagem + título + CTA ====== */}
+        <div className="relative overflow-hidden mt-10 mb-20 w-full px-8">
+          {/* Imagem */}
+          <img
+            src={assets.hero}
+            alt="Estudante a aprender no portátil"
+            className="h-[800px] w-full px-10  object-fill"
+          />
+          {/* Texto sobreposto */}
+          <div className="absolute inset-0 flex items-center left-20">
+            <div className="px-6 sm:px-10 ml-16">
+              <h2 className="max-w-2xl text-8xl sm:text-3xl md:text-5xl font-semibold text-[#44444E] drop-shadow-[0_1px_0_rgba(255,255,255,0.85)]">
+                Bem-vindo à tua plataforma
+                <br className="hidden sm:block" />
+                de aprendizagem digital.
+              </h2>
 
-      <p className="md:block hidden text-base-content/70 max-w-2xl mx-auto text-lg">
-        Reunimos instrutores de classe mundial, conteúdo interativo e uma
-        comunidade de apoio para te ajudar a alcançar os teus objetivos pessoais
-        e profissionais.
-      </p>
+              <div className="mt-4">
+                <Button
+                  className="bg-[#547792] hover:bg-[#547792]/90 text-[#ecefca] border border-[#d3dad9] rounded-[6px] px-10 py-2 text-sm"
+                  onClick={() => navigate("/course-list")}
+                >
+                  Começar agora
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <p className="md:hidden text-base-content/70 max-w-sm mx-auto text-base">
-        Reunimos instrutores de classe mundial para te ajudar a alcançar os teus
-        objetivos profissionais.
-      </p>
+        {/* ====== BLOCO 2: Painel azul com headline + subcopy + SearchBar ====== */}
+        <div className="flex-col justify-between  mt-10   bg-[#547792] text-white shadow-sm px-6 py-10 md:py-20 text-center ">
+          <h3 className="mx-auto max-w-3xl text-3xl md:text-4xl font-semibold leading-tight">
+            Potencia o teu futuro com cursos
+            <br className="hidden md:block" />
+            desenhados para se adaptarem
+            <br className="hidden md:block" />
+            às tuas escolhas.
+          </h3>
 
-      <SearchBar />
-    </div>
+          <p className="mt-4 mx-auto max-w-2xl text-xs md:text-base text-white/85">
+            Reunimos instrutores de classe mundial, conteúdo interativo e uma
+            comunidade <br /> de apoio para te ajudar a alcançar os teus
+            objetivos pessoais e profissionais.
+          </p>
+
+          {/* O teu SearchBar antigo aqui */}
+          <div className="mt-6 mx-auto max-w-max  justify-center items-center">
+            <SearchBar />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
-export default Hero;
+export default HeroSection;

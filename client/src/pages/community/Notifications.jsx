@@ -31,7 +31,7 @@ const Notifications = () => {
     <div className="min-h-screen px-6 md:px-20 py-12 space-y-10">
       {/* Título */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-base-content">Notificações</h1>
+        <h1 className="text-3xl font-bold ">Notificações</h1>
       </div>
 
       {/* Pedidos de Amizade */}
@@ -45,10 +45,8 @@ const Notifications = () => {
             <section className="space-y-6">
               <div className="flex items-center gap-3">
                 <UserCheckIcon className="text-primary size-6" />
-                <h2 className="text-xl font-semibold text-base-content">
-                  Pedidos de Amizade
-                </h2>
-                <span className="badge badge-primary badge-sm">
+                <h2 className="text-xl font-semibold ">Pedidos de Amizade</h2>
+                <span className="badge badge-neutral badge-sm">
                   {incomingRequests.length}
                 </span>
               </div>

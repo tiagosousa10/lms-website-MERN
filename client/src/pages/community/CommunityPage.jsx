@@ -95,7 +95,7 @@ const CommunityPage = () => {
                     <button
                       className={`btn btn-sm btn-ghost text-white bg-transparent border-white mx-auto w-[70%] ${
                         pedidoEnviado
-                          ? "btn-disabled"
+                          ? "btn-disabled text-red-400"
                           : "bg-[#94B4C1] text-white"
                       } flex justify-center items-center gap-2`}
                       disabled={pedidoEnviado || isLoading}

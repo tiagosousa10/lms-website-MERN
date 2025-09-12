@@ -9,14 +9,14 @@ export const HeroSection = () => {
 
   return (
     <section className="w-full">
-      <div className="mx-auto w-full">
+      <div className="mx-auto w-full flex flex-col">
         {/* ====== BLOCO 1: Banner com imagem + título + CTA ====== */}
-        <div className="relative overflow-hidden mt-10 mb-20 w-full px-8">
+        <div className="relative overflow-hidden mt-10 mb-20 w-full px-8 flex-col justify-between ">
           {/* Imagem */}
           <img
             src={assets.hero}
             alt="Estudante a aprender no portátil"
-            className="h-[800px] w-full px-10  object-fill"
+            className="h-[700px]  px-10  object-fill justify-center items-center"
           />
           {/* Texto sobreposto */}
           <div className="absolute inset-0 flex items-center left-20">
@@ -40,7 +40,7 @@ export const HeroSection = () => {
         </div>
 
         {/* ====== BLOCO 2: Painel azul com headline + subcopy + SearchBar ====== */}
-        <div className="flex-col justify-between  mt-10   bg-[#547792] text-white shadow-sm px-6 py-10 md:py-20 text-center ">
+        <div className="mt-10 w-full mx-auto   bg-[#547792] text-white shadow-sm px-6 py-10 md:py-20 text-center ">
           <h3 className="mx-auto max-w-3xl text-3xl md:text-4xl font-semibold leading-tight">
             Potencia o teu futuro com cursos
             <br className="hidden md:block" />

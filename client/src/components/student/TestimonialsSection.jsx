@@ -22,12 +22,12 @@ const TestimonialsSection = () => {
   }, []);
 
   return (
-    <div className="pb-14 px-8 md:px-0">
+    <div className="py-14 px-8 md:px-8 bg-[#547792] w-[90%] rounded-md">
       <div className="flex justify-center items-center">
         <div className="flex justify-between gap-3">
           <div>
-            <h2 className="text-3xl font-medium text-gray-800">Testemunhos</h2>
-            <p className="md:text-base text-gray-500 mt-3">
+            <h2 className="text-4xl font-semibold text-white">Testemunhos</h2>
+            <p className="md:text-base text-[#D3DAD9] mt-3">
               Ouve os nossos alunos enquanto partilham as suas jornadas de
               transformação, sucesso <br /> e como a nossa plataforma fez a
               diferença nas suas vidas.
@@ -45,11 +45,11 @@ const TestimonialsSection = () => {
             key={testimonial?._id || index}
             className="text-sm text-left border border-gray-500/30 rounded-lg pb-6 bg-white shadow-[0px_4px_15px_0px] shadow-black/5 overflow-hidden"
           >
-            <div className="flex items-center gap-4 px-5 py-4 bg-gray-500/10 ">
+            <div className="flex items-center gap-4 px-5 py-4 bg-[#94B4C1] ">
               {/* Avatar: se não houver imagem, mostra iniciais */}
               <div className="avatar placeholder">
                 <div className="bg-neutral text-neutral-content rounded-full w-12 h-12">
-                  <span className="text-base">
+                  <span className="text-base text-[#D3DAD9]">
                     {testimonial
                       ? initialsFromName(testimonial?.user?.name)
                       : "—"}
@@ -58,7 +58,7 @@ const TestimonialsSection = () => {
               </div>
 
               <div>
-                <h1 className="text-lg font-medium text-gray-800">
+                <h1 className="text-lg font-medium text-[#D3DAD9]">
                   {testimonial?.user?.name || "Utilizador"}
                 </h1>
                 <p className="text-gray-800/80">
@@ -68,6 +68,9 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="p-5 pb-7">
+              <p className="text-gray-500 mb-5">
+                {testimonial?.text || "Carregar testemunhos…"}
+              </p>
               <div className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <img
@@ -82,12 +85,9 @@ const TestimonialsSection = () => {
                   />
                 ))}
               </div>
-              <p className="text-gray-500 mt-5">
-                {testimonial?.text || "Carregar testemunhos…"}
-              </p>
             </div>
 
-            <a href="#" className="text-blue-500 underline px-5">
+            <a href="#" className="text-[#715A5A] underline px-5">
               Ler mais
             </a>
           </div>

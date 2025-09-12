@@ -13,10 +13,10 @@ const CallToAction = () => {
       </p>
 
       <div className="flex items-center font-medium gap-6 mt-4">
-        <button className="px-10 py-3 rounded-md text-white bg-blue-600">
+        <button className="px-10 py-3 rounded-md text-white bg-[#547792]">
           Começar Agora
         </button>
-        <button className="flex items-center gap-2">
+        <button className="flex items-center gap-2 border border-[#213448] py-3 px-10 rounded-md">
           Saber Mais <img src={assets.arrow_icon} alt="ícone de seta" />
         </button>
       </div>

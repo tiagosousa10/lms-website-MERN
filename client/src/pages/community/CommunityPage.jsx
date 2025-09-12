@@ -65,18 +65,18 @@ const CommunityPage = () => {
               return (
                 <div
                   key={u.id || idx}
-                  className="card card-sm bg-base-100 shadow hover:shadow-md transition"
+                  className="card card-sm  shadow hover:shadow-md transition bg-[#547792]"
                 >
                   <div className="card-body p-4 space-y-2">
                     <div className="flex items-center justify-between ">
                       <div className="flex gap-5">
                         <div className="avatar">
-                          <div className="w-12 h-12 rounded-full overflow-hidden">
+                          <div className="w-12 h-12 rounded-full overflow-hidden ring-2  ring-primary">
                             <img src={assets.profile_img} alt="Perfil" />
                           </div>
                         </div>
                         <div>
-                          <h3 className="text-md font-semibold truncate">
+                          <h3 className="text-md font-semibold truncate text-white">
                             {u.name}
                           </h3>
                           <p className="text-sm text-base-content/60 truncate">
@@ -85,7 +85,7 @@ const CommunityPage = () => {
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-sm mr-8 border border-primary px-4 py-1 ">
+                        <h4 className="text-sm mr-8 border border-[#ECEFCA] text-[#ECEFCA] px-4 py-1 ">
                           {isEducator ? "Professor" : "Aluno"}
                         </h4>
                       </div>
@@ -93,8 +93,10 @@ const CommunityPage = () => {
 
                     {/* Botão de ação */}
                     <button
-                      className={`btn btn-sm w-full ${
-                        pedidoEnviado ? "btn-disabled" : "btn-primary"
+                      className={`btn btn-sm btn-ghost text-white bg-transparent border-white mx-auto w-[70%] ${
+                        pedidoEnviado
+                          ? "btn-disabled"
+                          : "bg-[#94B4C1] text-white"
                       } flex justify-center items-center gap-2`}
                       disabled={pedidoEnviado || isLoading}
                       onClick={() => sendFriendRequest(u._id)}
@@ -123,8 +125,8 @@ const CommunityPage = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h2 className="text-3xl font-bold">Os teus Amigos</h2>
         <Link
-          to="/notifications"
-          className="btn btn-outline btn-sm flex items-center"
+          to="/community/friends"
+          className="btn btn-outline btn-sm flex items-center border-[#213448] text-[#213448]"
         >
           <UsersIcon className=" w-4 h-4" /> Amigos
         </Link>

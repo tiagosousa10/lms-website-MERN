@@ -11,12 +11,12 @@ export const HeroSection = () => {
     <section className="w-full">
       <div className="mx-auto w-full flex flex-col">
         {/* ====== BLOCO 1: Banner com imagem + título + CTA ====== */}
-        <div className="relative overflow-hidden mt-10 mb-20 w-full px-8 flex-col justify-between ">
+        <div className="relative overflow-hidden mt-10   px-8 mx-auto   ">
           {/* Imagem */}
           <img
             src={assets.hero}
             alt="Estudante a aprender no portátil"
-            className="h-[700px]  px-10  object-fill justify-center items-center"
+            className="h-[800px]    object-contain justify-center items-center"
           />
           {/* Texto sobreposto */}
           <div className="absolute inset-0 flex items-center left-20">

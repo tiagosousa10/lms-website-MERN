@@ -5,11 +5,11 @@ import { AppContext } from "../../context/AppContext";
 
 const FriendCard = ({ friend }) => {
   console.log("🚀 ~ FriendCard ~ friend:", friend);
-  const { removeFriend } = useContext(AppContext);
+  const { removeFriend, isEducator } = useContext(AppContext);
   return (
-    <div className="card card-sm bg-base-100 shadow hover:shadow-md transition rounded-lg overflow-hidden">
-      <div className="card-body p-4 space-y-2">
-        {/* Avatar + Nome + Línguas */}
+    <div className="card card-sm   shadow hover:shadow-md transition rounded-lg overflow-hidden bg-[#547792]">
+      <div className="card-body p-4 space-y-2 ">
+        {/* Avatar + Nome */}
         <div className="flex items-center gap-3">
           <div className="avatar">
             <div className="w-12 h-12 rounded-full overflow-hidden ring-2  ring-primary ring-offset-2">
@@ -17,11 +17,20 @@ const FriendCard = ({ friend }) => {
             </div>
           </div>
 
-          <div className="min-w-0 flex-1">
-            <h3 className="text-md font-semibold truncate">{friend.name}</h3>
-            <p className="text-sm text-base-content/60 truncate">
-              {friend.email}
-            </p>
+          <div className="flex justify-between">
+            <div>
+              <h3 className="text-md font-semibold truncate text-white">
+                {friend.name}
+              </h3>
+              <p className="text-sm text-base-content/60 truncate">
+                {friend.email}
+              </p>
+            </div>
+            <div className="ml-3">
+              <h4 className="text-sm mr-8 border border-[#ECEFCA] text-[#ECEFCA] px-4 py-1 ">
+                {isEducator ? "Professor" : "Aluno"}
+              </h4>
+            </div>
           </div>
         </div>
 
@@ -29,14 +38,14 @@ const FriendCard = ({ friend }) => {
         <div className="flex items-center gap-2">
           <Link
             to={`/community/chat/${friend._id}`}
-            className="btn btn-ghost btn-sm flex-1 normal-case"
+            className="btn btn-ghost btn-sm flex-1 normal-case bg-[#94B4C1] text-white "
           >
             Mensagem
           </Link>
           <button
             className="py-1.5 rounded-lg px-8 flex items-center gap-2 normal-case
-             bg-gradient-to-r from-[#60A5FA] to-[#3B82F6]
-             hover:from-[#4F8AE6] hover:to-[#2563EB]
+            bg-red-400
+            hover:bg-red-500
              text-white"
             onClick={() => removeFriend(friend._id)}
           >

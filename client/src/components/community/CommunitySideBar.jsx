@@ -7,7 +7,7 @@ const CommunitySideBar = () => {
   const currentPath = location.pathname;
   return (
     <aside className="w-64  border-r border-base-300 hidden lg:flex flex-col h-screen sticky top-0">
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-1 mt-5 gap-1 flex flex-col ">
         <Link
           to={"/community"}
           className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${

@@ -41,7 +41,7 @@ export default function TestimonialForm() {
   };
 
   return (
-    <section className="bg-base-100 rounded-xl shadow p-4 md:p-6">
+    <section className="bg-[#213448] rounded-xl shadow p-4 md:p-6 text-white">
       <div className="grid md:grid-cols-2 gap-8 items-stretch">
         {/* Coluna esquerda: Form */}
         <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
@@ -63,7 +63,7 @@ export default function TestimonialForm() {
               max={5}
               value={form.rating}
               onChange={handleChange}
-              className="input input-bordered w-32"
+              className="input input-bordered w-32 bg-white text-black"
               required
             />
           </label>
@@ -74,14 +74,16 @@ export default function TestimonialForm() {
               name="text"
               value={form.text}
               onChange={handleChange}
-              className="textarea textarea-bordered w-full min-h-32"
+              className="textarea textarea-bordered w-full min-h-32 bg-white text-black"
               placeholder="Escreve o teu testemunho (mín. 10 caracteres)"
               required
             />
           </label>
 
           <button
-            className={`btn btn-primary ${submitting ? "btn-disabled" : ""}`}
+            className={`btn btn-neutral bg-[#547792] text-white  ${
+              submitting ? "btn-disabled" : ""
+            }`}
           >
             {submitting ? "A enviar…" : "Submeter"}
           </button>

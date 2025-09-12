@@ -13,10 +13,13 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section className="pb-14 px-8 md:px-0">
+    <section className="px-6 md:px-20 py-12 ">
       <div className="flex items-end justify-between">
-        <h2 className="text-3xl font-medium text-gray-800">Testemunhos</h2>
-        <button onClick={fetchRandomTestimonials} className="btn btn-sm">
+        <h2 className="text-3xl font-bold text-gray-800">Testemunhos</h2>
+        <button
+          onClick={fetchRandomTestimonials}
+          className="btn btn-sm bg-[#ECEFCA] text-[#547792] hover:bg-[#547792] hover:text-[#ECEFCA] "
+        >
           Mostrar outros
         </button>
       </div>
@@ -32,7 +35,7 @@ export default function TestimonialsSection() {
             key={testimonial._id}
             className="text-sm text-left border border-gray-500/30 rounded-lg pb-6 bg-white shadow-[0px_4px_15px_0px] shadow-black/5 overflow-hidden"
           >
-            <div className="flex items-center gap-4 px-5 py-4 bg-gray-500/10">
+            <div className="flex items-center gap-4 px-5 py-4 bg-[#94B4C1] ">
               {/* Avatar do usuário que fez o testemunho */}
               {testimonial.user?.imageUrl ? (
                 <img
@@ -41,7 +44,7 @@ export default function TestimonialsSection() {
                   alt={testimonial.user.name}
                 />
               ) : (
-                <div className="h-12 w-12 rounded-full bg-gray-300 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-full bg-[#547792] flex items-center justify-center">
                   <span className="text-white">
                     {testimonial.user.name
                       .split(" ")
@@ -51,7 +54,7 @@ export default function TestimonialsSection() {
                 </div>
               )}
               <div>
-                <h1 className="text-lg font-medium text-gray-800">
+                <h1 className="text-lg font-medium text-white">
                   {testimonial.user.name}
                 </h1>
                 <p className="text-gray-800/80">{testimonial.user.email}</p>

@@ -6,7 +6,7 @@ import { MessageCircle, UserMinus } from "lucide-react"; // ícones como compone
 import { assets } from "../../assets/assets";
 
 export default function Friends() {
-  const { userFriends, removeFriend } = useContext(AppContext);
+  const { userFriends, removeFriend, isEducator } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   return (
@@ -61,7 +61,7 @@ export default function Friends() {
                     </div>
                     <div className="ml-3">
                       <h4 className="text-sm mr-2 border border-[#ECEFCA] text-[#ECEFCA] px-3 py-0.5 rounded">
-                        Amigo
+                        {isEducator ? "Professor" : "Aluno"}
                       </h4>
                     </div>
                   </div>

@@ -44,10 +44,13 @@ export default function TestimonialsTable() {
   };
 
   return (
-    <section className=" rounded-xl shadow p-4 md:p-6 bg-white">
+    <section className=" rounded-xl shadow p-4 md:p-6 bg-white mt-10">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold">Os meus testemunhos</h3>
-        <button onClick={fetchMyTestimonials} className="btn btn-sm">
+        <button
+          onClick={fetchMyTestimonials}
+          className="btn btn-sm bg-[#ECEFCA] text-[#547792] hover:bg-[#547792] hover:text-[#ECEFCA] "
+        >
           Recarregar
         </button>
       </div>
@@ -69,18 +72,21 @@ export default function TestimonialsTable() {
                   <td>{new Date(t.createdAt).toLocaleDateString()}</td>
                   <td>
                     <div className="flex items-center gap-1">
-                      <span className="badge badge-primary">{t.rating}★</span>
+                      <span className="badge badge-neutral">{t.rating}★</span>
                     </div>
                   </td>
                   <td className="max-w-[520px]">
                     <p className="line-clamp-2">{t.text}</p>
                   </td>
                   <td className="text-right space-x-2">
-                    <button className="btn btn-xs" onClick={() => openEdit(t)}>
+                    <button
+                      className="btn btn-xs px-5 bg-[#547792]"
+                      onClick={() => openEdit(t)}
+                    >
                       Editar
                     </button>
                     <button
-                      className="btn btn-xs btn-error"
+                      className="btn btn-xs px-5 btn-error text-white"
                       onClick={() => openDelete(t)}
                     >
                       Remover
@@ -154,7 +160,8 @@ export default function TestimonialsTable() {
               <button
                 type="button"
                 onClick={confirmDelete}
-                className="btn btn-error"
+                className="btn btn-error  bg-red-400
+            hover:bg-red-500"
               >
                 Remover
               </button>

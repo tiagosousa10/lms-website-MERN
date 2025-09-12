@@ -144,10 +144,10 @@ const CourseDetails = () => {
                   key={index}
                 >
                   <div
-                    className="flex items-center justify-between px-4 py-3 cursor-pointer select-none"
+                    className="flex items-center justify-between px-4 py-3 cursor-pointer select-none bg-[#213448] text-[#D3DAD9]"
                     onClick={() => toggleSection(index)}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 bg-[#213448]">
                       <img
                         src={assets.down_arrow_icon}
                         alt="ícone seta"
@@ -282,7 +282,7 @@ const CourseDetails = () => {
 
             <button
               onClick={enrollCourse}
-              className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium "
+              className="md:mt-6 mt-4 w-full py-3 rounded bg-[#547792] text-white font-medium "
             >
               {isAlreadyEnrolled ? "Já Inscrito" : "Inscreve-te Agora"}
             </button>
@@ -291,7 +291,7 @@ const CourseDetails = () => {
               <p className="md:text-xl text-lg font-medium text-gray-800">
                 O que está incluído no curso?
               </p>
-              <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
+              <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500 mb-2">
                 <li>Acesso vitalício com atualizações gratuitas</li>
                 <li>Guia passo a passo com projetos práticos</li>
                 <li>Recursos e código-fonte para download</li>

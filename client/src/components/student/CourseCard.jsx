@@ -15,7 +15,7 @@ const CourseCard = ({ course }) => {
     <Link
       to={`/course/${course._id}`}
       onClick={() => scrollTo(0, 0)}
-      className="overflow-hidden rounded-lg border border-gray-200 bg-[#213448] text-white transition-all hover:shadow-md  max-w-md mr-8"
+      className="overflow-hidden rounded-lg border border-gray-200 bg-[#213448] text-white transition-all hover:shadow-md  max-w-md mr-8 "
     >
       {/* thumb em 16:9 */}
       <div className="aspect-video bg-gray-100">

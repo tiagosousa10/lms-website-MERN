@@ -48,16 +48,14 @@ const MyEnrollments = () => {
   }, [enrolledCourses]);
 
   return (
-    <div className=" min-h-screen px-6 md:px-20 pt-10 pb-16 space-y-8">
-      <h1 className="text-3xl font-semibold text-base-content">
-        Os Meus Cursos
-      </h1>
+    <div className=" min-h-screen px-6 md:px-20 pt-10 pb-16 space-y-8 ">
+      <h1 className="text-3xl font-semibold  text-[#37353E]">Os Meus Cursos</h1>
 
-      <div className="overflow-x-auto bg-base-100 rounded-lg shadow">
-        <table className="table w-full">
+      <div className="overflow-x-auto bg-[#213448] rounded-lg shadow text-[#D3DAD9]">
+        <table className="table w-full ">
           <thead>
-            <tr>
-              <th>Curso</th>
+            <tr className="text-[#D3DAD9]">
+              <th className="">Curso</th>
               <th className="hidden md:table-cell">Duração</th>
               <th className="hidden md:table-cell">Concluído</th>
               <th>Estado</th>
@@ -81,7 +79,7 @@ const MyEnrollments = () => {
                       className="w-16 h-16 rounded-lg object-cover"
                     />
                     <div className="flex-1 space-y-1">
-                      <p className="font-medium">{course.courseTitle}</p>
+                      <p className="font-medium mb-4">{course.courseTitle}</p>
                       <Line
                         className="progress progress-primary h-2 rounded-full"
                         strokeWidth={4}
@@ -98,8 +96,8 @@ const MyEnrollments = () => {
                   <td>
                     <button
                       onClick={() => navigate("/player/" + course._id)}
-                      className={`btn btn-sm text-white ${
-                        percent >= 100 ? "btn-success" : "btn-primary"
+                      className={`btn btn-sm text-white  ${
+                        percent >= 100 ? "btn-success" : "bg-[#547792]"
                       }`}
                     >
                       {percent >= 100 ? "Concluído" : "Em Progresso"}

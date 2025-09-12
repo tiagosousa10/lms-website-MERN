@@ -40,7 +40,7 @@ export const HeroSection = () => {
         </div>
 
         {/* ====== BLOCO 2: Painel azul com headline + subcopy + SearchBar ====== */}
-        <div className="mt-10 w-full mx-auto   bg-[#547792] text-white shadow-sm px-6 py-10 md:py-20 text-center ">
+        <div className="mt-10 w-[90%] mx-auto   bg-[#547792] text-white shadow-sm px-6 py-10 md:py-20 text-center ">
           <h3 className="mx-auto max-w-3xl text-3xl md:text-4xl font-semibold leading-tight">
             Potencia o teu futuro com cursos
             <br className="hidden md:block" />

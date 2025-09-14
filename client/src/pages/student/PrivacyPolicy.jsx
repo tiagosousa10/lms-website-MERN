@@ -3,7 +3,7 @@ import React from "react";
 
 const PrivacyPolicy = () => {
   return (
-    <div className=" min-h-screen px-6 md:px-20 py-12 space-y-8 w-[90%] mx-auto  ">
+    <div className=" min-h-screen px-6 md:px-20 py-12 space-y-8 w-[80%] mx-auto  ">
       {/* 📝 Título & Introdução */}
       <section className="text-center max-w-3xl mx-auto space-y-4 ">
         <h1 className="text-4xl font-bold ">Política de Privacidade</h1>
@@ -16,10 +16,10 @@ const PrivacyPolicy = () => {
 
       {/* 🔐 Seção: Que dados recolhemos */}
       <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4 ">
-        <h2 className="text-2xl font-semibold text-base-content">
+        <h2 className="text-2xl font-semibold text-white">
           Que dados recolhemos
         </h2>
-        <ul className="list-disc list-inside text-base-content/70 space-y-2">
+        <ul className="list-disc list-inside text-white/70 space-y-2">
           <li>
             <strong>Informações fornecidas por ti:</strong> nome, email,
             detalhes da conta, comunicações, e compras online
@@ -33,10 +33,10 @@ const PrivacyPolicy = () => {
 
       {/* ↩️ Seção: Como utilizamos */}
       <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4 ">
-        <h2 className="text-2xl font-semibold text-base-content">
+        <h2 className="text-2xl font-semibold text-white">
           Como utilizamos os dados
         </h2>
-        <ul className="list-disc list-inside text-base-content/70 space-y-2">
+        <ul className="list-disc list-inside text-white/70 space-y-2">
           <li>Para fornecer e melhorar os nossos serviços.</li>
           <li>Para efetuar comunicações (email, notificações).</li>
           <li>Para garantir segurança, prevenir fraudes e uso indevido</li>
@@ -46,10 +46,10 @@ const PrivacyPolicy = () => {
 
       {/* 🤝 Seção: Partilha de dados */}
       <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
-        <h2 className="text-2xl font-semibold text-base-content">
+        <h2 className="text-2xl font-semibold text-white">
           Com quem partilhamos
         </h2>
-        <ul className="list-disc list-inside text-base-content/70 space-y-2">
+        <ul className="list-disc list-inside text-white/70 space-y-2">
           <li>
             Com empresas parceiras e prestadores de serviços (ex: processadores
             de pagamento).
@@ -62,10 +62,8 @@ const PrivacyPolicy = () => {
 
       {/* 🗄️ Seção: Retenção de dados */}
       <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
-        <h2 className="text-2xl font-semibold text-base-content">
-          Retenção de dados
-        </h2>
-        <p className="text-base-content/70">
+        <h2 className="text-2xl font-semibold text-white">Retenção de dados</h2>
+        <p className="text-white/70">
           Recebemos os dados apenas durante o tempo necessário para os fins
           descritos, conforme as obrigações legais ou legítimos interesses da
           tsAcademy
@@ -74,10 +72,8 @@ const PrivacyPolicy = () => {
 
       {/* 💼 Seção: Direitos dos utilizadores */}
       <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
-        <h2 className="text-2xl font-semibold text-base-content">
-          Os teus direitos
-        </h2>
-        <p className="text-base-content/70">
+        <h2 className="text-2xl font-semibold text-white">Os teus direitos</h2>
+        <p className="text-white/70">
           Tens o direito de aceder, retificar, eliminar, limitar o
           processamento, ou retirar consentimento sobre os teus dados pessoais.
           Conforme o RGPD, também podes solicitar portabilidade ou apresentar
@@ -87,10 +83,8 @@ const PrivacyPolicy = () => {
 
       {/* 📬 Seção: Contactos */}
       <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
-        <h2 className="text-2xl font-semibold text-base-content">
-          Contactar-nos
-        </h2>
-        <p className="text-base-content/70">
+        <h2 className="text-2xl font-semibold text-white">Contactar-nos</h2>
+        <p className="text-white/70">
           Se tiveres dúvidas ou quiseres exercer os teus direitos, entra em
           contacto através do email:{" "}
           <a href="mailto:privacy@tsacademy.pt" className="link">

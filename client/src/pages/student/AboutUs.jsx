@@ -35,8 +35,8 @@ export const AboutUs = () => {
     <div className="bg-white min-h-screen w-full">
       <div className="bg-white overflow-x-hidden max-w-[1440px] mx-auto relative">
         {/* Hero / Sobre Nós */}
-        <section className="flex flex-col-reverse md:flex-row items-start justify-between px-[24px] md:px-[147px] pt-[60px] md:pt-[100px] pb-[100px]  gap-10">
-          <div className="flex-1 max-w-[589px] flex flex-col mt-10 ">
+        <section className="flex flex-col-reverse md:flex-row items-start justify-between px-[24px] md:px-[147px] pt-[60px] md:pt-[100px] pb-[50px]  gap-10">
+          <div className="flex-1 max-w-[589px] flex flex-col mt-20 ">
             <h1 className="font-semibold text-[#37353e] text-4xl mb-6">
               Sobre Nós
             </h1>
@@ -57,7 +57,7 @@ export const AboutUs = () => {
         </section>
 
         {/* Cards de valores/mission (shadcn Card, layout do 2º JSX) */}
-        <section className="px-[24px] md:px-[81px] pb-[100px]">
+        <section className="px-[24px] md:px-[81px] pb-[50px]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1274px] mx-auto">
             {featureCards.map(({ title, description, Icon }) => (
               <Card

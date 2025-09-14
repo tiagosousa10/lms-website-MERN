@@ -47,8 +47,16 @@ import ipb_logo2 from "./ipb_logo2.png";
 import developerActivityBro from "./developer-activity-bro.svg";
 import faq from "./faq.svg";
 import hero from "./hero.png";
+import about_us_tiago from "./about-us-tiago.png";
+import about_us from "./about_us.jpg";
+import mern from "./mern.png";
+import contact_us from "./contact-us.svg";
 
 export const assets = {
+  contact_us,
+  mern,
+  about_us,
+  about_us_tiago,
   hero,
   faq,
   developerActivityBro,

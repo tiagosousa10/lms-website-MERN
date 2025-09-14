@@ -1,103 +1,131 @@
-// AboutUs.jsx
+// LmsAboutUs.tsx
 import React from "react";
-import { Flag, Users, Heart, Calendar } from "lucide-react"; // 🌟 Certifica-te que os ícones existem
+import { SearchIcon, Flag, Users, Heart, Calendar } from "lucide-react";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { assets } from "../../assets/assets";
 
-const AboutUs = () => {
+// Cards de valores/missão (conteúdo do AboutUs, estilo do segundo)
+const featureCards = [
+  {
+    title: "Nossa Missão",
+    description: "Educar. Inspirar. Transformar.",
+    Icon: Flag,
+  },
+  {
+    title: "Quem Somos",
+    description: "Professores experientes dedicados ao teu sucesso.",
+    Icon: Users,
+  },
+  {
+    title: "O Que Valorizamos",
+    description: "Integridade, suporte e melhoria contínua.",
+    Icon: Heart,
+  },
+  {
+    title: "A Nossa História",
+    description: "Lançados em 2021, já formámos +5.000 alunos.",
+    Icon: Calendar,
+  },
+];
+
+export const AboutUs = () => {
   return (
-    <div className=" min-h-screen px-6 md:px-20 py-12 space-y-12 bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] ">
-      {/* Hero */}
-      <section className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-base-content">Sobre Nós</h1>
-        <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
-          A tsAcademy nasceu da paixão por educação acessível e de qualidade.
-          Guiados pelos valores de transparência, inovação e comunidade,
-          ajudamos milhares de alunos a alcançarem os seus sonhos.
-        </p>
-      </section>
+    <div className="bg-white min-h-screen w-full">
+      <div className="bg-white overflow-x-hidden max-w-[1440px] mx-auto relative">
+        {/* Hero / Sobre Nós */}
+        <section className="flex flex-col-reverse md:flex-row items-start justify-between px-[24px] md:px-[147px] pt-[60px] md:pt-[100px] pb-[100px]  gap-10">
+          <div className="flex-1 max-w-[589px] flex flex-col mt-10 ">
+            <h1 className="font-semibold text-[#37353e] text-4xl mb-6">
+              Sobre Nós
+            </h1>
+            <p className="text-black/80 text-[15px] leading-relaxed max-w-[560px]">
+              A tsAcademy nasceu da paixão por educação acessível e de
+              qualidade. Guiados pelos valores de transparência, inovação e
+              comunidade, ajudamos milhares de alunos a alcançarem os seus
+              sonhos.
+            </p>
+          </div>
+          <div className="flex-shrink-0 mx-auto md:mx-0">
+            <img
+              className="w-[320px] h-[320px] md:w-[376px] md:h-[374px]"
+              alt="Ilustração Sobre Nós"
+              src={assets.about_us}
+            />
+          </div>
+        </section>
 
-      {/* Valores / Missão */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-        <div className="flex flex-col items-center p-6 bg-base-100 rounded-lg shadow">
-          <Flag className="h-12 w-12 text-primary mb-4" />
-          <h3 className="text-xl font-semibold">Nossa Missão</h3>
-          <p className="text-base-content/70 mt-2">
-            Educar. Inspirar. Transformar.
-          </p>
-        </div>
-        <div className="flex flex-col items-center p-6 bg-base-100 rounded-lg shadow">
-          <Users className="h-12 w-12 text-primary mb-4" />
-          <h3 className="text-xl font-semibold">Quem Somos</h3>
-          <p className="text-base-content/70 mt-2">
-            Professores experientes dedicados ao teu sucesso.
-          </p>
-        </div>
-        <div className="flex flex-col items-center p-6 bg-base-100 rounded-lg shadow">
-          <Heart className="h-12 w-12 text-primary mb-4" />
-          <h3 className="text-xl font-semibold">O Que Valorizamos</h3>
-          <p className="text-base-content/70 mt-2">
-            Integridade, suporte e melhoria contínua.
-          </p>
-        </div>
-        <div className="flex flex-col items-center p-6 bg-base-100 rounded-lg shadow">
-          <Calendar className="h-12 w-12 text-primary mb-4" />
-          <h3 className="text-xl font-semibold">A Nossa História</h3>
-          <p className="text-base-content/70 mt-2">
-            Lançados em 2021, já formámos +5.000 alunos.
-          </p>
-        </div>
-      </section>
+        {/* Cards de valores/mission (shadcn Card, layout do 2º JSX) */}
+        <section className="px-[24px] md:px-[81px] pb-[100px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1274px] mx-auto">
+            {featureCards.map(({ title, description, Icon }) => (
+              <Card
+                key={title}
+                className="h-[140px] rounded-[10px] border border-solid border-[#547792] bg-white hover:shadow-md transition"
+              >
+                <CardContent className="h-full p-4 flex flex-col items-center justify-center gap-2 relative">
+                  <div className="w-12 h-12 rounded-full bg-[#94b4c11a] border border-[#94b4c133] flex items-center justify-center absolute top-3">
+                    <Icon className="w-6 h-6 text-[#547792]" />
+                  </div>
+                  <div className="pt-10 text-center">
+                    <div className="font-semibold text-black text-sm">
+                      {title}
+                    </div>
+                    <div className="text-black/70 text-sm mt-1">
+                      {description}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
 
-      {/* Equipa */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold text-base-content text-center">
-          A Nossa Equipa
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {["Ana", "Bruno", "Carla", "Diogo"].map((name) => (
-            <div
-              key={name}
-              className="p-4 bg-base-100 rounded-lg shadow text-center"
-            >
-              <div className="avatar mx-auto mb-4">
-                <div className="w-24 h-24 rounded-full overflow-hidden">
-                  <img src={`https://i.pravatar.cc/150?u=${name}`} alt={name} />
+        {/* Equipa (estilo painel escuro do 2º JSX mas com grid da tua lógica) */}
+        <section className="px-[24px] md:px-[147px] pb-[100px]">
+          <h2 className="font-semibold text-[#37353e] text-3xl md:text-4xl mb-[36px] md:mb-[56px]">
+            A Nossa Equipa
+          </h2>
+
+          <div className="bg-[#213448] rounded-[12px] border border-[#ecefca33] p-8 md:p-10">
+            <div className="flex flex-row justify-between">
+              <div
+                key={name}
+                className="text-center bg-[#1a2a3a] rounded-[10px] border border-[#ecefca1f] p-5"
+              >
+                <div className="avatar mx-auto mb-4">
+                  <div className="size-64">
+                    <img
+                      src={assets.about_us_tiago}
+                      alt={name}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+                <h3 className="font-semibold text-white">Tiago Sousa</h3>
+                <p className="text-sm text-white/70">CEO</p>
+              </div>
+              <div className="px-4 items-center  py-4 w-3/4 flex flex-col justify-between">
+                <div>
+                  <p className="text-white text-xl p-8 ">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. <br />
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat.
+                    <br /> Duis aute irure dolor in reprehenderit in voluptate
+                    velit esse cillum dolore eu fugiat nulla pariatur.{" "}
+                  </p>
+                </div>
+                <div className="p-6">
+                  <img src={assets.mern} alt="" className="mx-auto w-2/4" />
                 </div>
               </div>
-              <h3 className="font-semibold">{name} Silva</h3>
-              <p className="text-sm text-base-content/70">Professor</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="bg-base-100 p-8 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-base-content mb-6 text-center">
-          A Nossa Viagem
-        </h2>
-        <div className="relative border-l-2 border-base-300 pl-8 space-y-8">
-          {[
-            { year: "2021", text: "Fundação da tsAcademy" },
-            { year: "2022", text: "Primeiros 1.000 alunos" },
-            { year: "2023", text: "Lançamento do módulo de comunidade" },
-            { year: "2024", text: "Parcerias internacionais" },
-          ].map((evt) => (
-            <div key={evt.year} className="relative">
-              <div className="absolute -left-4 top-0 bg-primary rounded-full w-8 h-8 flex items-center justify-center text-white font-bold text-sm">
-                {evt.year}
-              </div>
-              <p className="text-base-content/70 ml-4">{evt.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="text-center">
-        <button className="btn btn-primary btn-lg px-8">
-          Junte-se à Nossa Comunidade
-        </button>
-      </section>
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

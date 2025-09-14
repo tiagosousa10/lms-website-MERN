@@ -3,13 +3,11 @@ import React from "react";
 
 const PrivacyPolicy = () => {
   return (
-    <div className=" min-h-screen px-6 md:px-20 py-12 space-y-8 bg-gradient-to-b from-[#f4f7fc] via-[#e8f0fb] to-[#dce9f8] ">
+    <div className=" min-h-screen px-6 md:px-20 py-12 space-y-8 w-[90%] mx-auto  ">
       {/* 📝 Título & Introdução */}
-      <section className="text-center max-w-3xl mx-auto space-y-4">
-        <h1 className="text-4xl font-bold text-base-content">
-          Política de Privacidade
-        </h1>
-        <p className="text-base-content/70">
+      <section className="text-center max-w-3xl mx-auto space-y-4 ">
+        <h1 className="text-4xl font-bold ">Política de Privacidade</h1>
+        <p className="text-black/70">
           Atualizado pela última vez em 5 de Agosto de 2024. A tua privacidade é
           importante para nós. Esta política descreve como recolhemos, usamos,
           protegemos e partilhamos as tuas informações
@@ -17,7 +15,7 @@ const PrivacyPolicy = () => {
       </section>
 
       {/* 🔐 Seção: Que dados recolhemos */}
-      <section className="bg-base-100 rounded-lg shadow p-8 space-y-4">
+      <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4 ">
         <h2 className="text-2xl font-semibold text-base-content">
           Que dados recolhemos
         </h2>
@@ -34,7 +32,7 @@ const PrivacyPolicy = () => {
       </section>
 
       {/* ↩️ Seção: Como utilizamos */}
-      <section className="bg-base-100 rounded-lg shadow p-8 space-y-4">
+      <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4 ">
         <h2 className="text-2xl font-semibold text-base-content">
           Como utilizamos os dados
         </h2>
@@ -47,7 +45,7 @@ const PrivacyPolicy = () => {
       </section>
 
       {/* 🤝 Seção: Partilha de dados */}
-      <section className="bg-base-100 rounded-lg shadow p-8 space-y-4">
+      <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
         <h2 className="text-2xl font-semibold text-base-content">
           Com quem partilhamos
         </h2>
@@ -63,7 +61,7 @@ const PrivacyPolicy = () => {
       </section>
 
       {/* 🗄️ Seção: Retenção de dados */}
-      <section className="bg-base-100 rounded-lg shadow p-8 space-y-4">
+      <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
         <h2 className="text-2xl font-semibold text-base-content">
           Retenção de dados
         </h2>
@@ -75,7 +73,7 @@ const PrivacyPolicy = () => {
       </section>
 
       {/* 💼 Seção: Direitos dos utilizadores */}
-      <section className="bg-base-100 rounded-lg shadow p-8 space-y-4">
+      <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
         <h2 className="text-2xl font-semibold text-base-content">
           Os teus direitos
         </h2>
@@ -88,7 +86,7 @@ const PrivacyPolicy = () => {
       </section>
 
       {/* 📬 Seção: Contactos */}
-      <section className="bg-base-100 rounded-lg shadow p-8 space-y-4">
+      <section className="bg-[#213448] rounded-lg shadow p-8 space-y-4">
         <h2 className="text-2xl font-semibold text-base-content">
           Contactar-nos
         </h2>

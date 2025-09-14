@@ -24,7 +24,7 @@ const SearchBar = ({ data }) => {
         rounded-full bg-white text-slate-700
         ring-1 ring-black/5
         focus-within:ring-2 focus-within:ring-sky-400
-        transition
+        transition 
       "
       aria-label="Pesquisar cursos"
     >

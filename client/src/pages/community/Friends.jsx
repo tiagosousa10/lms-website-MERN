@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search as SearchIcon, X as XIcon, UserMinus } from "lucide-react";
+import { motion } from "framer-motion"; // animações
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 
@@ -15,9 +16,9 @@ export default function Friends() {
   const { userFriends = [], removeFriend, isEducator } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
-  // —— estado da pesquisa + debounce (mesmo padrão da tua SearchBar)
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [removingId, setRemovingId] = useState(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -34,18 +35,38 @@ export default function Friends() {
     });
   }, [debouncedQuery, userFriends]);
 
-  const onSearchSubmit = (e) => {
-    e.preventDefault(); // não navega; só filtra
-  };
+  const onSearchSubmit = (e) => e.preventDefault();
 
-  const [removingId, setRemovingId] = useState(null);
   const handleRemove = async (id) => {
     try {
       setRemovingId(id);
+      setLoading(true);
       await Promise.resolve(removeFriend(id)); // caso seja async no teu contexto
     } finally {
+      setLoading(false);
       setRemovingId(null);
     }
+  };
+
+  // classes partilhadas p/ grelha e cards — altura uniforme
+  const gridClasses =
+    "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-[minmax(0,1fr)]";
+  const cardBase =
+    "card shadow hover:shadow-lg transition rounded-2xl overflow-hidden bg-[#547792] h-full flex";
+  const roleBadge =
+    "text-sm border border-[#ECEFCA] text-[#ECEFCA] px-3 py-1 rounded-md";
+
+  // framer-motion variants
+  const containerV = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { when: "beforeChildren", staggerChildren: 0.06 },
+    },
+  };
+  const itemV = {
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
   };
 
   return (
@@ -60,66 +81,37 @@ export default function Friends() {
         </div>
       </header>
 
-      {/* SearchBar — MESMO look&feel  SearchBar */}
-      <div className="absolute top-6  left-1/2 -translate-x-1/2">
+      {/* SearchBar — mesmo look&feel */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2">
         <form
           role="search"
           aria-label="Pesquisar amigos"
           onSubmit={onSearchSubmit}
-          className="
-            relative
-            w-[300px] md:w-[360px]
-            h-8 md:h-10
-            flex items-center
-            rounded-full bg-white text-slate-700
-            ring-1 ring-black/5
-            focus-within:ring-2 focus-within:ring-sky-400
-            transition
-          "
+          className="relative w-[300px] md:w-[360px] h-10 flex items-center rounded-full bg-white text-slate-700 ring-1 ring-black/5 focus-within:ring-2 focus-within:ring-sky-400 transition"
         >
-          {/* Ícone à esquerda (decorativo) */}
           <SearchIcon className="absolute left-3 h-4 w-4 text-slate-500/80 pointer-events-none" />
-          {/* Input */}
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             type="search"
             placeholder="Pesquisar por nome ou e-mail…"
-            className="
-              flex-1 h-full pl-10 pr-10 bg-transparent
-              text-xs md:text-base
-              placeholder:text-xs md:placeholder:text-xs
-              placeholder:text-slate-500/80
-              outline-none
-            "
+            className="flex-1 h-full pl-9 pr-10 bg-transparent text-sm outline-none placeholder:text-slate-500/80"
             aria-label="Termo de pesquisa"
           />
-          {/* Limpar */}
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="mr-1 size-6 grid place-content-center rounded-full hover:bg-slate-100"
+              className="mr-2 size-7 grid place-content-center rounded-full hover:bg-slate-100"
               aria-label="Limpar pesquisa"
               title="Limpar"
             >
               <XIcon className="h-4 w-4 text-slate-600" />
             </button>
           )}
-          {/* Botão circular */}
           <button
             type="submit"
-            className="
-              mr-2
-              size-8
-              rounded-full
-              grid place-content-center
-              bg-[#94b4c1]
-              hover:opacity-90
-              active:opacity-100
-              focus:outline-hidden focus:ring-2 focus:ring-sky-400
-              transition
-            "
+            className="mr-2 size-8 rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 active:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-sky-400 transition"
             title="Pesquisar"
             aria-label="Pesquisar"
           >
@@ -138,79 +130,91 @@ export default function Friends() {
       )}
 
       {/* Lista / Estados */}
-      {loading ? (
+      {loading && !removingId ? (
         <div className="flex justify-center py-12">
           <span className="loading loading-spinner loading-lg" />
         </div>
       ) : !filteredFriends?.length ? (
-        <div className="card bg-[#547792] text-white shadow p-6 text-center">
-          <h3 className="text-lg font-semibold">Sem resultados</h3>
-          <p className="opacity-80">Tenta outro nome ou e-mail.</p>
+        <div className={`${cardBase} items-center justify-center p-8`}>
+          <div className="text-center space-y-1">
+            <h3 className="text-lg font-semibold text-white">Sem resultados</h3>
+            <p className="text-white/80">Tenta outro nome ou e-mail.</p>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <motion.div
+          className={gridClasses}
+          variants={containerV}
+          initial="hidden"
+          animate="show"
+        >
           {filteredFriends.map((f) => (
-            <div
+            <motion.div
               key={f._id}
-              className="card card-sm shadow hover:shadow-md transition rounded-lg overflow-hidden bg-[#547792]"
+              variants={itemV}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.995 }}
+              className={cardBase}
             >
-              <div className="card-body p-4 space-y-2">
-                {/* Avatar + Nome */}
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2">
-                      <img
-                        src={f.imageUrl || assets.profile_img}
-                        alt={f.name || "Amigo"}
-                      />
+              <div className="card-body p-4 space-y-3 flex-1">
+                {/* Top: Avatar + Nome + Papel */}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="avatar shrink-0">
+                      <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2">
+                        <img
+                          src={f.imageUrl || assets.profile_img}
+                          alt={f.name || "Amigo"}
+                        />
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex justify-between flex-1">
-                    <div>
+                    <div className="min-w-0">
                       <h3 className="text-md font-semibold truncate text-white">
-                        {f.name}
+                        {f.name || "—"}
                       </h3>
                       <p className="text-sm text-base-content/60 truncate">
-                        {f.email}
+                        {f.email || "—"}
                       </p>
                     </div>
-                    <div className="ml-3">
-                      <h4 className="text-sm mr-2 border border-[#ECEFCA] text-[#ECEFCA] px-3 py-0.5 rounded">
-                        {isEducator ? "Professor" : "Aluno"}
-                      </h4>
-                    </div>
                   </div>
+
+                  <span className={roleBadge}>
+                    {isEducator ? "Professor" : "Aluno"}
+                  </span>
                 </div>
 
-                {/* Descrição */}
+                {/* Descrição (opcional) */}
                 <p className="text-xs text-white/80">
                   Inicia uma conversa e continuem a aprender juntos.
                 </p>
 
-                {/* Botões de ação */}
-                <div className="flex items-center gap-2">
+                {/* Ações */}
+                <div className="mt-auto flex items-center gap-2">
                   <Link
                     to={`/community/chat/${f._id}`}
-                    className="btn btn-ghost btn-sm flex-1 normal-case bg-[#94B4C1] text-white"
+                    className="btn btn-ghost btn-sm flex-1 normal-case bg-[#94B4C1] text-white hover:opacity-90"
                     title="Enviar mensagem"
                   >
                     Mensagem
                   </Link>
+
                   <button
-                    className="py-1.5 rounded-lg px-6 flex items-center gap-2 normal-case bg-red-400 hover:bg-red-500 text-white disabled:opacity-60"
+                    className="btn btn-sm normal-case bg-red-500 hover:bg-red-600 text-white flex items-center gap-2 disabled:opacity-60"
                     title="Remover amigo"
                     onClick={() => handleRemove(f._id)}
                     disabled={loading || removingId === f._id}
                   >
+                    {removingId === f._id && (
+                      <span className="loading loading-spinner loading-xs" />
+                    )}
                     <UserMinus className="w-4 h-4" />
                     Remover
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

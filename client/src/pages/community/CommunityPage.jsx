@@ -14,29 +14,27 @@ import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
 
 const normalize = (string) =>
-  string
+  (string || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 
 const CommunityPage = () => {
-  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = React.useState(false);
 
   const {
-    userFriends,
-    recommendedUsers,
+    userFriends = [],
+    recommendedUsers = [],
     sendFriendRequest,
-    onGoingFriends,
+    onGoingFriends = [],
     isEducator,
   } = useContext(AppContext);
 
   // pedidos de amizade já enviados (para desativar botão)
-  const outgoingSet = React.useMemo(() => {
-    return new Set(
-      (onGoingFriends || []).map((fr) => String(fr?.recipient?._id))
-    );
-  }, [onGoingFriends]);
+  const outgoingSet = useMemo(
+    () => new Set(onGoingFriends.map((fr) => String(fr?.recipient?._id))),
+    [onGoingFriends]
+  );
 
   // estado da pesquisa + debounce
   const [query, setQuery] = React.useState("");
@@ -49,7 +47,7 @@ const CommunityPage = () => {
 
   // resultados combinados (amigos + sugestões)
   const friendIdSet = useMemo(
-    () => new Set((userFriends || []).map((f) => String(f._id || f.id))),
+    () => new Set(userFriends.map((f) => String(f._id || f.id))),
     [userFriends]
   );
 
@@ -59,8 +57,7 @@ const CommunityPage = () => {
 
     const results = [];
 
-    // Amigos
-    (userFriends || []).forEach((f) => {
+    userFriends.forEach((f) => {
       const name = f?.name ?? "";
       const email = f?.email ?? "";
       if (normalize(name).includes(q) || normalize(email).includes(q)) {
@@ -74,8 +71,7 @@ const CommunityPage = () => {
       }
     });
 
-    // Sugestões (evita duplicar amigos)
-    (recommendedUsers || []).forEach((u) => {
+    recommendedUsers.forEach((u) => {
       const id = String(u._id || u.id);
       if (friendIdSet.has(id)) return;
       const name = u?.name ?? "";
@@ -94,72 +90,55 @@ const CommunityPage = () => {
     return results;
   }, [debouncedQuery, userFriends, recommendedUsers, friendIdSet]);
 
-  // SUBSTITUÍDO: barra de pesquisa com o MESMO estilo da tua SearchBar
-  const onSearchSubmit = (e) => {
-    e.preventDefault(); // não navega; só filtra
-  };
+  const onSearchSubmit = (e) => e.preventDefault();
+
+  // Classes partilhadas p/ grelhas de cards (altura igual)
+  const gridClasses =
+    "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-[minmax(0,1fr)]";
+
+  // Classes partilhadas p/ card (mesma estética do FriendCard)
+  const cardBase =
+    "card shadow hover:shadow-md transition rounded-2xl overflow-hidden bg-[#547792] h-full flex";
+
+  const roleBadge =
+    "text-sm border border-[#ECEFCA] text-[#ECEFCA] px-3 py-1 rounded-md";
+
+  const actionBtnBase =
+    "btn btn-sm normal-case flex items-center justify-center gap-2";
 
   return (
-    <div className="min-h-screen p-4 md:p-8 lg:p-12  relative">
-      {/* SearchBar — mesmo look&feel do teu componente */}
+    <div className="min-h-screen p-4 md:p-8 lg:p-12 relative">
+      {/* SearchBar */}
       <div className="max-w-2xl absolute top-16 left-1/2 -translate-x-1/2">
         <form
           role="search"
           aria-label="Pesquisar amigos e recomendações"
           onSubmit={onSearchSubmit}
-          className="
-            w-[300px] md:w-[360px]
-            h-8 md:h-10
-            flex items-center
-            rounded-full bg-white text-slate-700
-            ring-1 ring-black/5
-            focus-within:ring-2 focus-within:ring-sky-400
-            transition
-          "
+          className="w-[300px] md:w-[360px] h-10 flex items-center rounded-full bg-white text-slate-700 ring-1 ring-black/5 focus-within:ring-2 focus-within:ring-sky-400 transition relative"
         >
-          {/* Input */}
+          <SearchIcon className="absolute left-3 h-4 w-4 text-slate-500/80 pointer-events-none" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             type="search"
             placeholder="Pesquisar por nome ou e-mail…"
-            className="
-              flex-1 h-full pl-10 pr-10 bg-transparent
-              text-xs md:text-base
-              placeholder:text-xs md:placeholder:text-xs
-              placeholder:text-slate-500/80
-              outline-none
-            "
+            className="flex-1 h-full pl-9 pr-10 bg-transparent text-sm outline-none placeholder:text-slate-500/80"
             aria-label="Termo de pesquisa"
           />
-          {/* Ícone à esquerda (decorativo) */}
-          <SearchIcon className="absolute ml-3 h-4 w-4 text-slate-500/80 pointer-events-none" />
-          {/* Limpar */}
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="mr-1 size-6 grid place-content-center rounded-full hover:bg-slate-100"
+              className="mr-2 size-7 grid place-content-center rounded-full hover:bg-slate-100"
               aria-label="Limpar pesquisa"
               title="Limpar"
             >
               <XIcon className="h-4 w-4 text-slate-600" />
             </button>
           )}
-          {/* Botão circular  */}
           <button
             type="submit"
-            className="
-              mr-2
-              size-8
-              rounded-full
-              grid place-content-center
-              bg-[#94b4c1]
-              hover:opacity-90
-              active:opacity-100
-              focus:outline-hidden focus:ring-2 focus:ring-sky-400
-              transition
-            "
+            className="mr-2 size-8 rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 active:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-sky-400 transition"
             title="Pesquisar"
             aria-label="Pesquisar"
           >
@@ -169,7 +148,7 @@ const CommunityPage = () => {
         </form>
       </div>
 
-      {/* Resultados combinados quando há query */}
+      {/* Resultados de pesquisa */}
       {debouncedQuery ? (
         <div className="space-y-4">
           <h3 className="text-xl font-semibold">
@@ -185,18 +164,20 @@ const CommunityPage = () => {
             </div>
           ) : (combinedResults?.length ?? 0) === 0 ? (
             <div className="py-12">
-              <div className="card bg-[#547792] shadow p-6 text-center ">
-                <h4 className="text-lg font-semibold text-white">
-                  Sem resultados
-                </h4>
-                <p className="text-base-content/70">
-                  Tenta outro nome ou e-mail.
-                </p>
+              <div className={`${cardBase} items-center justify-center p-6`}>
+                <div className="text-center space-y-1">
+                  <h4 className="text-lg font-semibold text-white">
+                    Sem resultados
+                  </h4>
+                  <p className="text-base-content/70">
+                    Tenta outro nome ou e-mail.
+                  </p>
+                </div>
               </div>
             </div>
           ) : (
             <div className="py-12">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className={gridClasses}>
                 {combinedResults.map((item) =>
                   item.type === "friend" ? (
                     <FriendCard
@@ -209,15 +190,12 @@ const CommunityPage = () => {
                       }}
                     />
                   ) : (
-                    <div
-                      key={`sug-${item._id}`}
-                      className="card card-sm shadow hover:shadow-md transition bg-[#547792]"
-                    >
-                      <div className="card-body p-4 space-y-2">
+                    <div key={`sug-${item._id}`} className={cardBase}>
+                      <div className="card-body p-4 space-y-3 flex-1">
                         <div className="flex items-center justify-between">
-                          <div className="flex gap-5">
+                          <div className="flex gap-4">
                             <div className="avatar">
-                              <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary">
+                              <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2">
                                 <img
                                   src={item.avatar || assets.profile_img}
                                   alt="Perfil"
@@ -226,39 +204,39 @@ const CommunityPage = () => {
                             </div>
                             <div>
                               <h3 className="text-md font-semibold truncate text-white">
-                                {item.name}
+                                {item.name || "Utilizador"}
                               </h3>
                               <p className="text-sm text-base-content/60 truncate">
-                                {item.email}
+                                {item.email || "—"}
                               </p>
                             </div>
                           </div>
-                          <span className="badge bg-[#ECEFCA] border border-[#ECEFCA] text-[#547792]">
-                            Sugestão
-                          </span>
+                          <span className={roleBadge}>Sugestão</span>
                         </div>
 
-                        <button
-                          className={`btn btn-sm btn-ghost text-white bg-transparent border-white mx-auto w-[70%] ${
-                            outgoingSet.has(item._id)
-                              ? "btn-disabled text-red-400"
-                              : "bg-[#94B4C1] text-white"
-                          } flex justify-center items-center gap-2`}
-                          disabled={outgoingSet.has(item._id) || isLoading}
-                          onClick={() => sendFriendRequest(item._id)}
-                        >
-                          {outgoingSet.has(item._id) ? (
-                            <>
-                              <CheckCircleIcon className="w-4 h-4" />
-                              Pedido Enviado
-                            </>
-                          ) : (
-                            <>
-                              <UserPlusIcon className="w-4 h-4" />
-                              Adicionar Amigo
-                            </>
-                          )}
-                        </button>
+                        <div className="mt-auto">
+                          <button
+                            className={`${actionBtnBase} w-[70%] mx-auto ${
+                              outgoingSet.has(item._id)
+                                ? "btn-disabled text-white/70 bg-white/10"
+                                : "bg-[#94B4C1] text-white hover:opacity-90"
+                            }`}
+                            disabled={outgoingSet.has(item._id) || isLoading}
+                            onClick={() => sendFriendRequest(item._id)}
+                          >
+                            {outgoingSet.has(item._id) ? (
+                              <>
+                                <CheckCircleIcon className="w-4 h-4" />
+                                Pedido Enviado
+                              </>
+                            ) : (
+                              <>
+                                <UserPlusIcon className="w-4 h-4" />
+                                Adicionar Amigo
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )
@@ -269,8 +247,6 @@ const CommunityPage = () => {
         </div>
       ) : (
         <>
-          {/* ======= UI original quando NÃO há pesquisa ======= */}
-
           {/* Descobrir mais amigos */}
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -296,59 +272,59 @@ const CommunityPage = () => {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendedUsers.map((u, idx) => {
+              <div className={gridClasses}>
+                {recommendedUsers.map((u) => {
                   const pedidoEnviado = outgoingSet.has(String(u._id));
                   return (
-                    <div
-                      key={u.id || idx}
-                      className="card card-sm shadow hover:shadow-md transition bg-[#547792]"
-                    >
-                      <div className="card-body p-4 space-y-2">
-                        <div className="flex items-center justify-between ">
-                          <div className="flex gap-5">
+                    <div key={u._id || u.id} className={cardBase}>
+                      <div className="card-body p-4 space-y-3 flex-1">
+                        <div className="flex items-center justify-between">
+                          <div className="flex gap-4">
                             <div className="avatar">
-                              <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary">
-                                <img src={assets.profile_img} alt="Perfil" />
+                              <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2">
+                                <img
+                                  src={u.imageUrl || assets.profile_img}
+                                  alt={u.name || "Perfil"}
+                                />
                               </div>
                             </div>
                             <div>
                               <h3 className="text-md font-semibold truncate text-white">
-                                {u.name}
+                                {u.name || "Utilizador"}
                               </h3>
                               <p className="text-sm text-base-content/60 truncate">
-                                {u.email}
+                                {u.email || "—"}
                               </p>
                             </div>
                           </div>
-                          <div>
-                            <h4 className="text-sm mr-8 border border-[#ECEFCA] text-[#ECEFCA] px-4 py-1 ">
-                              {isEducator ? "Professor" : "Aluno"}
-                            </h4>
+                          <div className={roleBadge}>
+                            {isEducator ? "Professor" : "Aluno"}
                           </div>
                         </div>
 
-                        <button
-                          className={`btn btn-sm btn-ghost text-white bg-transparent border-white mx-auto w-[70%] ${
-                            pedidoEnviado
-                              ? "btn-disabled text-red-400"
-                              : "bg-[#94B4C1] text-white"
-                          } flex justify-center items-center gap-2`}
-                          disabled={pedidoEnviado || isLoading}
-                          onClick={() => sendFriendRequest(u._id)}
-                        >
-                          {pedidoEnviado ? (
-                            <>
-                              <CheckCircleIcon className="w-4 h-4" />
-                              Pedido Enviado
-                            </>
-                          ) : (
-                            <>
-                              <UserPlusIcon className="w-4 h-4" />
-                              Adicionar Amigo
-                            </>
-                          )}
-                        </button>
+                        <div className="mt-auto">
+                          <button
+                            className={`${actionBtnBase} w-[70%] mx-auto ${
+                              pedidoEnviado
+                                ? "btn-disabled text-white/70 bg-white/10"
+                                : "bg-[#94B4C1] text-white hover:opacity-90"
+                            }`}
+                            disabled={pedidoEnviado || isLoading}
+                            onClick={() => sendFriendRequest(u._id)}
+                          >
+                            {pedidoEnviado ? (
+                              <>
+                                <CheckCircleIcon className="w-4 h-4" />
+                                Pedido Enviado
+                              </>
+                            ) : (
+                              <>
+                                <UserPlusIcon className="w-4 h-4" />
+                                Adicionar Amigo
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -374,9 +350,9 @@ const CommunityPage = () => {
           ) : userFriends.length === 0 ? (
             <NoFriendsFound />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {userFriends.map((friend, idx) => (
-                <FriendCard key={friend.id || idx} friend={friend} />
+            <div className={gridClasses}>
+              {userFriends.map((friend) => (
+                <FriendCard key={friend._id || friend.id} friend={friend} />
               ))}
             </div>
           )}

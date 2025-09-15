@@ -149,6 +149,7 @@ export const getEnrolledStudentsData = async (req, res) => {
       student: purchase.userId,
       courseTitle: purchase.courseId.courseTitle,
       purchaseDate: purchase.createdAt,
+      courseId: purchase.courseId._id,
     }));
 
     res.json({ success: true, enrolledStudents });

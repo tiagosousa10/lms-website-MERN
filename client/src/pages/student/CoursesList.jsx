@@ -6,27 +6,47 @@ import CourseCard from "../../components/student/CourseCard";
 import { assets } from "../../assets/assets";
 
 const CoursesList = () => {
-  const { navigate, allCourses } = useContext(AppContext);
+  const { navigate, allCourses, categories, fetchCategories, fetchAllCourses } =
+    useContext(AppContext);
+
   const { input } = useParams();
+
   const [filteredCourses, setFilteredCourses] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
+  // carregar categorias e cursos (sem filtro) no arranque
   useEffect(() => {
-    if (allCourses && allCourses.length > 0) {
-      const tempCourses = allCourses.slice();
+    fetchCategories?.();
+    fetchAllCourses?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      input
-        ? setFilteredCourses(
-            tempCourses.filter((item) =>
-              item.courseTitle.toLowerCase().includes(input.toLowerCase())
-            )
+  // quando a categoria muda -> pedir cursos filtrados ao backend
+  useEffect(() => {
+    fetchAllCourses?.({
+      category: selectedCategory || undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
+
+  // filtrar por título no cliente (com base em `input`)
+  useEffect(() => {
+    if (Array.isArray(allCourses) && allCourses.length > 0) {
+      const list = input
+        ? allCourses.filter((item) =>
+            item.courseTitle.toLowerCase().includes(input.toLowerCase())
           )
-        : setFilteredCourses(tempCourses);
+        : allCourses.slice();
+
+      setFilteredCourses(list);
+    } else {
+      setFilteredCourses([]);
     }
   }, [allCourses, input]);
 
   return (
     <>
-      <div className=" h-full md:px-36 px-8 py-20 text-left">
+      <div className="h-full md:px-36 px-8 py-20 text-left">
         <div className="flex md:flex-row flex-col items-start gap-6 justify-between w-full">
           <div>
             <h1 className="text-4xl font-semibold text-gray-800">
@@ -37,16 +57,45 @@ const CoursesList = () => {
                 className="text-blue-600 cursor-pointer"
                 onClick={() => navigate("/")}
               >
-                Início{" "}
+                Início
               </span>{" "}
               / <span>Lista de Cursos</span>
             </p>
           </div>
-          <SearchBar data={input} />
+
+          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+            {/* Filtro por categoria */}
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="category"
+                className="text-sm text-gray-600 whitespace-nowrap"
+              >
+                Categoria:
+              </label>
+              <select
+                id="category"
+                className="border rounded-md px-3 py-2 text-sm bg-white"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="">Todas</option>
+                {Array.isArray(categories) &&
+                  categories.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            {/* SearchBar existente */}
+            <SearchBar data={input} />
+          </div>
         </div>
 
+        {/* “chip” para limpar busca pelo título */}
         {input && (
-          <div className="inline-flex items-center gap-4 px-4 py-2 border mt-8 -mb-8 text-gray-600">
+          <div className="inline-flex items-center gap-4 px-4 py-2 border mt-8 -mb-8 text-gray-600 rounded-md">
             <p>{input}</p>
             <img
               src={assets.cross_icon}
@@ -57,11 +106,30 @@ const CoursesList = () => {
           </div>
         )}
 
-        <div className="flex flex-row  ">
-          <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 my-16 md:px-0 gap-8 mx-auto  ">
-            {filteredCourses.map((course, index) => (
-              <CourseCard key={index} course={course} />
+        {/* “chip” para limpar a categoria */}
+        {selectedCategory && (
+          <div className="inline-flex items-center gap-4 px-4 py-2 border mt-8 -mb-8 text-gray-600 rounded-md ml-3">
+            <p>{selectedCategory}</p>
+            <img
+              src={assets.cross_icon}
+              alt="Limpar categoria"
+              className="cursor-pointer"
+              onClick={() => setSelectedCategory("")}
+            />
+          </div>
+        )}
+
+        <div className="flex flex-row">
+          <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 my-16 md:px-0 gap-8 mx-auto w-full">
+            {filteredCourses.map((course) => (
+              <CourseCard key={course._id} course={course} />
             ))}
+
+            {filteredCourses.length === 0 && (
+              <div className="col-span-full text-center text-gray-500 py-10">
+                Sem resultados para os filtros aplicados.
+              </div>
+            )}
           </div>
         </div>
       </div>

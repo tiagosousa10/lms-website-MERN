@@ -1,5 +1,14 @@
 import mongoose from "mongoose";
 
+const CATEGORIES = [
+  "Programação",
+  "Design",
+  "Marketing",
+  "DevOps",
+  "Data",
+  "Idiomas",
+];
+
 const lectureSchema = new mongoose.Schema(
   {
     lectureId: { type: String, required: true },
@@ -31,6 +40,12 @@ const courseSchema = new mongoose.Schema(
     coursePrice: { type: Number, required: true },
     isPublished: { type: Boolean, default: true },
     discount: { type: Number, required: true, min: 0, max: 100 },
+    category: {
+      type: String,
+      enum: CATEGORIES, // validação por enum
+      required: true,
+      index: true, // índice para filtrar rápido
+    },
     courseContent: [chapterSchema],
     courseRatings: [
       {

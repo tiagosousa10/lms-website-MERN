@@ -26,23 +26,32 @@ export const AppContextProvider = (props) => {
   const [onGoingFriends, setOnGoingFriends] = useState([]);
   const [randomTestimonials, setRandomTestimonials] = useState([]);
   const [myTestimonials, setMyTestimonials] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   //-------------------------------------------------
   // --------------------COURSES---------------------
   //-------------------------------------------------
 
   //Fetch all courses
-  const fetchAllCourses = async () => {
+  const fetchAllCourses = async (opts = {}) => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/course/all");
-
-      if (data.success) {
-        setAllCourses(data.courses);
-      } else {
-        toast.error(data.message);
-      }
+      const { category } = opts;
+      const { data } = await axios.get(`${backendUrl}/api/course/all`, {
+        params: category ? { category } : undefined, // axios serializa params
+      });
+      if (data.success) setAllCourses(data.courses);
+      else toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/course/categories`);
+      if (data.success) setCategories(data.categories || []);
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 
@@ -143,6 +152,28 @@ export const AppContextProvider = (props) => {
         return { ok: true };
       } else {
         toast.error(data.message || "Falha ao remover o curso");
+        return { ok: false, error: data.message };
+      }
+    } catch (err) {
+      toast.error(err.message);
+      return { ok: false, error: err.message };
+    }
+  };
+
+  const removeStudentFromCourse = async (courseId, userId) => {
+    try {
+      const token = await getToken();
+
+      const { data } = await axios.delete(
+        `${backendUrl}/api/educator/course/${courseId}/student/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message || "Aluno removido com sucesso");
+        return { ok: true };
+      } else {
+        toast.error(data.message || "Falha ao remover aluno");
         return { ok: false, error: data.message };
       }
     } catch (err) {
@@ -440,6 +471,7 @@ export const AppContextProvider = (props) => {
   useEffect(() => {
     if (user) {
       fetchUserData();
+      fetchCategories();
       fetchUserEnrolledCourses();
       fetchAllCourses();
       getUserFriends();
@@ -492,6 +524,9 @@ export const AppContextProvider = (props) => {
     onGoingFriends,
     removeFriend,
     deleteCourse,
+    removeStudentFromCourse,
+    categories,
+    fetchCategories,
   };
 
   return (

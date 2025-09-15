@@ -6,6 +6,7 @@ import {
   getEducatorCourses,
   getEnrolledStudentsData,
   updateRoleToEducator,
+  removeStudentFromCourse,
 } from "../controllers/educatorController.js";
 import upload from "../configs/multer.js";
 import { protectEducator } from "../middlewares/authMiddleware.js";
@@ -28,33 +29,10 @@ educatorRouter.get(
   getEnrolledStudentsData
 );
 educatorRouter.delete("/course/:courseId", protectEducator, deleteCourse);
+educatorRouter.delete(
+  "/course/:courseId/student/:userId",
+  protectEducator,
+  removeStudentFromCourse
+);
 
 export default educatorRouter;
-
-/* 
-{
-  "courseTitle": "Web Development Bootcamp",
-  "courseDescription": "Test Course Description",
-  "coursePrice": 50,
-  "discount": 10,
-  "courseContent": [
-    {
-      "chapterId": "chapter1",
-      "chapterOrder": 1,
-      "chapterTitle": "HTML & CSS Basics",
-      "chapterContent": [
-        {
-          "lectureId": "lecture1",
-          "lectureTitle": "Introduction to HTML",
-          "lectureDuration": 600,
-          "lectureUrl": "https://youtu.be/-HeadgoqJ7A",
-          "isPreviewFree": true,
-          "lectureOrder": 1
-        }
-      ]
-    }
-  ]
-}
-
-
-*/

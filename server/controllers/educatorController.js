@@ -158,7 +158,7 @@ export const getEnrolledStudentsData = async (req, res) => {
   }
 };
 
-// DELETE /api/educator/course/:courseId
+// DELETE a course
 export const deleteCourse = async (req, res) => {
   try {
     const educatorId = req.auth.userId;
@@ -217,6 +217,64 @@ export const deleteCourse = async (req, res) => {
     res.json({ success: true, message: "Curso removido com sucesso" });
   } catch (error) {
     console.log("Error in deleteCourse:", error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+//delete a student from a course
+export const removeStudentFromCourse = async (req, res) => {
+  try {
+    const educatorId = req.auth.userId;
+    const { courseId, userId } = req.params;
+
+    // 1) Confirmar que o curso existe e pertence a este educator
+    const course = await Course.findById(courseId);
+    if (!course)
+      return res
+        .status(404)
+        .json({ success: false, message: "Curso não encontrado" });
+
+    if (String(course.educator) !== String(educatorId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Sem permissão para alterar este curso",
+      });
+    }
+
+    // 2) Verificar se o aluno está inscrito
+    const isEnrolled = course.enrolledStudents?.some(
+      (sid) => String(sid) === String(userId)
+    );
+    if (!isEnrolled) {
+      return res.status(400).json({
+        success: false,
+        message: "Este aluno não está inscrito neste curso",
+      });
+    }
+
+    // 3) Remover aluno do array enrolledStudents do curso
+    await Course.updateOne(
+      { _id: courseId },
+      { $pull: { enrolledStudents: String(userId) } } // $pull remove o valor do array
+    ); // :contentReference[oaicite:1]{index=1}
+
+    // 4) Remover curso da lista "enrolledCourses" do aluno
+    await User.updateOne(
+      { _id: String(userId) },
+      { $pull: { enrolledCourses: course._id } }
+    ); // :contentReference[oaicite:2]{index=2}
+
+    // 5) Remover progresso desse aluno nesse curso
+    await CourseProgress.deleteMany({
+      userId: String(userId),
+      courseId: String(course._id),
+    });
+
+    await Purchase.deleteMany({ userId: String(userId), courseId: course._id });
+
+    res.json({ success: true, message: "Aluno removido do curso com sucesso" });
+  } catch (error) {
+    console.log("Error in removeStudentFromCourse:", error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };

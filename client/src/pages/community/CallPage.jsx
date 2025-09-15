@@ -113,7 +113,7 @@ const CallContent = () => {
 
   const navigate = useNavigate();
 
-  if (callingState === CallingState.LEFT) return navigate("/"); // go back to home page
+  if (callingState === CallingState.LEFT) return navigate(`/community/friends`); // go back to home page
 
   return (
     <StreamTheme>

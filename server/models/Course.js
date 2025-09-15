@@ -13,8 +13,16 @@ const lectureSchema = new mongoose.Schema(
   {
     lectureId: { type: String, required: true },
     lectureTitle: { type: String, required: true },
-    lectureDuration: { type: Number, required: true },
-    lectureUrl: { type: String, required: true },
+    lectureDuration: { type: Number, required: true }, // em segundos
+    lectureUrl: { type: String, required: true }, // youtube ou cloudinary
+
+    lectureProvider: {
+      type: String,
+      enum: ["youtube", "cloudinary"],
+      default: "youtube",
+    },
+
+    cloudinaryPublicId: { type: String }, // só se provider === "cloudinary"
     isPreviewFree: { type: Boolean, required: true },
     lectureOrder: { type: Number, required: true },
   },

@@ -98,20 +98,25 @@ const ChatPage = () => {
   if (loading || !chatClient || !channel) return <ChatLoader />;
 
   return (
-    <div className="h-[93vh]">
-      <Chat client={chatClient}>
-        <Channel channel={channel}>
-          <div className="w-full relative">
-            <CallButton handleVideoCall={handleVideoCall} />
-            <Window>
-              <ChannelHeader />
-              <MessageList />
-              <MessageInput focus />
-            </Window>
-          </div>
-          <Thread />
-        </Channel>
-      </Chat>
+    <div className="h-[93vh] px-20  ">
+      <div>
+        <h1 className="text-3xl font-bold my-12 ">Chat</h1>
+      </div>
+      <div className="border border-[#547792] rounded p-4">
+        <Chat client={chatClient}>
+          <Channel channel={channel}>
+            <div className="w-full relative">
+              <CallButton handleVideoCall={handleVideoCall} />
+              <Window>
+                <ChannelHeader />
+                <MessageList />
+                <MessageInput focus />
+              </Window>
+            </div>
+            <Thread />
+          </Channel>
+        </Chat>
+      </div>
     </div>
   );
 };

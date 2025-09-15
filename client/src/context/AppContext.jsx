@@ -128,6 +128,28 @@ export const AppContextProvider = (props) => {
       setEnrolledCourses(data.enrolledCourses.reverse());
     } else toast.error(data.message);
   };
+
+  const deleteCourse = async (courseId) => {
+    try {
+      const token = await getToken();
+
+      const { data } = await axios.delete(
+        `${backendUrl}/api/educator/course/${courseId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message || "Curso removido com sucesso");
+        return { ok: true };
+      } else {
+        toast.error(data.message || "Falha ao remover o curso");
+        return { ok: false, error: data.message };
+      }
+    } catch (err) {
+      toast.error(err.message);
+      return { ok: false, error: err.message };
+    }
+  };
   //-------------------------------------------------
   // --------------------COMMUNITY AND CHATS---------
   //-------------------------------------------------
@@ -469,6 +491,7 @@ export const AppContextProvider = (props) => {
     recommendedUsers,
     onGoingFriends,
     removeFriend,
+    deleteCourse,
   };
 
   return (

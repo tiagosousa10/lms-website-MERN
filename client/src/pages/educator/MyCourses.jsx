@@ -3,6 +3,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
 import Loading from "../../components/student/Loading";
+import { Button } from "../../components/ui/button";
 
 // shadcn/ui
 import { Card, CardContent } from "../../components/ui/card";
@@ -14,10 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-
 const MyCourses = () => {
-  const { backendUrl, isEducator, currency, getToken } = useContext(AppContext);
+  const { backendUrl, isEducator, currency, getToken, deleteCourse } =
+    useContext(AppContext);
   const [courses, setCourses] = useState(null);
+  const [loadingId, setLoadingId] = useState(null);
 
   const fetchEducatorCourses = async () => {
     try {
@@ -34,6 +36,22 @@ const MyCourses = () => {
   useEffect(() => {
     if (isEducator) fetchEducatorCourses();
   }, [isEducator]);
+
+  const handleDeleteCourse = async (courseId, title) => {
+    const ok = window.confirm(
+      `Tens a certeza que queres remover o curso:\n“${title}”?\nEsta ação é permanente.`
+    );
+    if (!ok) return;
+
+    setLoadingId(courseId);
+    const res = await deleteCourse(courseId);
+    setLoadingId(null);
+
+    if (res?.ok) {
+      // refrescar a tabela
+      fetchEducatorCourses();
+    }
+  };
 
   if (!courses) return <Loading />;
 
@@ -60,6 +78,9 @@ const MyCourses = () => {
                   </TableHead>
                   <TableHead className="font-semibold text-white text-sm">
                     Publicado em
+                  </TableHead>
+                  <TableHead className="font-semibold text-white text-sm px-8">
+                    Ações
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -99,6 +120,24 @@ const MyCourses = () => {
 
                       <TableCell className="px-4 py-3 whitespace-nowrap">
                         {new Date(course.createdAt).toLocaleDateString("pt-PT")}
+                      </TableCell>
+
+                      <TableCell className="px-4 py-3 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          {/* Remover curso */}
+                          <Button
+                            variant="destructive"
+                            className="h-8"
+                            disabled={loadingId === course._id}
+                            onClick={() =>
+                              handleDeleteCourse(course._id, course.courseTitle)
+                            }
+                          >
+                            {loadingId === course._id
+                              ? "A remover…"
+                              : "Remover"}
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

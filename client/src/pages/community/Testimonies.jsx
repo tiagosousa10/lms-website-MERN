@@ -5,7 +5,7 @@ import MyTestimonialsTable from "../../components/community/TestimonialsTable";
 
 export default function CommunityTestimonials() {
   return (
-    <div className=" w-[90%]   ">
+    <div className=" w-[90%] mx-auto  ">
       <TestimonialsSection />
       <TestimonialForm />
       <MyTestimonialsTable />

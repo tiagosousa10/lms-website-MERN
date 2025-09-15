@@ -15,6 +15,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
   navigationMenuTriggerStyle,
+  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
@@ -120,8 +121,8 @@ const Navbar = () => {
           {/* CENTRO: navegação desktop com separadores */}
           <div className="hidden lg:flex items-center">
             {user && (
-              <NavigationMenu>
-                <NavigationMenuList className="gap-0 items-center">
+              <NavigationMenu viewport={false}>
+                <NavigationMenuList>
                   {/* link 1 */}
                   <NavigationMenuItem>
                     <NavigationMenuLink
@@ -163,12 +164,12 @@ const Navbar = () => {
                       Comunidade
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid w-[320px] gap-2 p-3">
+                      <ul className="grid w-[320px] gap-2 p-3 bg-[#213448] text-white">
                         <li>
                           <NavigationMenuLink asChild>
                             <Link
                               to="/community"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">Início</div>
                               <p className="text-xs text-muted-foreground">
@@ -181,7 +182,7 @@ const Navbar = () => {
                           <NavigationMenuLink asChild>
                             <Link
                               to="/community/notifications"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">
                                 Notificações
@@ -196,7 +197,7 @@ const Navbar = () => {
                           <NavigationMenuLink asChild>
                             <Link
                               to="/community/friends"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">Amigos</div>
                               <p className="text-xs text-muted-foreground">
@@ -209,7 +210,7 @@ const Navbar = () => {
                           <NavigationMenuLink asChild>
                             <Link
                               to="/community/testimonies"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">
                                 Testemunhos
@@ -232,12 +233,12 @@ const Navbar = () => {
                       Sobre nós
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid w-[320px] gap-2 p-3">
-                        <li>
+                      <ul className="grid w-[320px] gap-2 p-3 bg-[#213448] text-white ">
+                        <li className=" ">
                           <NavigationMenuLink asChild>
                             <Link
                               to="/about-us"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">
                                 A Equipa
@@ -252,7 +253,7 @@ const Navbar = () => {
                           <NavigationMenuLink asChild>
                             <Link
                               to="/contact-us"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">
                                 Contactos
@@ -267,7 +268,7 @@ const Navbar = () => {
                           <NavigationMenuLink asChild>
                             <Link
                               to="/privacy-policy"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">
                                 Política de Privacidade
@@ -282,7 +283,7 @@ const Navbar = () => {
                           <NavigationMenuLink asChild>
                             <Link
                               to="/faq"
-                              className="block rounded-md p-3 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2"
+                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
                             >
                               <div className="text-sm font-medium">FAQ</div>
                               <p className="text-xs text-muted-foreground">
@@ -324,7 +325,7 @@ const Navbar = () => {
             ) : (
               <button
                 onClick={() => openSignIn()}
-                className="inline-flex items-center gap-2 rounded-[10px] border border-[#d3dad9]/80 bg-[#547792] px-4 py-2 text-[15px] text-[#ecefca] hover:bg-[#547792]/90 transition"
+                className="inline-flex items-center gap-2 rounded-[10px] border border-[#d3dad9]/80 bg-[#547792] px-4 py-2 text-[15px] text-white hover:text-black hover:bg-[#547792]/90 transition"
               >
                 <GraduationCap className="h-5 w-5" />
                 Criar Conta

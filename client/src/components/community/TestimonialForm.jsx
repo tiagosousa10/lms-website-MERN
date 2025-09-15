@@ -41,7 +41,7 @@ export default function TestimonialForm() {
   };
 
   return (
-    <section className="bg-[#213448] rounded-xl shadow p-4 md:p-6 text-white">
+    <section className="bg-[#213448] rounded-xl shadow p-4 md:p-6 text-white ">
       <div className="grid md:grid-cols-2 gap-8 items-stretch">
         {/* Coluna esquerda: Form */}
         <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">

@@ -100,9 +100,9 @@ const CommunityPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 lg:p-12 space-y-12 relative">
+    <div className="min-h-screen p-4 md:p-8 lg:p-12  relative">
       {/* SearchBar — mesmo look&feel do teu componente */}
-      <div className="max-w-2xl absolute top-28 right-2 -translate-x-1/2">
+      <div className="max-w-2xl absolute top-16 left-1/2 -translate-x-1/2">
         <form
           role="search"
           aria-label="Pesquisar amigos e recomendações"
@@ -146,7 +146,7 @@ const CommunityPage = () => {
               <XIcon className="h-4 w-4 text-slate-600" />
             </button>
           )}
-          {/* Botão circular (igual ao teu) */}
+          {/* Botão circular  */}
           <button
             type="submit"
             className="
@@ -358,8 +358,8 @@ const CommunityPage = () => {
           </div>
 
           {/* Header Amigos */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <h2 className="text-3xl font-bold">Os teus Amigos</h2>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-12">
+            <h2 className="text-3xl font-bold mb-4">Os teus Amigos</h2>
             <Link
               to="/community/friends"
               className="btn btn-outline btn-sm flex items-center border-[#213448] text-[#213448]"

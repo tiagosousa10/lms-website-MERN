@@ -85,6 +85,41 @@ const CourseDetails = () => {
     }));
   };
 
+  const getYouTubeId = (input) => {
+    if (!input) return null;
+    const str = String(input).trim();
+
+    // já é só o ID?
+    if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+
+    try {
+      const url = new URL(str);
+
+      // youtu.be/<id>
+      if (url.hostname.includes("youtu.be")) {
+        const id = url.pathname.split("/").filter(Boolean)[0];
+        return id || null;
+      }
+
+      // youtube.com/watch?v=<id>
+      const v = url.searchParams.get("v");
+      if (v) return v;
+
+      // /embed/<id>  | /shorts/<id> | /live/<id> | /v/<id>
+      const parts = url.pathname.split("/").filter(Boolean);
+      const ix = parts.findIndex((p) =>
+        ["embed", "shorts", "live", "v"].includes(p)
+      );
+      if (ix !== -1 && parts[ix + 1]) return parts[ix + 1];
+
+      return null;
+    } catch {
+      // string sem ser URL completa (fallback)
+      const m = str.match(/v=([^&]+)/);
+      return m ? m[1] : null;
+    }
+  };
+
   return courseData ? (
     <>
       <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left">
@@ -184,18 +219,20 @@ const CourseDetails = () => {
                             <div className="flex gap-2">
                               {lecture.isPreviewFree && (
                                 <p
-                                  onClick={() =>
-                                    setPlayerData({
-                                      videoId: lecture.lectureUrl
-                                        .split("/")
-                                        .pop(),
-                                    })
-                                  }
+                                  onClick={() => {
+                                    const id = getYouTubeId(lecture.lectureUrl);
+                                    if (!id)
+                                      return toast.error(
+                                        "URL do vídeo inválida"
+                                      );
+                                    setPlayerData({ videoId: id });
+                                  }}
                                   className="text-blue-500 cursor-pointer"
                                 >
                                   Pré-visualizar
                                 </p>
                               )}
+
                               <p>
                                 {humanizeDuration(
                                   lecture.lectureDuration * 60 * 1000,
@@ -230,6 +267,7 @@ const CourseDetails = () => {
               videoId={playerData.videoId}
               opts={{ playerVars: { autoplay: 1 } }}
               iframeClassName="w-full aspect-video"
+              onError={() => toast.error("Vídeo indisponível ou ID inválido")}
             />
           ) : (
             <img src={courseData.courseThumbnail} alt="imagem curso" />

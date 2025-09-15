@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+// pages/Player.jsx
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { AppContext } from "../../context/AppContext";
 import YouTube from "react-youtube";
 import { assets } from "../../assets/assets";
@@ -8,6 +9,42 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Rating from "../../components/student/Rating";
 import Loading from "../../components/student/Loading";
+
+/** === Helper robusto para extrair o ID do YouTube === */
+const getYouTubeId = (input) => {
+  if (!input) return null;
+  const str = String(input).trim();
+
+  // já é só o ID?
+  if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+
+  try {
+    const url = new URL(str);
+
+    // youtu.be/<id>
+    if (url.hostname.includes("youtu.be")) {
+      const id = url.pathname.split("/").filter(Boolean)[0];
+      return id || null;
+    }
+
+    // youtube.com/watch?v=<id>
+    const v = url.searchParams.get("v");
+    if (v) return v;
+
+    // /embed/<id> | /shorts/<id> | /live/<id> | /v/<id>
+    const parts = url.pathname.split("/").filter(Boolean);
+    const ix = parts.findIndex((p) =>
+      ["embed", "shorts", "live", "v"].includes(p)
+    );
+    if (ix !== -1 && parts[ix + 1]) return parts[ix + 1];
+
+    return null;
+  } catch {
+    // string sem URL completa (fallback)
+    const m = str.match(/v=([^&]+)/);
+    return m ? m[1] : null;
+  }
+};
 
 const Player = () => {
   const {
@@ -42,6 +79,7 @@ const Player = () => {
 
   useEffect(() => {
     if (enrolledCourses.length) getCourseData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enrolledCourses]);
 
   const getCourseProgress = async () => {
@@ -60,6 +98,7 @@ const Player = () => {
 
   useEffect(() => {
     getCourseProgress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const marcarComoConcluida = async (lectureId) => {
@@ -136,18 +175,22 @@ const Player = () => {
                 >
                   <div className="border border-t-0 border-[#d3dad9] rounded-b-xl bg-white">
                     {chapter.chapterContent.map((lec, i) => {
-                      const done = progressData?.lectureCompleted.includes(
-                        lec.lectureId
+                      const isCompleted = Boolean(
+                        progressData?.lectureCompleted?.includes(lec.lectureId)
                       );
+                      const ytId = getYouTubeId(lec.lectureUrl);
+
                       return (
                         <div key={i}>
                           <div className="px-5 py-4 flex items-start gap-3">
                             <img
                               src={
-                                done ? assets.blue_tick_icon : assets.play_icon
+                                isCompleted
+                                  ? assets.blue_tick_icon
+                                  : assets.play_icon
                               }
                               className="w-[19px] h-[19px] mt-0.5"
-                              alt={done ? "Concluída" : "Por ver"}
+                              alt={isCompleted ? "Concluída" : "Por ver"}
                             />
                             <div className="flex-1 min-w-0">
                               <div className="text-[15px] text-[#232323] mb-3 truncate">
@@ -157,14 +200,25 @@ const Player = () => {
                                 <div className="flex items-center gap-2">
                                   {lec.lectureUrl && (
                                     <button
-                                      onClick={() =>
+                                      onClick={() => {
+                                        if (!ytId) {
+                                          toast.error("URL do vídeo inválida");
+                                          return;
+                                        }
                                         setPlayerData({
-                                          ...lec,
+                                          videoId: ytId,
+                                          lectureId: lec.lectureId,
+                                          lectureTitle: lec.lectureTitle,
                                           chapter: idx + 1,
                                           lecture: i + 1,
-                                        })
-                                      }
-                                      className="h-7 px-3 rounded-[10px] bg-[#547792] text-[#d3dad9] text-sm hover:bg-[#547792]/85 transition"
+                                        });
+                                      }}
+                                      disabled={!ytId}
+                                      className={`h-7 px-3 rounded-[10px] text-sm transition ${
+                                        ytId
+                                          ? "bg-[#547792] text-[#d3dad9] hover:bg-[#547792]/85"
+                                          : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                                      }`}
                                     >
                                       Assistir
                                     </button>
@@ -204,10 +258,23 @@ const Player = () => {
         <div>
           {playerData ? (
             <div className="space-y-4">
-              <div className="w-full aspect-video border border-black rounded-[7px] overflow-hidden">
+              <div className="w-full border border-black rounded-[7px] overflow-hidden relative aspect-video">
                 <YouTube
-                  iframeClassName="w-full h-full"
-                  videoId={playerData.lectureUrl.split("/").pop()}
+                  videoId={playerData.videoId}
+                  iframeClassName="absolute inset-0 w-full h-full"
+                  opts={{
+                    width: "100%",
+                    height: "100%",
+                    playerVars: {
+                      autoplay: 0,
+                      rel: 0,
+                      modestbranding: 1,
+                      playsinline: 1,
+                    },
+                  }}
+                  onError={() =>
+                    toast.error("Vídeo indisponível ou ID inválido")
+                  }
                 />
               </div>
 
@@ -220,14 +287,16 @@ const Player = () => {
                 <button
                   onClick={() => marcarComoConcluida(playerData.lectureId)}
                   className={`h-9 px-4 rounded-[10px] text-sm transition ${
-                    progressData?.lectureCompleted.includes(
+                    progressData?.lectureCompleted?.includes(
                       playerData.lectureId
                     )
                       ? "bg-[#22c55e] text-white hover:bg-[#16a34a]"
                       : "bg-[#547792] text-white hover:bg-[#547792]/85"
                   }`}
                 >
-                  {progressData?.lectureCompleted.includes(playerData.lectureId)
+                  {progressData?.lectureCompleted?.includes(
+                    playerData.lectureId
+                  )
                     ? "Concluída"
                     : "Marcar como concluída"}
                 </button>

@@ -12,6 +12,8 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Separator } from "../../components/ui/separator";
 import { Checkbox } from "../../components/ui/checkbox";
+import { CATEGORIES } from "../../constants/categories";
+
 import {
   Dialog,
   DialogContent,
@@ -21,14 +23,16 @@ import {
 } from "../../components/ui/dialog";
 
 const AddCourse = () => {
-  const { backendUrl, getToken } = useContext(AppContext);
+  const { backendUrl, getToken, categories, fetchCategories } =
+    useContext(AppContext);
 
   const quillRef = useRef(null);
   const editorRef = useRef(null);
 
   const [courseTitle, setCourseTitle] = useState("");
-  const [coursePrice, setCoursePrice] = useState(null);
-  const [discount, setDiscount] = useState(null);
+  const [coursePrice, setCoursePrice] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [category, setCategory] = useState(""); // <-- NOVO
   const [image, setImage] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -47,6 +51,11 @@ const AddCourse = () => {
       quillRef.current = new Quill(editorRef.current, { theme: "snow" });
     }
   }, []);
+
+  // Carregar categorias no arranque (para o dropdown)
+  useEffect(() => {
+    fetchCategories?.();
+  }, [fetchCategories]);
 
   const handleChapter = (action, chapterId) => {
     if (action === "add") {
@@ -124,12 +133,16 @@ const AddCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!image) return toast.error("Miniatura não selecionada");
+    if (!category) return toast.error("Seleciona uma categoria");
+    if (Number(discount) < 0 || Number(discount) > 100)
+      return toast.error("Desconto deve estar entre 0 e 100");
 
     const courseData = {
       courseTitle,
       courseDescription: quillRef.current?.root?.innerHTML || "",
       coursePrice: Number(coursePrice),
       discount: Number(discount),
+      category, // <-- NOVO
       courseContent: chapters,
     };
 
@@ -142,19 +155,26 @@ const AddCourse = () => {
       const { data } = await axios.post(
         `${backendUrl}/api/educator/add-course`,
         formData,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // não forces Content-Type; deixa o browser definir o boundary de multipart
+          },
+        }
       );
 
       if (data.success) {
-        toast.success(data.message);
+        toast.success(data.message || "Curso criado!");
+        // reset
         setCourseTitle("");
-        setCoursePrice(0);
-        setDiscount(0);
+        setCoursePrice("");
+        setDiscount("");
+        setCategory("");
         setImage(null);
         setChapters([]);
         if (quillRef.current) quillRef.current.root.innerHTML = "";
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Falha ao criar curso");
       }
     } catch (error) {
       toast.error(error.message);
@@ -164,7 +184,6 @@ const AddCourse = () => {
   return (
     <div className="bg-white min-h-screen p-6 md:p-8">
       <form onSubmit={handleSubmit} className="max-w-4xl w-full space-y-8">
-        {/* Header simples */}
         <div>
           <h1 className="text-2xl font-semibold text-[#213448]">
             Adicionar Curso
@@ -200,6 +219,7 @@ const AddCourse = () => {
               />
             </div>
 
+            {/* linha: preço, desconto, categoria, miniatura */}
             <div className="flex flex-wrap gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-[#213448]">
@@ -208,7 +228,7 @@ const AddCourse = () => {
                 <Input
                   type="number"
                   value={coursePrice}
-                  onChange={(e) => setCoursePrice(Number(e.target.value))}
+                  onChange={(e) => setCoursePrice(e.target.value)}
                   placeholder="0"
                   required
                   className="w-36"
@@ -222,12 +242,34 @@ const AddCourse = () => {
                 <Input
                   type="number"
                   value={discount}
-                  onChange={(e) => setDiscount(Number(e.target.value))}
+                  onChange={(e) => setDiscount(e.target.value)}
                   min={0}
                   max={100}
                   placeholder="0"
                   className="w-36"
                 />
+              </div>
+
+              {/* CATEGORIA */}
+              <div className="space-y-2 flex flex-col">
+                <label className="text-sm font-medium text-[#213448]">
+                  Categoria
+                </label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                  className="w-56 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow outline-none shadow-sm"
+                >
+                  <option value="" disabled>
+                    Seleciona…
+                  </option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="space-y-2">
@@ -381,7 +423,6 @@ const AddCourse = () => {
           </CardContent>
         </Card>
 
-        {/* Publicar */}
         <div className="flex justify-end">
           <Button
             type="submit"
@@ -393,7 +434,22 @@ const AddCourse = () => {
       </form>
 
       {/* Dialog: Nova aula */}
-      <Dialog open={showPopup} onOpenChange={setShowPopup}>
+      <Dialog
+        open={showPopup}
+        onOpenChange={(open) => {
+          setShowPopup(open);
+          if (!open) {
+            // opcional: reset quando fecha
+            setLectureDetails({
+              lectureTitle: "",
+              lectureDuration: "",
+              lectureUrl: "",
+              isPreviewFree: false,
+            });
+            setCurrentChapterId(null);
+          }
+        }}
+      >
         <DialogContent className="sm:max-w-[420px]">
           <DialogHeader>
             <DialogTitle>Nova Aula</DialogTitle>
@@ -404,10 +460,10 @@ const AddCourse = () => {
               placeholder="Título"
               value={lectureDetails.lectureTitle}
               onChange={(e) =>
-                setLectureDetails({
-                  ...lectureDetails,
+                setLectureDetails((s) => ({
+                  ...s,
                   lectureTitle: e.target.value,
-                })
+                }))
               }
             />
             <Input
@@ -415,31 +471,27 @@ const AddCourse = () => {
               placeholder="Duração (min)"
               value={lectureDetails.lectureDuration}
               onChange={(e) =>
-                setLectureDetails({
-                  ...lectureDetails,
+                setLectureDetails((s) => ({
+                  ...s,
                   lectureDuration: e.target.value,
-                })
+                }))
               }
             />
             <Input
-              placeholder="URL"
+              placeholder="URL (ex.: https://…)"
               value={lectureDetails.lectureUrl}
               onChange={(e) =>
-                setLectureDetails({
-                  ...lectureDetails,
-                  lectureUrl: e.target.value,
-                })
+                setLectureDetails((s) => ({ ...s, lectureUrl: e.target.value }))
               }
             />
-
             <label className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={lectureDetails.isPreviewFree}
                 onCheckedChange={(val) =>
-                  setLectureDetails({
-                    ...lectureDetails,
+                  setLectureDetails((s) => ({
+                    ...s,
                     isPreviewFree: Boolean(val),
-                  })
+                  }))
                 }
               />
               Pré-visualização gratuita?
@@ -449,7 +501,22 @@ const AddCourse = () => {
           <DialogFooter className="pt-4">
             <Button
               className="w-full bg-[#94b4c1] hover:bg-[#7ea3b0]"
-              onClick={addLecture}
+              onClick={() => {
+                if (!lectureDetails.lectureTitle?.trim())
+                  return toast.error("Título da aula é obrigatório");
+                if (
+                  !lectureDetails.lectureDuration ||
+                  Number(lectureDetails.lectureDuration) <= 0
+                )
+                  return toast.error("Define a duração (minutos)");
+
+                // garante número
+                setLectureDetails((s) => ({
+                  ...s,
+                  lectureDuration: Number(s.lectureDuration),
+                }));
+                addLecture();
+              }}
             >
               Adicionar Aula
             </Button>

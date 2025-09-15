@@ -5,6 +5,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
@@ -33,16 +34,14 @@ export const AppContextProvider = (props) => {
   //-------------------------------------------------
 
   //Fetch all courses
-  const fetchAllCourses = async (opts = {}) => {
+  const fetchAllCourses = async ({ category } = {}) => {
     try {
-      const { category } = opts;
       const { data } = await axios.get(`${backendUrl}/api/course/all`, {
-        params: category ? { category } : undefined, // axios serializa params
+        params: category ? { category } : undefined, // axios serializa query params
       });
       if (data.success) setAllCourses(data.courses);
-      else toast.error(data.message);
-    } catch (error) {
-      toast.error(error.message);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
 
@@ -481,6 +480,7 @@ export const AppContextProvider = (props) => {
       getRecommendedUsers();
       getOutgoingFriendReqs();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const value = {

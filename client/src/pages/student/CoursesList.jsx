@@ -4,15 +4,17 @@ import SearchBar from "../../components/student/SearchBar";
 import { useParams } from "react-router-dom";
 import CourseCard from "../../components/student/CourseCard";
 import { assets } from "../../assets/assets";
+import { CATEGORIES } from "../../constants/categories";
 
 const CoursesList = () => {
-  const { navigate, allCourses, categories, fetchCategories, fetchAllCourses } =
+  const { navigate, allCourses, fetchCategories, fetchAllCourses } =
     useContext(AppContext);
 
   const { input } = useParams();
 
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [category, setCategory] = useState("");
 
   // carregar categorias e cursos (sem filtro) no arranque
   useEffect(() => {
@@ -21,13 +23,10 @@ const CoursesList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // quando a categoria muda -> pedir cursos filtrados ao backend
   useEffect(() => {
-    fetchAllCourses?.({
-      category: selectedCategory || undefined,
-    });
+    fetchAllCourses({ category: category || undefined });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory]);
+  }, [category]);
 
   // filtrar por título no cliente (com base em `input`)
   useEffect(() => {
@@ -73,18 +72,16 @@ const CoursesList = () => {
                 Categoria:
               </label>
               <select
-                id="category"
-                className="border rounded-md px-3 py-2 text-sm bg-white"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-56 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow outline-none shadow-sm"
               >
                 <option value="">Todas</option>
-                {Array.isArray(categories) &&
-                  categories.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
               </select>
             </div>
 

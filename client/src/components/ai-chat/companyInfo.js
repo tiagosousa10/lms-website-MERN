@@ -148,7 +148,7 @@ Revê cursos submetidos; aprova/solicita ajustes; modera um testemunho inadequad
 
 - **Chatbot 24/7**: respostas imediatas a dúvidas comuns.
 - **FAQ (Perguntas Frequentes)**: requisitos técnicos, procedimentos, erros comuns.
-- **Contacto/Email**: formulário no site ou suporte por email (ex.: support@tsacademy.com) com resposta em 24–48h úteis.
+- **Contacto/Email**: formulário no site ou suporte por email (ex.: tiagosousa.tams@hotmail.com) com resposta em 24–48h úteis.
 - **Suporte Avançado**: incidentes críticos, pagamentos e segurança (escalonamento e notificações).
 - **Comunidade & Redes**: chat interno; presença em redes sociais para novidades e dicas.
 

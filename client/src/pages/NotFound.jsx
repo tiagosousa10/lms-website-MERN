@@ -55,7 +55,7 @@ const NotFound = () => {
               Se o problema persistir,{" "}
               <a
                 className="underline"
-                href="mailto:support@tsacademy.pt?subject=404%20na%20tsAcademy"
+                href="mailto:tiagosousa.tams@hotmail.com?subject=404%20na%20tsAcademy"
               >
                 contacta o suporte
               </a>

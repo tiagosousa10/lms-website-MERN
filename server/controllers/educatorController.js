@@ -4,6 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { Purchase } from "../models/Purchase.js";
 import User from "../models/User.js";
 import { CourseProgress } from "../models/CourseProgress.js";
+import fs from "fs/promises"; // <-- NOVO: para remover ficheiros temporários do multer
 
 //update role to educator
 export const updateRoleToEducator = async (req, res) => {
@@ -49,6 +50,11 @@ export const addCourse = async (req, res) => {
     newCourse.courseThumbnail = upload.secure_url;
     newCourse.courseThumbnailId = upload.public_id; // <— guarda o public_id
     await newCourse.save();
+
+    // limpa tmp se for o caso
+    try {
+      await fs.unlink(imageFile.path);
+    } catch {}
 
     res.json({ success: true, message: "Course added successfully" });
   } catch (error) {
@@ -183,7 +189,6 @@ export const deleteCourse = async (req, res) => {
 
     // 3) Remover thumbnail do Cloudinary (se possível)
     try {
-      // Ideal: guardar o public_id quando fazes upload (ver atualização do addCourse abaixo)
       const publicId =
         course.courseThumbnailId ||
         (course.courseThumbnail
@@ -191,11 +196,26 @@ export const deleteCourse = async (req, res) => {
           : null);
 
       if (publicId) {
-        await cloudinary.uploader.destroy(publicId); // apaga um asset por public_id
+        await cloudinary.uploader.destroy(publicId);
       }
-      // Dica: se guardares folder (ex: "courses/abc123"), mantém isso em courseThumbnailId.
-    } catch (_) {
-      // Não falhar o delete do curso só porque a imagem não foi apagada
+    } catch (_) {}
+
+    // 3b) NOVO: remover vídeos de aulas (Cloudinary) antes de apagar o curso
+    try {
+      for (const ch of course.courseContent || []) {
+        for (const lec of ch.chapterContent || []) {
+          if (
+            lec?.lectureProvider === "cloudinary" &&
+            lec?.cloudinaryPublicId
+          ) {
+            await cloudinary.uploader.destroy(lec.cloudinaryPublicId, {
+              resource_type: "video", // IMPORTANTÍSSIMO p/ vídeos
+            });
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao apagar vídeos do curso:", e?.message);
     }
 
     // 4) Remover o curso da lista de inscritos dos alunos
@@ -256,14 +276,14 @@ export const removeStudentFromCourse = async (req, res) => {
     // 3) Remover aluno do array enrolledStudents do curso
     await Course.updateOne(
       { _id: courseId },
-      { $pull: { enrolledStudents: String(userId) } } // $pull remove o valor do array
-    ); // :contentReference[oaicite:1]{index=1}
+      { $pull: { enrolledStudents: String(userId) } }
+    );
 
     // 4) Remover curso da lista "enrolledCourses" do aluno
     await User.updateOne(
       { _id: String(userId) },
       { $pull: { enrolledCourses: course._id } }
-    ); // :contentReference[oaicite:2]{index=2}
+    );
 
     // 5) Remover progresso desse aluno nesse curso
     await CourseProgress.deleteMany({
@@ -277,5 +297,172 @@ export const removeStudentFromCourse = async (req, res) => {
   } catch (error) {
     console.log("Error in removeStudentFromCourse:", error.message);
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * Upload do vídeo (multer -> Cloudinary).
+ * Espera form-data com campo "video" e, opcionalmente, "courseId".
+ * Devolve: secure_url, public_id, duration (s).
+ */
+export const uploadLectureVideo = async (req, res) => {
+  try {
+    const file = req.file; // field "video"
+    const { courseId } = req.body || {};
+
+    if (!file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Falta ficheiro de vídeo" });
+    }
+
+    // Para < 100 MB usa upload normal (resposta completa do Cloudinary)
+    const result = await cloudinary.uploader.upload(file.path, {
+      resource_type: "video",
+      folder: `courses/${courseId || "general"}/lectures`,
+      // opcional: eager transformations, overwrite, etc.
+    });
+
+    // limpa tmp
+    try {
+      await fs.unlink(file.path);
+    } catch {}
+
+    // devolve TUDO o que o front precisa
+    return res.json({
+      success: true,
+      data: {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+        duration: Math.round(result.duration || 0),
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        resource_type: result.resource_type,
+      },
+    });
+  } catch (err) {
+    console.error("[uploadLectureVideo] error:", err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+/**
+ * Cria uma aula (YouTube OU Cloudinary) num capítulo de um curso.
+ * Body:
+ *  - lectureId, lectureTitle, lectureOrder, isPreviewFree
+ *  - provider: "youtube" | "cloudinary"
+ *  - youtubeUrl (se provider="youtube")
+ *  - cloudinaryUrl, cloudinaryPublicId, duration (se provider="cloudinary")
+ */
+export const addLecture = async (req, res) => {
+  try {
+    const educatorId = req.auth.userId;
+    const { courseId, chapterId } = req.params;
+
+    const {
+      lectureId,
+      lectureTitle,
+      lectureOrder,
+      isPreviewFree,
+      provider, // "youtube" | "cloudinary"
+      youtubeUrl,
+      cloudinaryUrl,
+      cloudinaryPublicId,
+      duration, // segundos (Cloudinary devolve)
+    } = req.body;
+
+    const course = await Course.findById(courseId);
+    if (!course)
+      return res
+        .status(404)
+        .json({ success: false, message: "Curso não encontrado" });
+    if (String(course.educator) !== String(educatorId))
+      return res.status(403).json({ success: false, message: "Sem permissão" });
+
+    const chapter = course.courseContent.find((c) => c.chapterId === chapterId);
+    if (!chapter)
+      return res
+        .status(404)
+        .json({ success: false, message: "Capítulo não encontrado" });
+
+    const isCloud = provider === "cloudinary";
+    const lectureUrl = isCloud ? cloudinaryUrl : youtubeUrl;
+    if (!lectureUrl) {
+      return res
+        .status(400)
+        .json({ success: false, message: "URL do vídeo em falta" });
+    }
+
+    const lecture = {
+      lectureId,
+      lectureTitle,
+      lectureOrder: Number(lectureOrder),
+      isPreviewFree: !!isPreviewFree,
+      lectureProvider: isCloud ? "cloudinary" : "youtube",
+      lectureUrl,
+      lectureDuration: Number(duration) || 0,
+      cloudinaryPublicId: isCloud ? cloudinaryPublicId : undefined,
+    };
+
+    chapter.chapterContent.push(lecture);
+    await course.save();
+
+    return res.json({ success: true, message: "Aula adicionada", lecture });
+  } catch (error) {
+    console.error("addLecture error:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * Remove uma aula. Se for Cloudinary, apaga também o vídeo remoto.
+ */
+export const deleteLecture = async (req, res) => {
+  try {
+    const educatorId = req.auth.userId;
+    const { courseId, chapterId, lectureId } = req.params;
+
+    const course = await Course.findById(courseId);
+    if (!course)
+      return res
+        .status(404)
+        .json({ success: false, message: "Curso não encontrado" });
+    if (String(course.educator) !== String(educatorId))
+      return res.status(403).json({ success: false, message: "Sem permissão" });
+
+    const chapter = course.courseContent.find((c) => c.chapterId === chapterId);
+    if (!chapter)
+      return res
+        .status(404)
+        .json({ success: false, message: "Capítulo não encontrado" });
+
+    const idx = chapter.chapterContent.findIndex(
+      (l) => l.lectureId === lectureId
+    );
+    if (idx < 0)
+      return res
+        .status(404)
+        .json({ success: false, message: "Aula não encontrada" });
+
+    const lec = chapter.chapterContent[idx];
+
+    if (lec.lectureProvider === "cloudinary" && lec.cloudinaryPublicId) {
+      try {
+        await cloudinary.uploader.destroy(lec.cloudinaryPublicId, {
+          resource_type: "video", // obrigatório p/ vídeo
+        });
+      } catch (e) {
+        console.warn("Falha a apagar vídeo Cloudinary:", e?.message);
+      }
+    }
+
+    chapter.chapterContent.splice(idx, 1);
+    await course.save();
+
+    return res.json({ success: true, message: "Aula removida" });
+  } catch (error) {
+    console.error("deleteLecture error:", error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

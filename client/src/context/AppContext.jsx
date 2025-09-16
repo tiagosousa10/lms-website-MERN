@@ -180,6 +180,85 @@ export const AppContextProvider = (props) => {
       return { ok: false, error: err.message };
     }
   };
+  // --- NOVO: converter segundos → minutos, arredondando para cima (para UI)
+  const secsToMins = (s) => Math.max(1, Math.ceil(Number(s || 0) / 60));
+
+  // --- NOVO: upload de vídeo (multer → Cloudinary)
+  const uploadLectureVideo = async ({ file, courseId }) => {
+    try {
+      const token = await getToken();
+      const fd = new FormData();
+      fd.append("video", file); // campo "video" no backend
+      if (courseId) fd.append("courseId", courseId);
+
+      const { data } = await axios.post(
+        `${backendUrl}/api/educator/cloudinary/video`,
+        fd,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // NÃO definir Content-Type: o browser trata do boundary do multipart
+          },
+        }
+      );
+
+      if (data?.success) {
+        // devolve secure_url, public_id, duration (s), format
+        return { ok: true, ...data.data };
+      }
+      toast.error(data?.message || "Falha no upload do vídeo");
+      return { ok: false, error: data?.message };
+    } catch (err) {
+      toast.error(err.message);
+      return { ok: false, error: err.message };
+    }
+  };
+
+  // --- NOVO: criar aula num curso existente (opcional — pós-publicação)
+  const createLecture = async ({ courseId, chapterId, payload }) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        `${backendUrl}/api/educator/course/${courseId}/chapter/${chapterId}/lecture`,
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success(data.message || "Aula criada");
+        return { ok: true, lecture: data.lecture };
+      }
+      toast.error(data.message || "Falha ao criar a aula");
+      return { ok: false, error: data.message };
+    } catch (err) {
+      toast.error(err.message);
+      return { ok: false, error: err.message };
+    }
+  };
+
+  // --- NOVO: remover aula num curso existente (opcional — pós-publicação)
+  const deleteLectureFromCourse = async ({
+    courseId,
+    chapterId,
+    lectureId,
+  }) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.delete(
+        `${backendUrl}/api/educator/course/${courseId}/chapter/${chapterId}/lecture/${lectureId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success(data.message || "Aula removida");
+        return { ok: true };
+      }
+      toast.error(data.message || "Falha ao remover aula");
+      return { ok: false, error: data.message };
+    } catch (err) {
+      toast.error(err.message);
+      return { ok: false, error: err.message };
+    }
+  };
+
   //-------------------------------------------------
   // --------------------COMMUNITY AND CHATS---------
   //-------------------------------------------------
@@ -527,6 +606,10 @@ export const AppContextProvider = (props) => {
     removeStudentFromCourse,
     categories,
     fetchCategories,
+    uploadLectureVideo,
+    createLecture,
+    deleteLectureFromCourse,
+    secsToMins,
   };
 
   return (

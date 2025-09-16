@@ -23,8 +23,13 @@ import {
 } from "../../components/ui/dialog";
 
 const AddCourse = () => {
-  const { backendUrl, getToken, categories, fetchCategories } =
-    useContext(AppContext);
+  const {
+    backendUrl,
+    getToken,
+    categories,
+    uploadLectureVideo, // <-- NOVO (vem do AppContext)
+    secsToMins, // <-- NOVO (opcional, para converter seg → min)
+  } = useContext(AppContext);
 
   const quillRef = useRef(null);
   const editorRef = useRef(null);
@@ -32,18 +37,25 @@ const AddCourse = () => {
   const [courseTitle, setCourseTitle] = useState("");
   const [coursePrice, setCoursePrice] = useState("");
   const [discount, setDiscount] = useState("");
-  const [category, setCategory] = useState(""); // <-- NOVO
+  const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [currentChapterId, setCurrentChapterId] = useState(null);
 
+  // ---- NOVO: detalhes da aula com provider e publicId ----
   const [lectureDetails, setLectureDetails] = useState({
     lectureTitle: "",
-    lectureDuration: "",
+    lectureDuration: "", // minutos (UI)
     lectureUrl: "",
     isPreviewFree: false,
+    lectureProvider: "youtube", // "youtube" | "cloudinary"
+    cloudinaryPublicId: undefined, // se for Cloudinary
   });
+
+  // ---- NOVO: gestão de upload do vídeo (Cloudinary) ----
+  const [videoFile, setVideoFile] = useState(null);
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
 
   // Quill init
   useEffect(() => {
@@ -51,11 +63,6 @@ const AddCourse = () => {
       quillRef.current = new Quill(editorRef.current, { theme: "snow" });
     }
   }, []);
-
-  // Carregar categorias no arranque (para o dropdown)
-  useEffect(() => {
-    fetchCategories?.();
-  }, [fetchCategories]);
 
   const handleChapter = (action, chapterId) => {
     if (action === "add") {
@@ -102,11 +109,32 @@ const AddCourse = () => {
 
   const addLecture = () => {
     if (!currentChapterId) return;
+
+    // validações rápidas
+    if (!lectureDetails.lectureTitle?.trim())
+      return toast.error("Título da aula é obrigatório");
+
+    const dur = Number(lectureDetails.lectureDuration);
+    if (!dur || dur <= 0) return toast.error("Define a duração (minutos)");
+
+    if (
+      lectureDetails.lectureProvider === "youtube" &&
+      !lectureDetails.lectureUrl
+    )
+      return toast.error("Insere o URL do YouTube");
+
+    if (
+      lectureDetails.lectureProvider === "cloudinary" &&
+      !lectureDetails.lectureUrl
+    )
+      return toast.error("Carrega o vídeo para gerar o URL");
+
     setChapters((prev) =>
       prev.map((chapter) => {
         if (chapter.chapterId === currentChapterId) {
           const newLecture = {
             ...lectureDetails,
+            lectureDuration: dur, // garantir número (minutos)
             lectureOrder:
               chapter.chapterContent.length > 0
                 ? chapter.chapterContent.slice(-1)[0].lectureOrder + 1
@@ -121,13 +149,19 @@ const AddCourse = () => {
         return chapter;
       })
     );
+
+    // reset diálogo
     setShowPopup(false);
     setLectureDetails({
       lectureTitle: "",
       lectureDuration: "",
       lectureUrl: "",
       isPreviewFree: false,
+      lectureProvider: "youtube",
+      cloudinaryPublicId: undefined,
     });
+    setVideoFile(null);
+    setIsUploadingVideo(false);
   };
 
   const handleSubmit = async (e) => {
@@ -142,8 +176,8 @@ const AddCourse = () => {
       courseDescription: quillRef.current?.root?.innerHTML || "",
       coursePrice: Number(coursePrice),
       discount: Number(discount),
-      category, // <-- NOVO
-      courseContent: chapters,
+      category,
+      courseContent: chapters, // já inclui provider/URL/publicId/duração
     };
 
     const formData = new FormData();
@@ -156,10 +190,7 @@ const AddCourse = () => {
         `${backendUrl}/api/educator/add-course`,
         formData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // não forces Content-Type; deixa o browser definir o boundary de multipart
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
@@ -180,6 +211,16 @@ const AddCourse = () => {
       toast.error(error.message);
     }
   };
+
+  // Ativar o botão só quando tudo estiver pronto
+  const canAddLecture =
+    lectureDetails.lectureTitle?.trim() &&
+    Number(lectureDetails.lectureDuration) > 0 &&
+    !isUploadingVideo &&
+    ((lectureDetails.lectureProvider === "youtube" &&
+      !!lectureDetails.lectureUrl) ||
+      (lectureDetails.lectureProvider === "cloudinary" &&
+        !!lectureDetails.lectureUrl));
 
   return (
     <div className="bg-white min-h-screen p-6 md:p-8">
@@ -374,7 +415,13 @@ const AddCourse = () => {
                               —{" "}
                               {lecture.isPreviewFree
                                 ? "Prévia gratuita"
-                                : "Pago"}
+                                : "Pago"}{" "}
+                              —{" "}
+                              <span className="text-xs px-2 py-0.5 rounded border">
+                                {lecture.lectureProvider === "cloudinary"
+                                  ? "Cloudinary"
+                                  : "YouTube"}
+                              </span>
                             </p>
                             <Button
                               type="button"
@@ -439,18 +486,22 @@ const AddCourse = () => {
         onOpenChange={(open) => {
           setShowPopup(open);
           if (!open) {
-            // opcional: reset quando fecha
+            // reset ao fechar
             setLectureDetails({
               lectureTitle: "",
               lectureDuration: "",
               lectureUrl: "",
               isPreviewFree: false,
+              lectureProvider: "youtube",
+              cloudinaryPublicId: undefined,
             });
+            setVideoFile(null);
+            setIsUploadingVideo(false);
             setCurrentChapterId(null);
           }
         }}
       >
-        <DialogContent className="sm:max-w-[420px]">
+        <DialogContent className="sm:max-w-[480px]">
           <DialogHeader>
             <DialogTitle>Nova Aula</DialogTitle>
           </DialogHeader>
@@ -466,6 +517,116 @@ const AddCourse = () => {
                 }))
               }
             />
+
+            {/* Origem do vídeo */}
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Origem do vídeo</label>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="radio"
+                    name="provider"
+                    value="youtube"
+                    checked={lectureDetails.lectureProvider === "youtube"}
+                    onChange={() =>
+                      setLectureDetails((s) => ({
+                        ...s,
+                        lectureProvider: "youtube",
+                        lectureUrl: "",
+                        cloudinaryPublicId: undefined,
+                      }))
+                    }
+                  />
+                  YouTube (link)
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="radio"
+                    name="provider"
+                    value="cloudinary"
+                    checked={lectureDetails.lectureProvider === "cloudinary"}
+                    onChange={() =>
+                      setLectureDetails((s) => ({
+                        ...s,
+                        lectureProvider: "cloudinary",
+                        lectureUrl: "",
+                        cloudinaryPublicId: undefined,
+                      }))
+                    }
+                  />
+                  Cloudinary (ficheiro)
+                </label>
+              </div>
+            </div>
+
+            {/* Campos por provider */}
+            {lectureDetails.lectureProvider === "youtube" ? (
+              <Input
+                placeholder="URL do YouTube (https://…)"
+                value={lectureDetails.lectureUrl}
+                onChange={(e) =>
+                  setLectureDetails((s) => ({
+                    ...s,
+                    lectureUrl: e.target.value,
+                  }))
+                }
+              />
+            ) : (
+              <div className="space-y-2">
+                <Input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={!videoFile || isUploadingVideo}
+                  onClick={async () => {
+                    if (!videoFile) return;
+                    try {
+                      setIsUploadingVideo(true);
+                      const up = await uploadLectureVideo({
+                        file: videoFile,
+                        // courseId: opcional para organizar pastas no Cloudinary
+                      });
+                      if (up.ok) {
+                        setLectureDetails((s) => ({
+                          ...s,
+                          lectureUrl: up.secure_url,
+                          cloudinaryPublicId: up.public_id,
+                          lectureDuration: secsToMins
+                            ? secsToMins(up.duration)
+                            : Math.max(1, Math.ceil((up.duration || 0) / 60)),
+                        }));
+                        toast.success("Vídeo carregado");
+                      } else {
+                        toast.error(up.error || "Falha no upload");
+                      }
+                    } finally {
+                      setIsUploadingVideo(false);
+                    }
+                  }}
+                >
+                  {isUploadingVideo ? "A carregar…" : "Carregar vídeo"}
+                </Button>
+
+                {lectureDetails.lectureUrl && (
+                  <p className="text-xs text-gray-600 break-all">
+                    URL:{" "}
+                    <a
+                      href={lectureDetails.lectureUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline"
+                    >
+                      {lectureDetails.lectureUrl}
+                    </a>
+                  </p>
+                )}
+              </div>
+            )}
+
             <Input
               type="number"
               placeholder="Duração (min)"
@@ -477,13 +638,7 @@ const AddCourse = () => {
                 }))
               }
             />
-            <Input
-              placeholder="URL (ex.: https://…)"
-              value={lectureDetails.lectureUrl}
-              onChange={(e) =>
-                setLectureDetails((s) => ({ ...s, lectureUrl: e.target.value }))
-              }
-            />
+
             <label className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={lectureDetails.isPreviewFree}
@@ -501,16 +656,11 @@ const AddCourse = () => {
           <DialogFooter className="pt-4">
             <Button
               className="w-full bg-[#94b4c1] hover:bg-[#7ea3b0]"
+              disabled={!canAddLecture}
               onClick={() => {
-                if (!lectureDetails.lectureTitle?.trim())
-                  return toast.error("Título da aula é obrigatório");
-                if (
-                  !lectureDetails.lectureDuration ||
-                  Number(lectureDetails.lectureDuration) <= 0
-                )
-                  return toast.error("Define a duração (minutos)");
+                // proteção extra caso alguém force o clique
+                if (!canAddLecture) return;
 
-                // garante número
                 setLectureDetails((s) => ({
                   ...s,
                   lectureDuration: Number(s.lectureDuration),
@@ -518,7 +668,7 @@ const AddCourse = () => {
                 addLecture();
               }}
             >
-              Adicionar Aula
+              {isUploadingVideo ? "A aguardar upload…" : "Adicionar Aula"}
             </Button>
           </DialogFooter>
         </DialogContent>

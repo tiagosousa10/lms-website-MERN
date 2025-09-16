@@ -18,7 +18,6 @@ const CoursesList = () => {
 
   // carregar categorias e cursos (sem filtro) no arranque
   useEffect(() => {
-    fetchCategories?.();
     fetchAllCourses?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -87,7 +87,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <button
-                  onClick={() => navigate(-1)}
+                  onClick={() => navigate("/")}
                   className="hidden sm:inline-flex items-center gap-2 rounded-md border border-white/40 px-3 py-2 text-sm hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
                   <StepBack className="h-5 w-5" aria-hidden="true" />

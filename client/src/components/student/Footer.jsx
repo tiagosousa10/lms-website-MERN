@@ -96,7 +96,7 @@ const Footer = () => {
                 />
                 <button
                   type="submit"
-                  className="h-11 px-4 rounded-md bg-[#94B4C1] text-[#0b1721] font-medium hover:opacity-90 transition inline-flex items-center justify-center min-w-[120px]"
+                  className="h-11 px-4 rounded-md bg-[#94B4C1] text-white font-medium hover:opacity-90 transition inline-flex items-center justify-center min-w-[120px]"
                 >
                   Subscrever
                 </button>

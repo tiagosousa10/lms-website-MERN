@@ -164,7 +164,7 @@ const AddCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!image) return toast.error("Miniatura não selecionada");
+    if (!image) return toast.error("Imagem não selecionada");
     if (!category) return toast.error("Seleciona uma categoria");
     if (Number(discount) < 0 || Number(discount) > 100)
       return toast.error("Desconto deve estar entre 0 e 100");
@@ -310,7 +310,7 @@ const AddCourse = () => {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-[#213448]">
-                    Miniatura
+                    Imagem
                   </label>
                   <div className="flex items-center gap-3">
                     <label

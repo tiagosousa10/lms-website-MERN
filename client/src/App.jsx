@@ -28,9 +28,12 @@ import Testimonies from "./pages/community/Testimonies";
 import Friends from "./pages/community/Friends";
 import ChatBot from "./components/ai-chat/ChatBot";
 import Faq from "./pages/student/Faq";
+import { AppContext } from "./context/AppContext";
+import { useContext } from "react";
 
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
+  const { isEducator, userData } = useContext(AppContext);
 
   return (
     <div className="text-default min-h-screen bg-white">
@@ -42,33 +45,43 @@ const App = () => {
         <Route path="/course-list" element={<CoursesList />} />
         <Route path="/course-list/:input" element={<CoursesList />} />
         <Route path="/course/:id" element={<CourseDetails />} />
-        <Route path="/my-enrollments" element={<MyEnrollments />} />
-        <Route path="/player/:courseId" element={<Player />} />
+        {userData && (
+          <>
+            <Route path="/my-enrollments" element={<MyEnrollments />} />
+            <Route path="/player/:courseId" element={<Player />} />
+          </>
+        )}
+
         <Route path="/loading/:path" element={<Loading />} />
+
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/faq" element={<Faq />} />
         {/* SOCIAL & CHAT  : TODO -> VERIFICAR UTILIZADOR LOGADO*/}
 
-        <Route
-          path="/community"
-          element={<CommunityLayout showSidebar={true} />}
-        >
-          <Route index element={<CommunityPage />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="chat/:id" element={<ChatPage />} />
-          <Route path="call/:id" element={<CallPage />} />
-          <Route path="friends" element={<Friends />} />
-          <Route path="testimonies" element={<Testimonies />} />
-        </Route>
+        {userData && (
+          <Route
+            path="/community"
+            element={<CommunityLayout showSidebar={true} />}
+          >
+            <Route index element={<CommunityPage />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="chat/:id" element={<ChatPage />} />
+            <Route path="call/:id" element={<CallPage />} />
+            <Route path="friends" element={<Friends />} />
+            <Route path="testimonies" element={<Testimonies />} />
+          </Route>
+        )}
 
-        <Route path="/educator" element={<Educator />}>
-          <Route path="/educator" element={<Dashboard />} />
-          <Route path="add-course" element={<AddCourse />} />
-          <Route path="my-courses" element={<MyCourses />} />
-          <Route path="student-enrolled" element={<StudentsEnrolled />} />
-        </Route>
+        {isEducator && (
+          <Route path="/educator" element={<Educator />}>
+            <Route path="/educator" element={<Dashboard />} />
+            <Route path="add-course" element={<AddCourse />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="student-enrolled" element={<StudentsEnrolled />} />
+          </Route>
+        )}
 
         <Route path="*" element={<NotFound />} />
       </Routes>

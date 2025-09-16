@@ -157,7 +157,7 @@ const MobileMenu = ({ user, isEducator, becomeEducator }) => {
 const Navbar = () => {
   const { navigate, isEducator, backendUrl, setIsEducator, getToken } =
     useContext(AppContext);
-  const { openSignIn } = useClerk();
+  const { openSignIn, openSignUp } = useClerk();
   const { user } = useUser();
 
   const becomeEducator = async () => {
@@ -227,185 +227,185 @@ const Navbar = () => {
 
           {/* CENTRO: navegação desktop */}
           <div className="hidden lg:flex items-center">
-            {user && (
-              <NavigationMenu viewport={false}>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      <Link to="/course-list" className="px-4 bg-transparent">
-                        Explorar Cursos
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+            <NavigationMenu viewport={false}>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    asChild
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    <Link to="/course-list" className="px-4 bg-transparent">
+                      Explorar Cursos
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
 
-                  <span
-                    className="mx-1 h-6 w-px bg-white/20"
-                    aria-hidden="true"
-                  />
-
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      <Link
-                        to="/my-enrollments"
-                        className="px-4 bg-transparent"
+                {user && (
+                  <>
+                    <span
+                      className="mx-1 h-6 w-px bg-white/20"
+                      aria-hidden="true"
+                    />
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        asChild
+                        className={navigationMenuTriggerStyle()}
                       >
-                        Meu Aprendizado
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+                        <Link
+                          to="/my-enrollments"
+                          className="px-4 bg-transparent"
+                        >
+                          Meu Aprendizado
+                        </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
 
-                  <span
-                    className="mx-1 h-6 w-px bg-white/20"
-                    aria-hidden="true"
-                  />
+                    <span
+                      className="mx-1 h-6 w-px bg-white/20"
+                      aria-hidden="true"
+                    />
 
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="px-4 bg-transparent text-white/95">
-                      Comunidade
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[320px] gap-2 p-3 bg-[#213448] text-white">
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/community"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">Início</div>
-                              <p className="text-xs text-muted-foreground">
-                                Explora a atividade da comunidade.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/community/notifications"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">
-                                Notificações
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                Pedidos e atualizações.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/community/friends"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">Amigos</div>
-                              <p className="text-xs text-muted-foreground">
-                                Mensagens e gestão de amizades.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/community/testimonies"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">
-                                Testemunhos
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                Partilha a tua experiência.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="px-4 bg-transparent text-white/95">
+                        Comunidade
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-[320px] gap-2 p-3 bg-[#213448] text-white">
+                          <li>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                to="/community"
+                                className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                              >
+                                <div className="text-sm font-medium">
+                                  Início
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Explora a atividade da comunidade.
+                                </p>
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                          <li>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                to="/community/notifications"
+                                className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                              >
+                                <div className="text-sm font-medium">
+                                  Notificações
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Pedidos e atualizações.
+                                </p>
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                          <li>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                to="/community/friends"
+                                className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                              >
+                                <div className="text-sm font-medium">
+                                  Amigos
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Mensagens e gestão de amizades.
+                                </p>
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                          <li>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                to="/community/testimonies"
+                                className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                              >
+                                <div className="text-sm font-medium">
+                                  Testemunhos
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Partilha a tua experiência.
+                                </p>
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </>
+                )}
+                <span
+                  className="mx-1 h-6 w-px bg-white/20"
+                  aria-hidden="true"
+                />
 
-                  <span
-                    className="mx-1 h-6 w-px bg-white/20"
-                    aria-hidden="true"
-                  />
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="px-4 text-white/95 bg-transparent">
-                      Sobre nós
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[320px] gap-2 p-3 bg-[#213448] text-white">
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/about-us"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">
-                                A Equipa
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                Quem somos e o que fazemos.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/contact-us"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">
-                                Contactos
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                Fala connosco.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/privacy-policy"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">
-                                Política de Privacidade
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                Termos e condições.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to="/faq"
-                              className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
-                            >
-                              <div className="text-sm font-medium">FAQ</div>
-                              <p className="text-xs text-muted-foreground">
-                                Dúvidas frequentes.
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            )}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="px-4 text-white/95 bg-transparent">
+                    Sobre nós
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[320px] gap-2 p-3 bg-[#213448] text-white">
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/about-us"
+                            className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                          >
+                            <div className="text-sm font-medium">A Equipa</div>
+                            <p className="text-xs text-muted-foreground">
+                              Quem somos e o que fazemos.
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/contact-us"
+                            className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                          >
+                            <div className="text-sm font-medium">Contactos</div>
+                            <p className="text-xs text-muted-foreground">
+                              Fala connosco.
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/privacy-policy"
+                            className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                          >
+                            <div className="text-sm font-medium">
+                              Política de Privacidade
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Termos e condições.
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/faq"
+                            className="block rounded-md p-3 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2"
+                          >
+                            <div className="text-sm font-medium">FAQ</div>
+                            <p className="text-xs text-muted-foreground">
+                              Dúvidas frequentes.
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
           {/* DIREITA: CTA / User */}

@@ -208,7 +208,7 @@ const MyEnrollments = () => {
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="">
                 {enrolledCourses.map((course, idx) => {
                   const prog = progressArray[idx] || {
                     lectureCompleted: 0,
@@ -222,7 +222,7 @@ const MyEnrollments = () => {
                   return (
                     <tr key={course._id} className="align-top">
                       <td>
-                        <div className="flex items-center gap-4 min-w-[280px]">
+                        <div className="flex items-center gap-4 min-w-[280px] ">
                           <img
                             src={course.courseThumbnail}
                             alt=""

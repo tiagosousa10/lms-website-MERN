@@ -1,5 +1,5 @@
 // pages/Player.jsx
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import YouTube from "react-youtube";
 import { assets } from "../../assets/assets";
@@ -9,8 +9,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Rating from "../../components/student/Rating";
 import Loading from "../../components/student/Loading";
+import CloudinaryVideo from "../../components/student/CloudinaryVideo";
 
-/** === Helper robusto para extrair o ID do YouTube === */
+// === Helper robusto para extrair o ID do YouTube ===
 const getYouTubeId = (input) => {
   if (!input) return null;
   const str = String(input).trim();
@@ -33,6 +34,43 @@ const getYouTubeId = (input) => {
     const m = str.match(/v=([^&]+)/);
     return m ? m[1] : null;
   }
+};
+
+// helper: detetar se URL é Cloudinary
+const isCloudinaryUrl = (u = "") =>
+  /res\.cloudinary\.com\/[^/]+\/video\/upload\//.test(String(u));
+
+/** devolve descritor para player com base na lecture */
+const resolvePlayerSource = (lec) => {
+  // --- CLOUDINARY: usa SEMPRE o MP4 direto se existir lectureUrl ---
+  if (
+    lec.lectureProvider === "Cloudinary" ||
+    lec.cloudinaryPublicId ||
+    isCloudinaryUrl(lec.lectureUrl)
+  ) {
+    // 1) Se já tens o link completo (como no teu exemplo), usa-o
+    if (
+      lec.lectureUrl &&
+      isCloudinaryUrl(lec.lectureUrl) &&
+      lec.lectureUrl.endsWith(".mp4")
+    ) {
+      return { type: "cloudinary", sourceUrl: lec.lectureUrl };
+    }
+    // 2) Caso contrário, constrói a partir do publicId
+    if (lec.cloudinaryPublicId) {
+      return {
+        type: "cloudinary",
+        // Nota: usa o cloudName do teu .env no componente
+        publicId: lec.cloudinaryPublicId,
+      };
+    }
+  }
+
+  // --- YOUTUBE ---
+  const ytId = getYouTubeId(lec.lectureUrl);
+  if (ytId) return { type: "youtube", videoId: ytId };
+
+  return null;
 };
 
 const Player = () => {
@@ -138,23 +176,32 @@ const Player = () => {
               <div className="space-y-4">
                 {/* wrapper responsivo 16:9 */}
                 <div className="relative w-full overflow-hidden rounded-lg border border-slate-300 aspect-video">
-                  <YouTube
-                    videoId={playerData.videoId}
-                    iframeClassName="absolute inset-0 w-full h-full"
-                    opts={{
-                      width: "100%",
-                      height: "100%",
-                      playerVars: {
-                        autoplay: 0,
-                        rel: 0,
-                        modestbranding: 1,
-                        playsinline: 1,
-                      },
-                    }}
-                    onError={() =>
-                      toast.error("Vídeo indisponível ou ID inválido")
-                    }
-                  />
+                  {playerData?.type === "youtube" && (
+                    <YouTube
+                      videoId={playerData.videoId}
+                      iframeClassName="absolute inset-0 w-full h-full"
+                      opts={{
+                        width: "100%",
+                        height: "100%",
+                        playerVars: {
+                          autoplay: 0,
+                          rel: 0,
+                          modestbranding: 1,
+                          playsinline: 1,
+                        },
+                      }}
+                      onError={() => toast.error("Vídeo YouTube indisponível")}
+                    />
+                  )}
+
+                  {playerData?.type === "cloudinary" && (
+                    <CloudinaryVideo
+                      cloudName={import.meta.env.VITE_CLOUDINARY_CLOUD_NAME} // ex.: "dww7ekn5u"
+                      publicId={playerData.publicId}
+                      sourceUrl={playerData.sourceUrl} // quando vem o .mp4, é isto que será usado
+                      poster={courseData.courseThumbnail}
+                    />
+                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
@@ -253,7 +300,9 @@ const Player = () => {
                               lec.lectureId
                             )
                           );
-                          const ytId = getYouTubeId(lec.lectureUrl);
+
+                          // Fonte do player (Cloudinary » URL Cloudinary » YouTube)
+                          const src = resolvePlayerSource(lec);
 
                           return (
                             <div key={i}>
@@ -273,33 +322,36 @@ const Player = () => {
                                   </div>
                                   <div className="flex items-center justify-between gap-3 flex-wrap">
                                     <div className="flex items-center gap-2">
-                                      {!!lec.lectureUrl && (
-                                        <button
-                                          onClick={() => {
-                                            if (!ytId) {
-                                              toast.error(
-                                                "URL do vídeo inválida"
-                                              );
-                                              return;
-                                            }
-                                            setPlayerData({
-                                              videoId: ytId,
-                                              lectureId: lec.lectureId,
-                                              lectureTitle: lec.lectureTitle,
-                                              chapter: idx + 1,
-                                              lecture: i + 1,
-                                            });
-                                          }}
-                                          disabled={!ytId}
-                                          className={`h-8 px-3 rounded-md text-sm transition ${
-                                            ytId
-                                              ? "bg-[#547792] text-[#d3dad9] hover:bg-[#547792]/85"
-                                              : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                                          }`}
-                                        >
-                                          Assistir
-                                        </button>
-                                      )}
+                                      <button
+                                        onClick={() => {
+                                          const src = resolvePlayerSource(lec);
+                                          if (!src) {
+                                            toast.error(
+                                              "Fonte de vídeo inválida"
+                                            );
+                                            return;
+                                          }
+                                          console.log(
+                                            "[Player] Fonte selecionada:",
+                                            src
+                                          );
+                                          setPlayerData({
+                                            ...src,
+                                            lectureId: lec.lectureId,
+                                            lectureTitle: lec.lectureTitle,
+                                            chapter: idx + 1,
+                                            lecture: i + 1,
+                                          });
+                                        }}
+                                        disabled={!resolvePlayerSource(lec)}
+                                        className={`h-8 px-3 rounded-md text-sm transition ${
+                                          resolvePlayerSource(lec)
+                                            ? "bg-[#547792] text-[#d3dad9] hover:bg-[#547792]/85"
+                                            : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                                        }`}
+                                      >
+                                        Assistir
+                                      </button>
                                     </div>
                                     <span className="text-sm text-black/80">
                                       {humanizeDuration(

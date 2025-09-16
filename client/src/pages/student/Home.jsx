@@ -7,7 +7,7 @@ import CallToAction from "../../components/student/CallToAction";
 
 const Home = () => {
   return (
-    <div className="flex flex-col items-center space-y-7 text-center mx-auto w-[90%] ">
+    <div className="flex flex-col items-center text-center w-full">
       <Hero />
       <Companies />
       <CoursesSection />

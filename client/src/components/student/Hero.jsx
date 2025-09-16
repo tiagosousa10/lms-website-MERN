@@ -4,65 +4,72 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../student/SearchBar";
 import { assets } from "../../assets/assets";
 
-export const HeroSection = () => {
+export default function Hero() {
   const navigate = useNavigate();
 
   return (
     <section className="w-full">
-      <div className="mx-auto w-full flex flex-col">
-        {/* ====== BLOCO 1: Banner com imagem + título + CTA ====== */}
-        <div className="relative overflow-hidden mt-10   px-8 mx-auto   ">
+      {/* Bloco 1 — Hero */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Imagem */}
-          <img
-            src={assets.hero}
-            alt="Estudante a aprender no portátil"
-            className="h-[800px]    object-contain justify-center items-center"
-          />
-          {/* Texto sobreposto */}
-          <div className="absolute inset-0 flex items-center left-20">
-            <div className="px-6 sm:px-10 ml-16">
-              <h2 className="max-w-2xl text-8xl sm:text-3xl md:text-5xl font-semibold text-[#44444E] drop-shadow-[0_1px_0_rgba(255,255,255,0.85)]">
-                Bem-vindo à tua plataforma
-                <br className="hidden sm:block" />
-                de aprendizagem digital.
-              </h2>
+          <div className="w-full">
+            <div className="w-full rounded-xl overflow-hidden shadow-sm">
+              <img
+                src={assets.hero}
+                alt="Estudante a aprender no portátil"
+                className="w-full h-64 xs:h-80 md:h-[28rem] object-cover"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          </div>
 
-              <div className="mt-4">
-                <Button
-                  className="bg-[#547792] hover:bg-[#547792]/90 text-[#ecefca] border border-[#d3dad9] rounded-[6px] px-10 py-2 text-sm"
-                  onClick={() => navigate("/course-list")}
-                >
-                  Começar agora
-                </Button>
+          {/* Texto + CTA */}
+          <div className="text-left lg:text-left">
+            <h1 className="text-3xl xs:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-[#44444E]">
+              Bem-vindo à tua plataforma de aprendizagem digital.
+            </h1>
+
+            <p className="mt-4 text-sm md:text-base text-[#566] max-w-prose">
+              Cursos práticos, conteúdos interativos e comunidade de apoio para
+              acelerares o teu percurso.
+            </p>
+
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Button
+                className="bg-[#547792] hover:bg-[#547792]/90 text-[#ecefca] border border-[#d3dad9] rounded-md px-6 py-3 text-sm md:text-base mx-auto"
+                onClick={() => navigate("/course-list")}
+              >
+                Começar agora
+              </Button>
+
+              <div className="w-full sm:w-auto hidden">
+                <SearchBar />
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* ====== BLOCO 2: Painel azul com headline + subcopy + SearchBar ====== */}
-        <div className="mt-10 w-[90%] mx-auto   bg-[#547792] text-white shadow-sm px-6 py-10 md:py-20 text-center ">
-          <h3 className="mx-auto max-w-3xl text-3xl md:text-4xl font-semibold leading-tight">
-            Potencia o teu futuro com cursos
-            <br className="hidden md:block" />
-            desenhados para se adaptarem
-            <br className="hidden md:block" />
-            às tuas escolhas.
+      {/* Bloco 2 — Painel informativo com Search (mantido, mas responsivo) */}
+      <div className="w-full bg-[#547792] text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 text-center">
+          <h3 className="mx-auto max-w-3xl text-2xl md:text-4xl font-semibold leading-tight">
+            Potencia o teu futuro com cursos desenhados para se adaptarem às
+            tuas escolhas.
           </h3>
 
-          <p className="mt-4 mx-auto max-w-2xl text-xs md:text-base text-white/85">
-            Reunimos instrutores de classe mundial, conteúdo interativo e uma
-            comunidade <br /> de apoio para te ajudar a alcançar os teus
-            objetivos pessoais e profissionais.
+          <p className="mt-3 mx-auto max-w-2xl text-xs md:text-base text-white/85">
+            Instrutores de classe mundial, conteúdo interativo e comunidade de
+            apoio — tudo num só lugar.
           </p>
 
-          {/* O teu SearchBar antigo aqui */}
-          <div className="mt-6 mx-auto max-w-max  justify-center items-center">
+          <div className="mt-6 mx-auto max-w-xl">
             <SearchBar />
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default HeroSection;
+}

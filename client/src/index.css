@@ -150,6 +150,14 @@
 .rich-text li {
   margin-bottom: 8px;
 }
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 
 @layer base {
   * {

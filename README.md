@@ -130,5 +130,3 @@ VITE_STREAM_API_KEY=
 VITE_CURRENCY=EUR
 VITE_API_URL= # (Opcional – Chatbot IA)
 ```
-
-## 🖼️ Capturas de Ecrã

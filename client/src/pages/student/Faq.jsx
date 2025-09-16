@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { assets } from "../../assets/assets";
-import { SearchIcon } from "lucide-react";
+import { Search as SearchIcon } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../../components/ui/accordion";
-import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 
-// Recolha do conteúdo original (mantém perguntas/respostas da tua página)
+// conteúdo
 const faqItems = [
   {
     id: "item-1",
@@ -75,55 +74,84 @@ const faqItems = [
 ];
 
 const Faq = () => {
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return faqItems;
+    return faqItems.filter(
+      (it) =>
+        it.question.toLowerCase().includes(q) ||
+        it.answer.toLowerCase().includes(q)
+    );
+  }, [query]);
+
   return (
     <div className="bg-white min-h-screen w-full">
-      {/* Main */}
-      <main className="max-w-[1440px] mx-auto px-[135px] py-[100px]">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[200px] items-start">
-          {/* Coluna FAQ (accordion shadcn/ui) */}
-          <div className="space-y-[33px]">
-            <div className="space-y-[26px]">
-              <h1 className="font-semibold text-[#37353e] text-4xl">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Coluna FAQ */}
+          <div className="space-y-6">
+            <header className="space-y-2">
+              <h1 className="font-semibold text-[#37353e] text-3xl md:text-4xl">
                 Perguntas Frequentes
               </h1>
-              <p className="font-normal text-black text-sm">
+              <p className="text-black/70 text-sm md:text-base">
                 Encontra respostas rápidas às questões mais comuns sobre a
                 plataforma.
               </p>
-            </div>
+            </header>
 
-            <Accordion
-              type="single"
-              collapsible
-              className="w-full space-y-[10px]"
+            {/* pesquisa local (opcional, mas útil) */}
+            <label
+              className="relative block"
+              aria-label="Pesquisar perguntas frequentes"
             >
-              {faqItems.map((item) => (
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <SearchIcon className="w-4 h-4 text-slate-500" />
+              </span>
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Pesquisar no FAQ…"
+                className="pl-10 h-11"
+              />
+            </label>
+
+            <Accordion type="single" collapsible className="w-full space-y-2">
+              {filtered.map((item) => (
                 <AccordionItem
                   key={item.id}
                   value={item.id}
-                  className="bg-[#213448] border border-solid border-[#d3dad9] rounded-none"
+                  className="bg-[#213448] border border-[#d3dad9] rounded-md"
                 >
-                  <AccordionTrigger className="h-[50px] px-12 font-medium text-[#d3dad9] text-base hover:no-underline [&[data-state=open]>svg]:rotate-180">
+                  <AccordionTrigger className="px-4 sm:px-6 py-3 sm:py-4 font-medium text-[#d3dad9] text-base hover:no-underline [&[data-state=open]>svg]:rotate-180">
                     {item.question}
                   </AccordionTrigger>
                   {item.answer && (
-                    <AccordionContent className="px-[33px] pb-4 font-light text-white text-sm">
+                    <AccordionContent className="px-4 sm:px-6 pb-4 text-white/90 text-sm">
                       {item.answer}
                     </AccordionContent>
                   )}
                 </AccordionItem>
               ))}
+              {!filtered.length && (
+                <p className="text-sm text-slate-600 px-1">
+                  Sem resultados para “{query}”.
+                </p>
+              )}
             </Accordion>
           </div>
 
-          {/* Coluna imagem (usa o teu assets.faq) */}
-          <div className="relative w-[500px] h-[500px] mx-auto mt-20">
-            <figure className="absolute inset-0 bg-white rounded-2xl border border-[#d3dad9] shadow-sm overflow-hidden flex items-center justify-center p-6">
+          {/* Coluna imagem */}
+          <div className="relative max-w-md mx-auto lg:max-w-none">
+            <figure className="bg-white rounded-2xl border border-[#d3dad9] shadow-sm overflow-hidden p-4 sm:p-6">
               <img
                 src={assets.faq}
-                alt="FAQ"
-                className="w-full h-full max-h-[430px] object-contain"
+                alt="Perguntas e respostas"
+                className="w-full h-64 sm:h-80 md:h-[28rem] object-contain"
                 loading="lazy"
+                decoding="async"
               />
             </figure>
           </div>

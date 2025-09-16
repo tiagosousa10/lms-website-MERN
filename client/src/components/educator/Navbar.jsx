@@ -1,33 +1,81 @@
 import React from "react";
-import { assets } from "../../assets/assets";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { Link, useNavigate } from "react-router-dom";
-import { StepBack } from "lucide-react";
+import { StepBack, Menu as MenuIcon } from "lucide-react";
+import { SidebarContent } from "./Sidebar";
+// shadcn/ui
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "../../components/ui/sheet";
 
 const Navbar = () => {
   const { user } = useUser();
   const navigate = useNavigate();
 
   return (
-    <nav className="w-full bg-[#213448] text-white/95 shadow-sm">
-      <div className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
+    <nav
+      className="w-full bg-[#213448] text-white/95 shadow-sm"
+      aria-label="Barra superior"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Barra principal */}
         <div className="h-[74px] flex items-center justify-between gap-4">
-          {/* ESQUERDA: logo/brand */}
+          {/* ESQUERDA: logo + hambúrguer (mobile) */}
           <div className="flex items-center gap-3 lg:gap-6">
+            {/* Drawer em <lg> */}
+            <div className="lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center h-11 w-11 rounded-md border border-white/30 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                    aria-label="Abrir menu"
+                    aria-haspopup="dialog"
+                  >
+                    <MenuIcon className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="left" className="p-0 w-72">
+                  <SheetHeader className="px-4 py-3 border-b">
+                    <SheetTitle>Menu</SheetTitle>
+                  </SheetHeader>
+                  <div className="h-[calc(100vh-3.25rem)] flex flex-col">
+                    <SidebarContent />
+                    <div className="p-3">
+                      <SheetClose asChild>
+                        <button
+                          className="w-full h-11 rounded-md border border-slate-300 text-slate-800 hover:bg-slate-50"
+                          aria-label="Fechar menu"
+                        >
+                          Fechar
+                        </button>
+                      </SheetClose>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+
+            {/* Logo / Brand */}
             <button
               onClick={() => navigate("/")}
               className="flex items-center gap-2 hover:opacity-90"
+              aria-label="Ir para a página inicial"
             >
-              <div className="avatar">
-                <div className="w-10 h-10 rounded-full overflow-hidden ring-1 ring-white/30">
+              <span className="avatar">
+                <span className="w-10 h-10 rounded-full overflow-hidden ring-1 ring-white/30 inline-block">
                   <img
                     src="/logo.jpg"
                     alt="tsAcademy"
-                    className="object-cover"
+                    className="object-cover w-full h-full"
                   />
-                </div>
-              </div>
+                </span>
+              </span>
               <span className="font-semibold text-2xl tracking-tight">
                 tsACADEMY
               </span>
@@ -35,14 +83,14 @@ const Navbar = () => {
           </div>
 
           {/* DIREITA: ações do utilizador */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {user ? (
               <>
                 <button
-                  onClick={() => navigate("/")}
-                  className="hidden sm:flex items-center gap-2 rounded-md border border-white/40 px-3 py-2 text-sm hover:bg-white/10 transition"
+                  onClick={() => navigate(-1)}
+                  className="hidden sm:inline-flex items-center gap-2 rounded-md border border-white/40 px-3 py-2 text-sm hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
-                  <StepBack className="h-5 w-5" />
+                  <StepBack className="h-5 w-5" aria-hidden="true" />
                   Voltar
                 </button>
 
@@ -50,26 +98,24 @@ const Navbar = () => {
                   Olá! {user.fullName}
                 </p>
 
+                {/* Clerk UserButton (customizável via appearance) */}
                 <UserButton
                   afterSignOutUrl="/"
                   appearance={{
                     elements: {
                       userButtonAvatarBox: "rounded-full",
-                      userButtonAnchor: "btn btn-ghost btn-circle",
+                      userButtonTrigger: "h-10 w-10", // tamanho alvo confortável
                     },
                   }}
                 />
               </>
             ) : (
-              <div className="avatar">
-                <div className="w-8 h-8 rounded-full overflow-hidden ring-1 ring-white/30">
-                  <img
-                    src={assets.profile_img}
-                    alt="perfil"
-                    className="object-cover object-center w-full h-full"
-                  />
-                </div>
-              </div>
+              <Link
+                to="/sign-in"
+                className="inline-flex items-center justify-center h-11 px-4 rounded-md border border-white/40 text-sm hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              >
+                Iniciar sessão
+              </Link>
             )}
           </div>
         </div>

@@ -98,24 +98,25 @@ const ChatPage = () => {
   if (loading || !chatClient || !channel) return <ChatLoader />;
 
   return (
-    <div className="h-[93vh] px-20  ">
-      <div>
-        <h1 className="text-3xl font-bold my-12 ">Chat</h1>
-      </div>
-      <div className="border border-[#547792] rounded p-4">
-        <Chat client={chatClient}>
-          <Channel channel={channel}>
-            <div className="w-full relative">
-              <CallButton handleVideoCall={handleVideoCall} />
-              <Window>
-                <ChannelHeader />
-                <MessageList />
-                <MessageInput focus />
-              </Window>
-            </div>
-            <Thread />
-          </Channel>
-        </Chat>
+    <div className="bg-white min-h-[100svh]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+        <h1 className="text-3xl font-bold mb-6 md:mb-8">Chat</h1>
+
+        <div className="border border-[#547792] rounded-lg p-2 sm:p-4">
+          <Chat client={chatClient}>
+            <Channel channel={channel}>
+              <div className="w-full relative">
+                <CallButton handleVideoCall={handleVideoCall} />
+                <Window>
+                  <ChannelHeader />
+                  <MessageList /> {/* mantém hierarquia recomendada */}
+                  <MessageInput focus />
+                </Window>
+              </div>
+              <Thread />
+            </Channel>
+          </Chat>
+        </div>
       </div>
     </div>
   );

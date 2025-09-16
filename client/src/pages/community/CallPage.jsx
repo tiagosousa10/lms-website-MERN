@@ -89,8 +89,8 @@ const CallPage = () => {
   if (isLoading || isConnecting) return <PageLoader />;
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="relative">
+    <div className="bg-black min-h-[100svh]">
+      <div className="container mx-auto px-0 sm:px-4 md:px-6 py-0 md:py-6">
         {client && call ? (
           <StreamVideo client={client}>
             <StreamCall call={call}>
@@ -98,8 +98,8 @@ const CallPage = () => {
             </StreamCall>
           </StreamVideo>
         ) : (
-          <div className="flex items-center justify-center h-full">
-            <p>Could not initialize call. Please refresh or try again later</p>
+          <div className="flex items-center justify-center h-[60svh] text-white">
+            <p>Não foi possível iniciar a chamada. Atualiza a página.</p>
           </div>
         )}
       </div>

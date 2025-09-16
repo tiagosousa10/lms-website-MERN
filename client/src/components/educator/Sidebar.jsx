@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
-import { assets } from "../../assets/assets";
-import { AppContext } from "../../context/AppContext";
 import { NavLink } from "react-router-dom";
-import { Button } from "../ui/button";
+import { AppContext } from "../../context/AppContext";
+import { assets } from "../../assets/assets";
 
-const Sidebar = () => {
-  const { isEducator } = useContext(AppContext);
-
+export const SidebarContent = () => {
   const menuItems = [
     { name: "Painel de Controlo", path: "/educator", icon: assets.home_icon },
     {
@@ -27,31 +24,49 @@ const Sidebar = () => {
   ];
 
   return (
-    isEducator && (
-      <aside className="w-64 border-r border-base-300 hidden md:flex flex-col h-screen sticky top-0">
-        <nav className="flex-1 p-4 space-y-1">
-          {menuItems.map((item) => (
-            <NavLink
-              to={item.path}
-              key={item.name}
-              end={item.path === "/educator"}
-              className={({ isActive }) =>
-                `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
-                  isActive ? "btn-active" : ""
-                }`
-              }
-            >
-              <img
-                src={item.icon}
-                alt={`Ícone de ${item.name}`}
-                className="w-5 h-5 opacity-70"
-              />
-              <span>{item.name}</span>
-            </NavLink>
-          ))}
-        </nav>
-      </aside>
-    )
+    <nav
+      className="flex-1 p-3 sm:p-4 space-y-1"
+      aria-label="Navegação do educador"
+    >
+      {menuItems.map((item) => (
+        <NavLink
+          key={item.name}
+          to={item.path}
+          end={item.path === "/educator"}
+          className={({ isActive }) =>
+            [
+              "w-full inline-flex items-center gap-3 px-3 h-11 rounded-md transition",
+              "hover:bg-slate-100",
+              isActive ? "bg-slate-100 font-medium" : "bg-transparent",
+            ].join(" ")
+          }
+        >
+          <img
+            src={item.icon}
+            alt=""
+            className="w-5 h-5 opacity-70"
+            aria-hidden="true"
+          />
+          <span className="truncate">{item.name}</span>
+        </NavLink>
+      ))}
+    </nav>
+  );
+};
+
+const Sidebar = () => {
+  const { isEducator } = useContext(AppContext);
+
+  if (!isEducator) return null;
+
+  return (
+    <aside
+      className="hidden lg:flex w-64 lg:w-72 border-r border-slate-200 flex-col sticky top-0 h-screen bg-white"
+      role="complementary"
+      aria-label="Sidebar"
+    >
+      <SidebarContent />
+    </aside>
   );
 };
 

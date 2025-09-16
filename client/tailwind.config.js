@@ -123,5 +123,8 @@ export default {
       },
     },
   },
-  plugins: [daisyui, require("tailwindcss-animate")],
+  plugins: [
+    daisyui,
+    require("tailwindcss-animate", " @tailwindcss/line-clamp"),
+  ],
 };

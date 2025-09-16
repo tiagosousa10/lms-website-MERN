@@ -90,101 +90,96 @@ const StudentsEnrolled = () => {
   if (!enrolledStudents) return <Loading />;
 
   return (
-    <div className="bg-white min-h-screen p-4 md:p-8">
-      <div className="w-full max-w-6xl mx-auto">
+    <main className="bg-white min-h-screen">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h2 className="font-medium text-gray-800 text-xl mb-6">
           Alunos Inscritos
         </h2>
 
-        <Card className="w-full bg-white rounded-md border border-solid border-[#ecefca]">
+        <Card className="w-full bg-white border border-[#ecefca]">
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-[#94b4c1] h-[51px] hover:bg-[#94b4c1]">
-                  <TableHead className="font-semibold text-white text-sm text-center hidden sm:table-cell w-[60px]">
-                    #
-                  </TableHead>
-                  <TableHead className="font-semibold text-white text-sm">
-                    Nome do Aluno
-                  </TableHead>
-                  <TableHead className="font-semibold text-white text-sm">
-                    Título do Curso
-                  </TableHead>
-                  <TableHead className="font-semibold text-white text-sm hidden sm:table-cell">
-                    Data
-                  </TableHead>
-                  <TableHead className="font-semibold text-white text-sm px-8">
-                    Ações
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
+            <div className="overflow-x-auto">
+              <Table className="min-w-[860px]">
+                <TableHeader>
+                  <TableRow className="bg-[#94b4c1] h-[51px] hover:bg-[#94b4c1]">
+                    <TableHead className="font-semibold text-white text-sm text-center hidden sm:table-cell w-[60px]">
+                      #
+                    </TableHead>
+                    <TableHead className="font-semibold text-white text-sm">
+                      Nome do Aluno
+                    </TableHead>
+                    <TableHead className="font-semibold text-white text-sm">
+                      Título do Curso
+                    </TableHead>
+                    <TableHead className="font-semibold text-white text-sm hidden sm:table-cell">
+                      Data
+                    </TableHead>
+                    <TableHead className="font-semibold text-white text-sm px-8">
+                      Ações
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
 
-              <TableBody>
-                {enrolledStudents.map((item, index) => {
-                  console.log("🚀 ~ StudentsEnrolled ~ item:", item);
-                  const courseId = item.courseId;
-                  console.log("🚀 ~ StudentsEnrolled ~ courseId:", courseId);
-                  const userId = item.student?._id;
-                  const key = `${courseId}-${userId}`;
-                  const isLoading = loadingRemoval[key] === true;
+                <TableBody>
+                  {enrolledStudents.map((item, index) => {
+                    const courseId = item.courseId;
+                    const userId = item.student?._id;
+                    const key = `${courseId}-${userId}`;
+                    const isLoading = loadingRemoval[key] === true;
 
-                  return (
-                    <TableRow
-                      key={key}
-                      className="border-b border-solid border-gray-200"
-                    >
-                      <TableCell className="text-[#252525b2] text-sm text-center hidden sm:table-cell">
-                        {index + 1}
-                      </TableCell>
+                    return (
+                      <TableRow key={key} className="border-b border-gray-200">
+                        <TableCell className="text-[#252525b2] text-sm text-center hidden sm:table-cell">
+                          {index + 1}
+                        </TableCell>
 
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <Avatar className="w-[35px] h-[35px]">
-                            <AvatarImage
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <img
                               src={item.student?.imageUrl}
                               alt={item.student?.name ?? "Aluno"}
+                              className="w-9 h-9 rounded-full object-cover"
                             />
-                            <AvatarFallback>
-                              {item.student?.name?.[0]?.toUpperCase() ?? "U"}
-                            </AvatarFallback>
-                          </Avatar>
-                          <span className="text-[#252525b2] text-sm truncate">
-                            {item.student?.name}
-                          </span>
-                        </div>
-                      </TableCell>
+                            <span className="text-[#252525b2] text-sm truncate">
+                              {item.student?.name}
+                            </span>
+                          </div>
+                        </TableCell>
 
-                      <TableCell className="text-[#252525b2] text-sm truncate">
-                        {item.courseTitle}
-                      </TableCell>
+                        <TableCell className="text-[#252525b2] text-sm truncate">
+                          {item.courseTitle}
+                        </TableCell>
 
-                      <TableCell className="text-[#252525b2] text-sm hidden sm:table-cell">
-                        {item.purchaseDate
-                          ? new Date(item.purchaseDate).toLocaleDateString(
-                              "pt-PT"
-                            )
-                          : "—"}
-                      </TableCell>
+                        <TableCell className="text-[#252525b2] text-sm hidden sm:table-cell">
+                          {item.purchaseDate
+                            ? new Date(item.purchaseDate).toLocaleDateString(
+                                "pt-PT"
+                              )
+                            : "—"}
+                        </TableCell>
 
-                      <TableCell className="text-sm">
-                        <Button
-                          variant="destructive"
-                          className="h-8"
-                          disabled={isLoading}
-                          onClick={() => handleRemoveStudent(courseId, userId)}
-                        >
-                          {isLoading ? "Removendo…" : "Remover"}
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                        <TableCell className="text-sm">
+                          <Button
+                            variant="destructive"
+                            className="h-9"
+                            disabled={isLoading}
+                            onClick={() =>
+                              handleRemoveStudent(courseId, userId)
+                            }
+                          >
+                            {isLoading ? "Removendo…" : "Remover"}
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
-    </div>
+    </main>
   );
 };
 

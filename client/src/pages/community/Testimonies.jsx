@@ -5,7 +5,7 @@ import MyTestimonialsTable from "../../components/community/TestimonialsTable";
 export default function CommunityTestimonials() {
   return (
     <main className="bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="container max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <TestimonialsSection />
         <div className="mt-10">
           <TestimonialForm />

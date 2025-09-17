@@ -172,7 +172,7 @@ const Navbar = () => {
       );
       if (data.success) {
         setIsEducator(true);
-        toast.success(data.message);
+        toast.success("Agora é Professor " + data.message);
       } else toast.error(data.message);
     } catch (error) {
       toast.error(error.message);

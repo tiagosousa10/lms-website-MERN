@@ -1,4 +1,3 @@
-// pages/Player.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import YouTube from "react-youtube";

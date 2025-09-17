@@ -33,6 +33,7 @@ const CourseCard = ({ course }) => {
           {course.courseTitle}
         </h3>
         <p className="text-sm truncate">{course.educator?.name}</p>
+        <p className="text-xs text-end">{course.category}</p>
 
         {/* rating */}
         <div className="mt-2 flex items-center gap-2">

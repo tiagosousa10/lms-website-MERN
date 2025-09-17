@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+// pages/student/CourseDetails.jsx
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import Loading from "../../components/student/Loading";
@@ -7,7 +8,9 @@ import humanizeDuration from "humanize-duration";
 import YouTube from "react-youtube";
 import axios from "axios";
 import { toast } from "react-toastify";
+import CloudinaryVideo from "../../components/student/CloudinaryVideo";
 
+/* === Helpers === */
 const getYouTubeId = (input) => {
   if (!input) return null;
   const str = String(input).trim();
@@ -31,6 +34,33 @@ const getYouTubeId = (input) => {
     return m ? m[1] : null;
   }
 };
+
+const isCloudinaryVideoUrl = (u = "") =>
+  /res\.cloudinary\.com\/[^/]+\/video\/upload\//.test(String(u));
+
+/** Decide a fonte da PRÉ-VISUALIZAÇÃO (YouTube | Cloudinary MP4) */
+const resolvePreviewSource = (lecture) => {
+  // Cloudinary por URL direto (preferência, se vier .mp4)
+  if (
+    lecture?.lectureUrl &&
+    isCloudinaryVideoUrl(lecture.lectureUrl) &&
+    lecture.lectureUrl.endsWith(".mp4")
+  ) {
+    return { type: "cloudinary", sourceUrl: lecture.lectureUrl };
+  }
+  // Cloudinary por publicId (monta .mp4)
+  if (lecture?.cloudinaryPublicId) {
+    return { type: "cloudinary", publicId: lecture.cloudinaryPublicId };
+  }
+  // YouTube
+  const yt = getYouTubeId(lecture?.lectureUrl);
+  if (yt) return { type: "youtube", videoId: yt };
+
+  return null;
+};
+
+// compara apenas se ambos existem
+const isSame = (a, b) => Boolean(a && b && String(a) === String(b));
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -60,12 +90,30 @@ const CourseDetails = () => {
     }
   };
 
+  // é o criador do curso?
+  const isOwner = useMemo(() => {
+    if (!userData || !courseData) return false;
+
+    // educator pode vir populado (objeto) OU como id string
+    const edu = courseData.educator;
+    const eduId = typeof edu === "string" ? edu : edu?._id;
+
+    return (
+      isSame(userData._id, eduId) ||
+      (typeof edu === "object" &&
+        (isSame(userData._id, edu?._id) ||
+          isSame(userData.clerkId, edu?.clerkId) ||
+          isSame(userData.email, edu?.email)))
+    );
+  }, [userData, courseData]);
+
   const enrollCourse = async () => {
     try {
       if (!userData)
         return toast.error("Por favor inicia sessão para te inscreveres");
       if (isAlreadyEnrolled)
         return toast.warning("Já estás inscrito neste curso");
+      if (isOwner) return toast.info("És o criador deste curso.");
 
       const token = await getToken();
       const { data } = await axios.post(
@@ -88,7 +136,8 @@ const CourseDetails = () => {
 
   useEffect(() => {
     if (userData && courseData) {
-      setIsAlreadyEnrolled(userData.enrolledCourses.includes(courseData._id));
+      const arr = userData.enrolledCourses || [];
+      setIsAlreadyEnrolled(arr.includes(courseData._id));
     }
   }, [userData, courseData]);
 
@@ -103,7 +152,9 @@ const CourseDetails = () => {
     width: "100%",
     height: "100%",
     playerVars: { autoplay: 1, rel: 0, modestbranding: 1, playsinline: 1 },
-  }; // YouTube IFrame API params via react-youtube :contentReference[oaicite:1]{index=1}
+  };
+
+  const disableCTA = isOwner || isAlreadyEnrolled;
 
   return (
     <main className="bg-white min-h-screen">
@@ -160,7 +211,9 @@ const CourseDetails = () => {
             <p className="text-sm">
               Curso por{" "}
               <span className="text-blue-600 underline">
-                {courseData.educator?.name}
+                {typeof courseData.educator === "object"
+                  ? courseData.educator?.name
+                  : "Educador"}
               </span>
             </p>
 
@@ -230,14 +283,15 @@ const CourseDetails = () => {
                                   {lecture.isPreviewFree && (
                                     <button
                                       onClick={() => {
-                                        const vid = getYouTubeId(
-                                          lecture.lectureUrl
-                                        );
-                                        if (!vid)
-                                          return toast.error(
-                                            "URL do vídeo inválida"
+                                        const src =
+                                          resolvePreviewSource(lecture);
+                                        if (!src) {
+                                          toast.error(
+                                            "Pré-visualização indisponível"
                                           );
-                                        setPlayerData({ videoId: vid });
+                                          return;
+                                        }
+                                        setPlayerData(src);
                                       }}
                                       className="text-blue-600 underline"
                                     >
@@ -247,9 +301,7 @@ const CourseDetails = () => {
                                   <span className="text-gray-600">
                                     {humanizeDuration(
                                       lecture.lectureDuration * 60000,
-                                      {
-                                        units: ["h", "m"],
-                                      }
+                                      { units: ["h", "m"] }
                                     )}
                                   </span>
                                 </div>
@@ -284,14 +336,27 @@ const CourseDetails = () => {
               {/* vídeo/thumb responsivo 16:9 */}
               <div className="relative w-full overflow-hidden aspect-video">
                 {playerData ? (
-                  <YouTube
-                    videoId={playerData.videoId}
-                    opts={videoOpts}
-                    iframeClassName="absolute inset-0 w-full h-full"
-                    onError={() =>
-                      toast.error("Vídeo indisponível ou ID inválido")
-                    }
-                  />
+                  <>
+                    {playerData.type === "youtube" && (
+                      <YouTube
+                        videoId={playerData.videoId}
+                        opts={videoOpts}
+                        iframeClassName="absolute inset-0 w-full h-full"
+                        onError={() =>
+                          toast.error("Vídeo indisponível ou ID inválido")
+                        }
+                      />
+                    )}
+
+                    {playerData.type === "cloudinary" && (
+                      <CloudinaryVideo
+                        cloudName={import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}
+                        publicId={playerData.publicId}
+                        sourceUrl={playerData.sourceUrl}
+                        poster={courseData.courseThumbnail}
+                      />
+                    )}
+                  </>
                 ) : (
                   <img
                     src={courseData.courseThumbnail}
@@ -355,9 +420,26 @@ const CourseDetails = () => {
 
                 <button
                   onClick={enrollCourse}
-                  className="mt-4 md:mt-6 w-full h-11 rounded-md bg-[#547792] text-white font-medium hover:bg-[#547792]/90"
+                  disabled={disableCTA}
+                  className={`mt-4 md:mt-6 w-full h-11 rounded-md font-medium
+                    ${
+                      disableCTA
+                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                        : "bg-[#547792] text-white hover:bg-[#547792]/90"
+                    }`}
+                  title={
+                    isOwner
+                      ? "És o criador deste curso"
+                      : isAlreadyEnrolled
+                      ? "Já estás inscrito"
+                      : "Inscreve-te Agora"
+                  }
                 >
-                  {isAlreadyEnrolled ? "Já Inscrito" : "Inscreve-te Agora"}
+                  {isOwner
+                    ? "És o criador"
+                    : isAlreadyEnrolled
+                    ? "Já Inscrito"
+                    : "Inscreve-te Agora"}
                 </button>
 
                 <div className="pt-6">

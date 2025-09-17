@@ -7,7 +7,6 @@ import {
   Search as SearchIcon,
   X as XIcon,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
 import Loading from "../../components/student/Loading";
 import NoFriendsFound from "../../components/community/NoFriendsFound";
 import FriendCard from "../../components/community/FriendCard";
@@ -32,8 +31,6 @@ const CommunityPage = () => {
     onGoingFriends = [],
     isEducator,
   } = useContext(AppContext);
-
-  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query.trim()), 250);
@@ -88,27 +85,11 @@ const CommunityPage = () => {
   const gridClasses =
     "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-[minmax(0,1fr)]";
   const cardBase =
-    "card shadow hover:shadow-md transition rounded-2xl overflow-hidden bg-[#547792] h-full flex";
+    "card shadow hover:shadow-md rounded-2xl overflow-hidden bg-[#547792] h-full flex";
   const roleBadge =
     "text-sm border border-[#ECEFCA] text-[#ECEFCA] px-3 py-1 rounded-md";
   const actionBtnBase =
     "btn btn-sm normal-case flex items-center justify-center gap-2 min-h-[44px]";
-
-  const containerV = reduceMotion
-    ? {}
-    : {
-        hidden: { opacity: 0 },
-        show: {
-          opacity: 1,
-          transition: { when: "beforeChildren", staggerChildren: 0.06 },
-        },
-      };
-  const itemV = reduceMotion
-    ? {}
-    : {
-        hidden: { opacity: 0, y: 8 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
-      };
 
   const outgoingSet = useMemo(
     () => new Set(onGoingFriends.map((fr) => String(fr?.recipient?._id))),
@@ -128,13 +109,14 @@ const CommunityPage = () => {
             </p>
           </div>
         </div>
+
         {/* SearchBar: sticky + role=search */}
         <div className="sticky top-16 mt-10 z-20  w-full max-w-2xl">
           <form
             role="search"
             aria-label="Pesquisar amigos e recomendações"
             onSubmit={onSearchSubmit}
-            className="w-full h-11 flex items-center rounded-full bg-white text-slate-700 ring-1 ring-black/10 focus-within:ring-2 focus-within:ring-sky-400 transition relative"
+            className="w-full h-11 flex items-center rounded-full bg-white text-slate-700 ring-1 ring-black/10 focus-within:ring-2 focus-within:ring-sky-400 relative"
           >
             <label htmlFor="community-search" className="sr-only">
               Pesquisar por nome ou e-mail
@@ -163,7 +145,7 @@ const CommunityPage = () => {
             )}
             <button
               type="submit"
-              className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 active:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 transition"
+              className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
               title="Pesquisar"
               aria-label="Pesquisar"
             >
@@ -203,12 +185,7 @@ const CommunityPage = () => {
               </div>
             ) : (
               <div className="py-12">
-                <motion.div
-                  className={gridClasses}
-                  variants={containerV}
-                  initial={reduceMotion ? undefined : "hidden"}
-                  animate={reduceMotion ? undefined : "show"}
-                >
+                <div className={gridClasses}>
                   {combinedResults.map((item) =>
                     item.type === "friend" ? (
                       <FriendCard
@@ -221,11 +198,7 @@ const CommunityPage = () => {
                         }}
                       />
                     ) : (
-                      <motion.div
-                        key={`sug-${item._id}`}
-                        className={cardBase}
-                        variants={itemV}
-                      >
+                      <div key={`sug-${item._id}`} className={cardBase}>
                         <div className="card-body p-4 space-y-3 flex-1">
                           <div className="flex items-center justify-between">
                             <div className="flex gap-4">
@@ -259,7 +232,7 @@ const CommunityPage = () => {
                               className={`${actionBtnBase} w-[70%] mx-auto ${
                                 outgoingSet.has(item._id)
                                   ? "btn-disabled text-white/70 bg-white/10"
-                                  : "bg-[#94B4C1] text-white hover:opacity-90"
+                                  : "bg-[#94B4C1] text-white"
                               }`}
                               disabled={outgoingSet.has(item._id) || isLoading}
                               onClick={() => sendFriendRequest(item._id)}
@@ -285,10 +258,10 @@ const CommunityPage = () => {
                             </button>
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     )
                   )}
-                </motion.div>
+                </div>
               </div>
             )}
           </div>
@@ -301,7 +274,7 @@ const CommunityPage = () => {
                   <span className="loading loading-spinner loading-lg" />
                 </div>
               ) : recommendedUsers.length === 0 ? (
-                <div className="card bg-base-100 shadow p-6 text-center">
+                <div className="card bg-[#547792] text-white shadow p-6 text-center">
                   <h3 className="text-xl font-semibold">
                     Sem recomendações por agora
                   </h3>
@@ -310,20 +283,11 @@ const CommunityPage = () => {
                   </p>
                 </div>
               ) : (
-                <motion.div
-                  className={gridClasses}
-                  variants={containerV}
-                  initial={reduceMotion ? undefined : "hidden"}
-                  animate={reduceMotion ? undefined : "show"}
-                >
+                <div className={gridClasses}>
                   {recommendedUsers.map((u) => {
                     const pedidoEnviado = outgoingSet.has(String(u._id));
                     return (
-                      <motion.div
-                        key={u._id || u.id}
-                        className={cardBase}
-                        variants={itemV}
-                      >
+                      <div key={u._id || u.id} className={cardBase}>
                         <div className="card-body p-4 space-y-3 flex-1">
                           <div className="flex items-center justify-between">
                             <div className="flex gap-4">
@@ -357,7 +321,7 @@ const CommunityPage = () => {
                               className={`${actionBtnBase} w-[70%] mx-auto ${
                                 pedidoEnviado
                                   ? "btn-disabled text-white/70 bg-white/10"
-                                  : "bg-[#94B4C1] text-white hover:opacity-90"
+                                  : "bg-[#94B4C1] text-white"
                               }`}
                               disabled={pedidoEnviado || isLoading}
                               onClick={() => sendFriendRequest(u._id)}
@@ -383,10 +347,10 @@ const CommunityPage = () => {
                             </button>
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     );
                   })}
-                </motion.div>
+                </div>
               )}
             </section>
 
@@ -409,16 +373,11 @@ const CommunityPage = () => {
             ) : userFriends.length === 0 ? (
               <NoFriendsFound />
             ) : (
-              <motion.div
-                className={gridClasses}
-                variants={containerV}
-                initial={reduceMotion ? undefined : "hidden"}
-                animate={reduceMotion ? undefined : "show"}
-              >
+              <div className={gridClasses}>
                 {userFriends.map((friend) => (
                   <FriendCard key={friend._id || friend.id} friend={friend} />
                 ))}
-              </motion.div>
+              </div>
             )}
           </>
         )}

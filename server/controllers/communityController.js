@@ -9,7 +9,7 @@ export async function getAllUsers(req, res) {
     const currentUser = await User.findById(currentUserId);
 
     if (!currentUser) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Utilizador não encontrado" });
     }
 
     const getUsers = await User.find({});
@@ -29,7 +29,7 @@ export async function getRecommendedUsers(req, res) {
     const currentUser = await User.findById(currentUserId);
 
     if (!currentUser) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Utilizador não encontrado" });
     }
 
     const recommendedUsers = await User.find({
@@ -71,7 +71,7 @@ export async function sendFriendRequest(req, res) {
     const myId = req.auth.userId;
 
     if (!myId) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Não Autorizado" });
     }
 
     const { id: recipientId } = req.params;
@@ -79,18 +79,16 @@ export async function sendFriendRequest(req, res) {
     if (myId === recipientId) {
       return res
         .status(400)
-        .json({ message: "You cannot send a friend request to yourself" });
+        .json({ message: "Não pode enviar uma solicitação para si mesmo" });
     }
 
     const recipient = await User.findById(recipientId);
     if (!recipient) {
-      return res.status(404).json({ message: "Recipient not found" });
+      return res.status(404).json({ message: "Recipient não encontrado" });
     }
 
     if (recipient.friends.includes(myId)) {
-      return res
-        .status(400)
-        .json({ message: "You are already friends with this user" });
+      return res.status(400).json({ message: "Vocês já são amigos." });
     }
 
     const existingRequest = await FriendRequest.findOne({
@@ -101,7 +99,7 @@ export async function sendFriendRequest(req, res) {
     });
 
     if (existingRequest) {
-      return res.status(400).json({ message: "Friend request already exists" });
+      return res.status(400).json({ message: "Pedido de amizade ja enviado" });
     }
 
     const friendRequest = await FriendRequest.create({
@@ -126,13 +124,15 @@ export async function acceptFriendRequest(req, res) {
 
     const friendRequest = await FriendRequest.findById(requestId);
     if (!friendRequest) {
-      return res.status(404).json({ message: "Friend request not found" });
+      return res
+        .status(404)
+        .json({ message: "Pedido de amizade nao encontrado" });
     }
 
     if (friendRequest.recipient.toString() !== userId) {
       return res
         .status(403)
-        .json({ message: "You are not authorized to accept this request" });
+        .json({ message: "Nao autorizado para aceitar essa solicitação" });
     }
 
     friendRequest.status = "accepted";
@@ -146,7 +146,7 @@ export async function acceptFriendRequest(req, res) {
       $addToSet: { friends: friendRequest.sender },
     });
 
-    res.status(200).json({ message: "Friend request accepted" });
+    res.status(200).json({ message: "Pedido de amizade aceito" });
   } catch (error) {
     console.log("Error in acceptFriendRequest controller", error.message);
     res
@@ -212,17 +212,19 @@ export async function removeFriend(req, res) {
 
     const { id: friendId } = req.params;
     if (!friendId)
-      return res.status(400).json({ message: "Friend ID not provided" });
+      return res.status(400).json({ message: "Friend ID não encontrado" });
     if (String(userId) === String(friendId))
-      return res.status(400).json({ message: "You cannot remove yourself" });
+      return res.status(400).json({ message: "Não pode remover a si mesmo" });
 
     const [me, friend] = await Promise.all([
       User.findById(userId).select("_id friends"),
       User.findById(friendId).select("_id friends"),
     ]);
 
-    if (!me) return res.status(404).json({ message: "User not found" });
-    if (!friend) return res.status(404).json({ message: "Friend not found" });
+    if (!me)
+      return res.status(404).json({ message: "Utilizador nao encontrado" });
+    if (!friend)
+      return res.status(404).json({ message: "Amigo não encontrado" });
 
     await Promise.all([
       User.updateOne({ _id: userId }, { $pull: { friends: String(friendId) } }),

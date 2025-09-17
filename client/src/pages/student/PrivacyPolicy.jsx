@@ -71,14 +71,17 @@ const PrivacyPolicy = () => {
             <li>
               <strong>Identidade e contactos:</strong> tsAcademy, Porto,
               Portugal. Email:{" "}
-              <a className="underline" href="mailto:privacy@tsacademy.pt">
-                privacy@tsacademy.pt
+              <a
+                className="underline"
+                href="mailto:tiagosousa.tams@hotmail.com"
+              >
+                tiagosousa.tams@hotmail.com
               </a>
             </li>
             <li>
               <strong>Encarregado de Proteção de Dados (DPO):</strong>{" "}
-              <span className="opacity-90">privacy@tsacademy.pt</span> (se
-              aplicável).
+              <span className="opacity-90">tiagosousa.tams@hotmail.com</span>{" "}
+              (se aplicável).
             </li>
           </ul>
         </Section>
@@ -182,8 +185,8 @@ const PrivacyPolicy = () => {
           </p>
           <p className="text-white/80">
             Para exercer, contacta-nos através de{" "}
-            <a className="underline" href="mailto:privacy@tsacademy.pt">
-              privacy@tsacademy.pt
+            <a className="underline" href="mailto:tiagosousa.tams@hotmail.com">
+              tiagosousa.tams@hotmail.com
             </a>
             . Forneceremos informação clara e num prazo razoável, salvo exceções
             previstas em lei.
@@ -235,8 +238,8 @@ const PrivacyPolicy = () => {
         <Section id="contactos" title="Contactos & Reclamações">
           <p className="text-white/80">
             Dúvidas ou pedidos sobre privacidade? Contacta:{" "}
-            <a href="mailto:privacy@tsacademy.pt" className="underline">
-              privacy@tsacademy.pt
+            <a href="mailto:tiagosousa.tams@hotmail.com" className="underline">
+              tiagosousa.tams@hotmail.com
             </a>
             .
           </p>

@@ -13,7 +13,7 @@ export const getUserData = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.json({ success: false, message: "User not found" });
+      return res.json({ success: false, message: "Utilizador não encontrado" });
     }
 
     res.json({ success: true, user });
@@ -57,7 +57,7 @@ export const purchaseCourse = async (req, res) => {
     const userData = await User.findById(userId);
 
     if (!userData || !courseData) {
-      return res.json({ success: false, message: "Data Not Found" });
+      return res.json({ success: false, message: "Dados não encontrados" });
     }
 
     const purchaseData = {
@@ -119,7 +119,7 @@ export const updateUserCourseProgress = async (req, res) => {
       if (progressData.lectureCompleted.includes(lectureId)) {
         return res.json({
           success: true,
-          message: "Lecture Already Completed",
+          message: "Aula já Completa",
         });
       }
 
@@ -133,7 +133,7 @@ export const updateUserCourseProgress = async (req, res) => {
       });
     }
 
-    res.json({ success: true, message: "Progress Updated" });
+    res.json({ success: true, message: "Progresso Atualizado" });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -164,7 +164,7 @@ export const addUserRating = async (req, res) => {
 
   // Validate inputs
   if (!courseId || !userId || !rating || rating < 1 || rating > 5) {
-    return res.json({ success: false, message: "InValid Details" });
+    return res.json({ success: false, message: "Detalhes Inválidos" });
   }
 
   try {
@@ -172,7 +172,7 @@ export const addUserRating = async (req, res) => {
     const course = await Course.findById(courseId);
 
     if (!course) {
-      return res.json({ success: false, message: "Course not found." });
+      return res.json({ success: false, message: "Curso não encontrado." });
     }
 
     const user = await User.findById(userId);
@@ -180,7 +180,7 @@ export const addUserRating = async (req, res) => {
     if (!user || !user.enrolledCourses.includes(courseId)) {
       return res.json({
         success: false,
-        message: "User has not purchased this course.",
+        message: "Utilizador não comprou o curso.",
       });
     }
 
@@ -199,7 +199,7 @@ export const addUserRating = async (req, res) => {
 
     await course.save();
 
-    return res.json({ success: true, message: "Rating added" });
+    return res.json({ success: true, message: "Classificação Adicionada" });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }

@@ -56,7 +56,7 @@ export const addCourse = async (req, res) => {
       await fs.unlink(imageFile.path);
     } catch {}
 
-    res.json({ success: true, message: "Course added successfully" });
+    res.json({ success: true, message: "Curso adicionado com sucesso!" });
   } catch (error) {
     res.json({ success: false, message: error.message });
     console.log("Error in addCourse", error.message);
@@ -300,11 +300,6 @@ export const removeStudentFromCourse = async (req, res) => {
   }
 };
 
-/**
- * Upload do vídeo (multer -> Cloudinary).
- * Espera form-data com campo "video" e, opcionalmente, "courseId".
- * Devolve: secure_url, public_id, duration (s).
- */
 export const uploadLectureVideo = async (req, res) => {
   try {
     const file = req.file; // field "video"
@@ -347,14 +342,6 @@ export const uploadLectureVideo = async (req, res) => {
   }
 };
 
-/**
- * Cria uma aula (YouTube OU Cloudinary) num capítulo de um curso.
- * Body:
- *  - lectureId, lectureTitle, lectureOrder, isPreviewFree
- *  - provider: "youtube" | "cloudinary"
- *  - youtubeUrl (se provider="youtube")
- *  - cloudinaryUrl, cloudinaryPublicId, duration (se provider="cloudinary")
- */
 export const addLecture = async (req, res) => {
   try {
     const educatorId = req.auth.userId;
@@ -415,9 +402,6 @@ export const addLecture = async (req, res) => {
   }
 };
 
-/**
- * Remove uma aula. Se for Cloudinary, apaga também o vídeo remoto.
- */
 export const deleteLecture = async (req, res) => {
   try {
     const educatorId = req.auth.userId;

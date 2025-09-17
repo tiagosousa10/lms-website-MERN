@@ -56,7 +56,7 @@ export default function TestimonialsTable() {
 
       <div className="px-4 sm:px-6 pb-6">
         <div className="overflow-x-auto">
-          <table className="table table-zebra min-w-[720px] bg-white">
+          <table className="table  min-w-[720px] bg-white">
             <thead>
               <tr>
                 <th>Data</th>

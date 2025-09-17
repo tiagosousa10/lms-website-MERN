@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search as SearchIcon, X as XIcon, UserMinus } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 
@@ -19,11 +18,8 @@ export default function Friends() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [removingId, setRemovingId] = useState(null);
 
-  // 🔕 respeita “reduzir movimento”
-  const reduceMotion = useReducedMotion();
-
   useEffect(() => {
-    const t = setTimeout(() => setDebouncedQuery(query.trim()), 250); // 200–300ms
+    const t = setTimeout(() => setDebouncedQuery(query.trim()), 250);
     return () => clearTimeout(t);
   }, [query]);
 
@@ -54,27 +50,9 @@ export default function Friends() {
   const gridClasses =
     "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-[minmax(0,1fr)]";
   const cardBase =
-    "card shadow hover:shadow-lg transition rounded-2xl overflow-hidden bg-[#547792] h-full flex";
+    "card shadow hover:shadow-lg rounded-2xl overflow-hidden bg-[#547792] h-full flex";
   const roleBadge =
     "text-sm border border-[#ECEFCA] text-[#ECEFCA] px-3 py-1 rounded-md";
-
-  // motion variants com fallback acessível
-  const containerV = reduceMotion
-    ? {}
-    : {
-        hidden: { opacity: 0 },
-        show: {
-          opacity: 1,
-          transition: { when: "beforeChildren", staggerChildren: 0.06 },
-        },
-      };
-
-  const itemV = reduceMotion
-    ? {}
-    : {
-        hidden: { opacity: 0, y: 8 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
-      };
 
   return (
     <main className="min-h-screen bg-white">
@@ -87,13 +65,13 @@ export default function Friends() {
           </div>
         </header>
 
-        {/* SearchBar: sticky, landmark e alvo de toque ≥44px */}
+        {/* SearchBar */}
         <div className="sticky top-16 z-20  w-full max-w-xl">
           <form
             role="search"
             aria-label="Pesquisar amigos"
             onSubmit={onSearchSubmit}
-            className="relative h-11 flex items-center rounded-full bg-white text-slate-700 ring-1 ring-black/10 focus-within:ring-2 focus-within:ring-sky-400 transition"
+            className="relative h-11 flex items-center rounded-full bg-white text-slate-700 ring-1 ring-black/10 focus-within:ring-2 focus-within:ring-sky-400"
           >
             <label htmlFor="friends-search" className="sr-only">
               Pesquisar por nome ou e-mail
@@ -122,7 +100,7 @@ export default function Friends() {
             )}
             <button
               type="submit"
-              className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 active:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 transition"
+              className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
               title="Pesquisar"
               aria-label="Pesquisar"
             >
@@ -158,20 +136,9 @@ export default function Friends() {
             </div>
           </div>
         ) : (
-          <motion.div
-            className={gridClasses}
-            variants={containerV}
-            initial={reduceMotion ? undefined : "hidden"}
-            animate={reduceMotion ? undefined : "show"}
-          >
+          <div className={gridClasses}>
             {filteredFriends.map((f) => (
-              <motion.div
-                key={f._id}
-                variants={itemV}
-                whileHover={reduceMotion ? undefined : { y: -2 }}
-                whileTap={reduceMotion ? undefined : { scale: 0.995 }}
-                className={cardBase}
-              >
+              <div key={f._id} className={cardBase}>
                 <div className="card-body p-4 space-y-3 flex-1">
                   {/* Top */}
                   <div className="flex items-center justify-between gap-3">
@@ -203,7 +170,7 @@ export default function Friends() {
                     Inicia uma conversa e continuem a aprender juntos.
                   </p>
 
-                  {/* Ações com alvos ≥44px */}
+                  {/* Ações */}
                   <div className="mt-auto flex items-center gap-2">
                     <Link
                       to={`/community/chat/${f._id}`}
@@ -228,9 +195,9 @@ export default function Friends() {
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         )}
       </div>
     </main>

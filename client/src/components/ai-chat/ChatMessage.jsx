@@ -21,7 +21,7 @@ const ChatMessage = ({ chat }) => {
           isBot ? "bg-slate-100 text-slate-800" : "bg-[#547792] text-white"
         } ${
           chat.isError ? "border border-red-400 bg-red-50 text-red-800" : ""
-        }`}
+        } whitespace-pre-line leading-relaxed`}
       >
         {chat.text}
       </p>

@@ -20,7 +20,7 @@ const normalize = (string = "") =>
     .replace(/[\u0300-\u036f]/g, "");
 
 const CommunityPage = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [debouncedQuery, setDebouncedQuery] = React.useState("");
 
@@ -111,7 +111,7 @@ const CommunityPage = () => {
         </div>
 
         {/* SearchBar: sticky + role=search */}
-        <div className="sticky top-16 mt-10 z-20  w-full max-w-2xl">
+        <div className=" top-16 mt-10 z-20  w-full max-w-2xl">
           <form
             role="search"
             aria-label="Pesquisar amigos e recomendações"
@@ -132,7 +132,7 @@ const CommunityPage = () => {
               aria-describedby="community-results-count"
               inputMode="search"
             />
-            {query && (
+            {query ? (
               <button
                 type="button"
                 onClick={() => setQuery("")}
@@ -142,15 +142,16 @@ const CommunityPage = () => {
               >
                 <XIcon className="h-4 w-4 text-slate-600" />
               </button>
+            ) : (
+              <button
+                type="submit"
+                className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+                title="Pesquisar"
+                aria-label="Pesquisar"
+              >
+                <SearchIcon className="h-4 w-4 text-white" />
+              </button>
             )}
-            <button
-              type="submit"
-              className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-              title="Pesquisar"
-              aria-label="Pesquisar"
-            >
-              <SearchIcon className="h-4 w-4 text-white" />
-            </button>
           </form>
         </div>
 

@@ -87,26 +87,15 @@ export default function Friends() {
               aria-describedby="friends-results-count"
               inputMode="search"
             />
-            {query ? (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="mr-1.5 size-11 min-w-[44px] min-h-[44px] grid place-content-center rounded-full hover:bg-slate-100"
-                aria-label="Limpar pesquisa"
-                title="Limpar"
-              >
-                <XIcon className="h-4 w-4 text-slate-600" />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-                title="Pesquisar"
-                aria-label="Pesquisar"
-              >
-                <SearchIcon className="h-4 w-4 text-white" />
-              </button>
-            )}
+
+            <button
+              type="submit"
+              className="mr-1.5 size-11 min-w-[44px] min-h-[44px] rounded-full grid place-content-center bg-[#94b4c1] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+              title="Pesquisar"
+              aria-label="Pesquisar"
+            >
+              <SearchIcon className="h-4 w-4 text-white" />
+            </button>
           </form>
         </div>
 
